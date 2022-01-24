@@ -1,4 +1,15 @@
-import { Button, Card, Col, Layout, Row, Space, Typography } from "antd"
+import {
+  Button,
+  Spin,
+  Skeleton,
+  Card,
+  Col,
+  Layout,
+  Row,
+  Space,
+  Typography,
+  message,
+} from "antd"
 import { Content } from "antd/lib/layout/layout"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
@@ -21,19 +32,29 @@ const toDataURL = (url) =>
     )
 
 const generateSeed = (): string => (Math.random() + 1).toString(36).substring(7)
+
+const msg = (type: any, txt: String, ...rest) => {
+  console.log(rest)
+  message[type](txt, rest)
+}
 const Home = () => {
   const [avatar, setAvatar] = useAvatar()
-
+  const [loading, setLoading] = useState(false)
+  const [avatarLoading, setAvatarLoading] = useState(false)
   const handleRegister = (form: Object) => {
-    console.log("index ", form)
-
+    setLoading(true)
     axios
       .post("/api/register", form)
       .then((res) => {
-        console.log(res)
+        if (res.status === 201) {
+          msg("success", "You have successfully registered!", [5])
+        }
       })
       .catch((err) => {
-        console.log(err)
+        msg("error", "Register Failed!")
+      })
+      .finally(() => {
+        setLoading(false)
       })
   }
 
@@ -50,53 +71,67 @@ const Home = () => {
   // console.log(encodedData)
   // var decodedData = window.atob(encodedData)
   // console.log(decodedData)
+  function handleAvatarChange(): void {
+    setAvatarLoading(true)
+    setTimeout(() => {
+      setAvatar()
+      setAvatarLoading(false)
+    }, 500)
+  }
+
   return (
     <Layout className="pt-3">
-      <Content>
-        <Row justify="center" align="middle">
-          <Card>
-            <Space direction="vertical" size="large">
-              <Row style={{ textAlign: "center" }}>
-                <Col span={24}>
-                  <Typography.Title level={1}>Sign Up</Typography.Title>
-                </Col>
-                <Col span={24}>
-                  <Typography.Text>
-                    Register and start sharing your secrets with everyone.
-                  </Typography.Text>
-                </Col>
-              </Row>
-              <Row align="middle" justify="center">
-                <div>
-                  <Image
-                    width={150}
-                    height={150}
-                    src={avatar}
-                    loader={() => avatar}
-                    alt="Avatar"
-                    unoptimized={true}
-                    draggable="false"
+      <Spin spinning={loading} delay={500} tip="Loading...">
+        <Content>
+          <Row justify="center" align="middle">
+            <Card>
+              <Space direction="vertical" size="large">
+                <Row style={{ textAlign: "center" }}>
+                  <Col span={24}>
+                    <Typography.Title level={1}>Sign Up</Typography.Title>
+                  </Col>
+                  <Col span={24}>
+                    <Typography.Text>
+                      Register and start sharing your secrets with everyone.
+                    </Typography.Text>
+                  </Col>
+                </Row>
+                <Row align="middle" justify="center">
+                  <Spin spinning={avatarLoading} size="small" delay={100}>
+                    <Image
+                      width={150}
+                      height={150}
+                      src={avatar}
+                      loader={() => avatar}
+                      alt="Avatar"
+                      unoptimized={true}
+                      draggable="false"
+                    />
+                  </Spin>
+                </Row>
+                <Row justify="center">
+                  <Col span={24} style={{ textAlign: "center" }}>
+                    <BsDice5Fill
+                      onClick={() => handleAvatarChange()}
+                      className={styles.icon}
+                    />
+                  </Col>
+                  <Col span={24} style={{ textAlign: "center" }}>
+                    <Typography.Text>Roll the Dice!</Typography.Text>
+                  </Col>
+                </Row>
+                <Row justify="center">
+                  <LoginForm
+                    handleRegister={(form) =>
+                      handleRegister({ ...form, profilePic: avatar })
+                    }
                   />
-                </div>
-              </Row>
-              <Row justify="center">
-                <Col span={24} style={{ textAlign: "center" }}>
-                  <BsDice5Fill
-                    onClick={() => setAvatar()}
-                    className={styles.icon}
-                  />
-                </Col>
-                <Col span={24} style={{ textAlign: "center" }}>
-                  <Typography.Text>Roll the Dice!</Typography.Text>
-                </Col>
-              </Row>
-              <Row justify="center">
-                <LoginForm handleRegister={(form) => handleRegister(form)} />
-              </Row>
-            </Space>
-          </Card>
-        </Row>
-      </Content>
+                </Row>
+              </Space>
+            </Card>
+          </Row>
+        </Content>
+      </Spin>
     </Layout>
   )
 }

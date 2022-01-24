@@ -14,7 +14,6 @@ const useAvatar = () => {
       ),
     []
   )
-  console.log(url)
   return [url, toggle] as const
 }
 

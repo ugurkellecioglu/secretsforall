@@ -1,6 +1,7 @@
 import { Form, Input, Button, Checkbox } from "antd"
 import { UserOutlined, LockOutlined } from "@ant-design/icons"
 import { useState } from "react"
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons"
 
 const LoginForm = ({ handleRegister }) => {
   const onFinish = (values: any) => {
@@ -43,8 +44,11 @@ const LoginForm = ({ handleRegister }) => {
           },
         ]}
       >
-        <Input
+        <Input.Password
           autoComplete="new-password"
+          iconRender={(visible) =>
+            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+          }
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"
