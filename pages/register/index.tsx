@@ -1,4 +1,4 @@
-import { Spin, Card, Layout, Row, Space } from "antd"
+import { Spin, Card, Layout, Row, Space, Col } from "antd"
 import { useState } from "react"
 import axios from "axios"
 import LoginForm from "./LoginForm"
@@ -46,32 +46,36 @@ const Home = () => {
     <Layout style={{ width: "%100", height: "100vh" }}>
       <Spin spinning={loading} delay={500} tip="Loading...">
         <Row justify="center" align="middle">
-          <Card
-            style={{ height: "100vh", display: "flex", alignItems: "center" }}
-          >
-            <Space direction="vertical" size="large">
-              <Row style={{ textAlign: "center" }}>
-                <Header />
-              </Row>
-              <Row align="middle" justify="center">
-                <Avatar avatar={avatar} avatarLoading={avatarLoading} />
-              </Row>
-              <Row justify="center">
-                <AvatarController
-                  handleAvatarChange={handleAvatarChange}
-                  styles={styles}
-                />
-              </Row>
-              <Row justify="center">
-                <LoginForm
-                  handleRegister={(form) =>
-                    handleRegister({ ...form, profilePic: avatar })
-                  }
-                />
-              </Row>
-            </Space>
-          </Card>
-          <Image src={Vector} alt="Group of People Image" />
+          <Col md={9}>
+            <Card
+              style={{ height: "100vh", display: "flex", alignItems: "center" }}
+            >
+              <Space direction="vertical" size="large">
+                <Row style={{ textAlign: "center" }}>
+                  <Header />
+                </Row>
+                <Row align="middle" justify="center">
+                  <Avatar avatar={avatar} avatarLoading={avatarLoading} />
+                </Row>
+                <Row justify="center">
+                  <AvatarController
+                    handleAvatarChange={handleAvatarChange}
+                    styles={styles}
+                  />
+                </Row>
+                <Row justify="center">
+                  <LoginForm
+                    handleRegister={(form) =>
+                      handleRegister({ ...form, profilePic: avatar })
+                    }
+                  />
+                </Row>
+              </Space>
+            </Card>
+          </Col>
+          <Col lg={12} md={12} sm={24}>
+            <Image src={Vector} alt="Group of People Image" />
+          </Col>
         </Row>
       </Spin>
     </Layout>
