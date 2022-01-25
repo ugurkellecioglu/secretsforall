@@ -8,35 +8,17 @@ import {
   Row,
   Space,
   Typography,
-  message,
 } from "antd"
 import { Content } from "antd/lib/layout/layout"
 import Image from "next/image"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { BsDice5Fill } from "react-icons/bs"
 import axios from "axios"
 import LoginForm from "./LoginForm"
 import styles from "./register.module.css"
 import useAvatar from "./useAvatar"
-const toDataURL = (url) =>
-  fetch(url)
-    .then((response) => response.blob())
-    .then(
-      (blob) =>
-        new Promise((resolve, reject) => {
-          const reader = new FileReader()
-          reader.onloadend = () => resolve(reader.result)
-          reader.onerror = reject
-          reader.readAsDataURL(blob)
-        })
-    )
+import Message from "../../helpers/Message"
 
-const generateSeed = (): string => (Math.random() + 1).toString(36).substring(7)
-
-const msg = (type: any, txt: String, ...rest) => {
-  console.log(rest)
-  message[type](txt, rest)
-}
 const Home = () => {
   const [avatar, setAvatar] = useAvatar()
   const [loading, setLoading] = useState(false)
@@ -47,30 +29,17 @@ const Home = () => {
       .post("/api/register", form)
       .then((res) => {
         if (res.status === 201) {
-          msg("success", "You have successfully registered!", [5])
+          Message("success", "You have successfully registered!", [5])
         }
       })
       .catch((err) => {
-        msg("error", "Register Failed!")
+        Message("error", "Register Failed!")
       })
       .finally(() => {
         setLoading(false)
       })
   }
 
-  // const svgRef = useRef()
-  // const handleSave = () => {
-  //   console.log(svgRef.current)
-  //   toDataURL(url).then((dataUrl: string) => {
-  //     console.log("RESULT:", dataUrl)
-  //     var decodedData = window.atob(dataUrl)
-  //     console.log(decodedData)
-  //   })
-  // var s = new XMLSerializer().serializeToString(svgRef.current)
-  // var encodedData = window.btoa(s)
-  // console.log(encodedData)
-  // var decodedData = window.atob(encodedData)
-  // console.log(decodedData)
   function handleAvatarChange(): void {
     setAvatarLoading(true)
     setTimeout(() => {
