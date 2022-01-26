@@ -2,7 +2,7 @@ import { Form, Input, Button, Checkbox } from "antd"
 import { UserOutlined, LockOutlined } from "@ant-design/icons"
 import { useState } from "react"
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons"
-
+import styles from "./style.module.css"
 const LoginForm = ({ handleRegister }) => {
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values)
@@ -12,10 +12,8 @@ const LoginForm = ({ handleRegister }) => {
   function onFinisFailed({ errorFields }) {
     setError(true)
   }
-  const [form] = Form.useForm()
 
   const [isError, setError] = useState(false)
-  const [userNameErrors, setuserNameErrors] = useState([])
 
   return (
     <Form
@@ -25,7 +23,13 @@ const LoginForm = ({ handleRegister }) => {
       scrollToFirstError={true}
       onFinishFailed={onFinisFailed}
     >
-      <Form.Item name="username">
+      <Form.Item
+        name="username"
+        className={styles.formItem}
+        rules={[
+          { required: true, message: "Can you please provide an username?" },
+        ]}
+      >
         <Input
           autoComplete="new-password"
           prefix={<UserOutlined className="site-form-item-icon" />}
@@ -35,7 +39,10 @@ const LoginForm = ({ handleRegister }) => {
       <Form.Item
         name="password"
         rules={[
-          { required: true, message: "Please input your Password!" },
+          {
+            required: true,
+            message: "It seems you forgot to enter a password.",
+          },
           {
             required: true,
             type: "regexp",
