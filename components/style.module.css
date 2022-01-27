@@ -1,0 +1,26 @@
+.header {
+  background-color: transparent;
+}
+
+.wrapper {
+  padding: 10px;
+}
+
+#username {
+  font-size: 1em;
+  font-weight: bold;
+  padding: 5px;
+}
+
+.wrapper .username {
+  font-weight: bold;
+  padding-right: 10px;
+}
+
+.col > span {
+  font-size: 10px !important;
+}
+
+.avatar {
+  padding: 10px;
+}

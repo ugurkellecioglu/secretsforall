@@ -1,0 +1,9 @@
+.col {
+  padding: 20px;
+}
+.ShareSecret {
+  padding: 10px;
+}
+.ShareSecret > button {
+  margin-top: 10px;
+}

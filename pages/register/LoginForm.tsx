@@ -5,7 +5,6 @@ import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons"
 import styles from "./style.module.css"
 const LoginForm = ({ handleRegister }) => {
   const onFinish = (values: any) => {
-    console.log("Received values of form: ", values)
     handleRegister(values)
   }
 

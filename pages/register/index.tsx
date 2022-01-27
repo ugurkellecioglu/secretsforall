@@ -15,24 +15,17 @@ const Home = () => {
   const [avatar, changeAvatar] = useAvatar()
   const [loading, setLoading] = useState(false)
   const [avatarLoading, setAvatarLoading] = useState(false)
-  const handleRegister = (form: Object) => {
+  const handleRegister = async (form: Object) => {
     setLoading(true)
-    axios
-      .post("/api/register", form)
-      .then((res) => {
-        if (res.status === 201) {
-          Message("success", "You have successfully registered!", [5])
-        } else {
-          Message("error", "Something went wrong!", [5])
-        }
-      })
-      .catch((err) => {
-        console.log("ERR", err)
-        Message("error", "err", [2])
-      })
-      .finally(() => {
-        setLoading(false)
-      })
+    const response = await axios.post("/api/register", form)
+    const result = await response.data
+    console.log(result)
+    if (result.status === 200) {
+      Message("success", "Successfully registered")
+    } else {
+      Message("error", "Could not register, please try again")
+    }
+    setLoading(false)
   }
 
   function handleAvatarChange(): void {
