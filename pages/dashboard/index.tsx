@@ -1,9 +1,8 @@
-import { style } from "@dicebear/avatars/dist/utils"
 import { Card, Button, Col, Layout, Row, Input } from "antd"
 import React from "react"
 import Header from "../../components/Header"
 import styles from "./style.module.css"
-
+import secrets from "../../secrets.js"
 const { TextArea } = Input
 
 function index() {
@@ -25,22 +24,22 @@ function index() {
               <Button type="primary">Submit</Button>
             </Col>
           </Row>
-          <Row justify="center" align="middle">
-            <Col className={styles.col} span={6}>
-              <Card title="Card title" bordered={true}>
-                Card content
-              </Card>
-            </Col>
-            <Col className={styles.col} span={6}>
-              <Card title="Card title" bordered={true}>
-                Card content
-              </Card>
-            </Col>
-            <Col className={styles.col} span={6}>
-              <Card title="Card title" bordered={true}>
-                Card content
-              </Card>
-            </Col>
+          <Row
+            style={{ padding: "50px" }}
+            gutter={4}
+            justify="center"
+            align="middle"
+          >
+            {secrets.map((secret, index) => (
+              <Col className={styles.col} key={secret.secretId} span={24}>
+                <Card
+                  title={secret.secretText.substring(0, 20)}
+                  bordered={true}
+                >
+                  {secret.secretText}
+                </Card>
+              </Col>
+            ))}
           </Row>
         </Layout.Content>
       </Layout>
