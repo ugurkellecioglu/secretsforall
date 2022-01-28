@@ -1,8 +1,13 @@
-import { Col, Row, Typography } from "antd"
+import { Col, Row, Switch, Typography } from "antd"
 import React from "react"
 import { Layout } from "antd"
 import styles from "./style.module.css"
-import { UserOutlined, DownOutlined } from "@ant-design/icons"
+import {
+  UserOutlined,
+  DownOutlined,
+  CheckOutlined,
+  CloseOutlined,
+} from "@ant-design/icons"
 import Avatar from "antd/lib/avatar/avatar"
 import { Dropdown } from "antd"
 import MenuComp from "./Menu"
@@ -27,13 +32,34 @@ const menuData = [
 ]
 function Header() {
   return (
-    <div className={styles.wrapper}>
-      <Head className={styles.header}>
+    <div
+      style={{
+        width: "100vw",
+        height: "10vh",
+        zIndex: "999",
+        backgroundColor: "white",
+      }}
+    >
+      <Head
+        style={{
+          backgroundColor: "white",
+          zIndex: "999",
+          height: "10vh",
+          position: "fixed",
+          width: "100vw",
+          display: "block",
+        }}
+      >
         <Row justify="space-between" align="middle">
           <Col>
             <Typography.Title level={5}>Secrets for All</Typography.Title>
           </Col>
           <Col className={styles.col}>
+            <Switch
+              checkedChildren={<CheckOutlined />}
+              unCheckedChildren={<CloseOutlined />}
+              defaultChecked
+            />
             <Typography.Text italic={true} className="username">
               sensetil0346
             </Typography.Text>

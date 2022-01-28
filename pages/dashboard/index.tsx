@@ -1,4 +1,4 @@
-import { Card, Button, Col, Layout, Row, Input } from "antd"
+import { Card, Button, Col, Layout, Row, Input, Menu } from "antd"
 import React from "react"
 import Header from "../../components/Header"
 import styles from "./style.module.css"
@@ -17,7 +17,7 @@ const CardHeader = ({ secret }: any) => {
   return (
     <>
       <Row align="middle">
-        <Avatar src={user.profilePic || ""} />
+        <Avatar size="large" src={user.profilePic || ""} />
         <div>
           <span className={styles.username}>{user.username}</span>
           <p style={{ fontSize: "9px", color: "gray", fontWeight: "lighter" }}>
@@ -34,6 +34,19 @@ function index() {
     <div>
       <Header />
       <Layout>
+        <Layout.Sider
+          style={{
+            overflow: "auto",
+            height: "100vh",
+            position: "fixed",
+          }}
+          theme="light"
+        >
+          <Menu mode="inline" defaultSelectedKeys={["1"]}>
+            <Menu.Item key="1">Dashboard</Menu.Item>
+            <Menu.Item key="2">Random Secret</Menu.Item>
+          </Menu>
+        </Layout.Sider>
         <Layout.Content>
           <Row justify="center" align="middle">
             <Col className={styles.ShareSecret} span={12}>
@@ -49,18 +62,24 @@ function index() {
               <Button type="primary">Submit</Button>
             </Col>
           </Row>
-          <Row style={{ padding: "50px" }} gutter={4} justify="center">
-            {secrets.map((secret, index) => (
-              <Col className={styles.col} key={secret.secretId} span={8}>
+          <Row
+            style={{ padding: "0 4px", display: "flex", flexWrap: "wrap" }}
+            gutter={4}
+            justify="center"
+          >
+            <Col className={styles.col} span={48}>
+              {secrets.map((secret, index) => (
                 <Card
+                  key={secret.secretId}
                   title={<CardHeader secret={secret} />}
-                  bordered={false}
+                  bordered={true}
                   hoverable={true}
+                  style={{ marginBottom: "10px", width: "50vw" }}
                 >
-                  {secret.secretText.substring(0, 100) + "..."}
+                  {secret.secretText + "..."}
                 </Card>
-              </Col>
-            ))}
+              ))}
+            </Col>
           </Row>
         </Layout.Content>
       </Layout>
