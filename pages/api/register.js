@@ -1,10 +1,11 @@
 import getUsers from "../../helpers/getUsers"
+import mongo from "./client"
 const fs = require("fs")
 const bcrypt = require("bcryptjs")
 const saltRounds = 10
 
 export default async function handler(req, res) {
-  try {
+  mongo("secretsforall", "users", async (collection) => {
     if (req.method !== "POST") return
     const body = req.body
     const { username, password, profilePic } = body
@@ -12,25 +13,15 @@ export default async function handler(req, res) {
       throw new Error("Missing username, password or profilePic")
     }
     const user = { username, password, profilePic }
+    const isUserFound = await collection.findOne({ username })
+    if (isUserFound)
+      return res.status(400).json({ message: "User already exists" })
 
-    const users = await getUsers()
-    const existingUser = users
-      ? users.find((user) => user.username === username)
-      : false
-    if (existingUser) {
-      throw new Error("Username already exists")
-    }
     const hashedPassword = await bcrypt.hash(password, saltRounds)
     user.password = hashedPassword
-    users.push(user)
-
-    fs.writeFile("users.json", JSON.stringify(users, null, 2), (err) => {
-      return res.status(200).send({
-        message: "User created",
-      })
+    return collection.insertOne(user, (err, result) => {
+      if (err) return res.status(400).send(err)
+      return res.status(200).send("User created")
     })
-  } catch (error) {
-    console.log(error)
-    return res.status(400).send(error)
-  }
+  })
 }
