@@ -17,13 +17,13 @@ const Home = () => {
   const [avatarLoading, setAvatarLoading] = useState(false)
   const handleRegister = async (form: Object) => {
     setLoading(true)
-    const response = await axios.post("/api/register", form)
-    const result = await response.data
-    console.log(result)
-    if (result.status === 200) {
-      Message("success", "Successfully registered")
-    } else {
-      Message("error", "Could not register, please try again")
+    try {
+      const response = await axios.post("/api/register", form)
+      const result = await response.data
+      console.log(result)
+      Message("success", "Successfully registered", [2])
+    } catch (error) {
+      Message("error", "Could not register, please try again", [2])
     }
     setLoading(false)
   }

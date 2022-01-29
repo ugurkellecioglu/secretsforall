@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     return
   }
 
-  mongo.connect("secretsforall", "users", async (collection) => {
+  mongo("secretsforall", "users", async (collection) => {
     const user = await collection.findOne({ username })
     if (!user) {
       res.status(400).json({ error: "User not found" })
@@ -28,7 +28,9 @@ export default async function handler(req, res) {
       res.status(400).json({ error: "Invalid password" })
       return
     }
-    const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" })
-    res.status(200).json({ token })
+    const token = jwt.sign({ id: user._id, username: user.username }, secret, {
+      expiresIn: "1h",
+    })
+    res.status(200).json({ jwt_token: token, expires_in: 60 })
   })
 }
