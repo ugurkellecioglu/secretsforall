@@ -1,5 +1,5 @@
-import { Card, Button, Col, Layout, Row, Input, Menu } from "antd"
-import React from "react"
+import { Card, Button, Col, Layout, Row, Input, Menu, Spin } from "antd"
+import React, { useState } from "react"
 import Header from "../../components/Header"
 import styles from "./style.module.css"
 import secrets from "../../secrets.js"
@@ -7,6 +7,8 @@ import Avatar from "antd/lib/avatar/avatar"
 const { TextArea } = Input
 import users from "../../users.js"
 import Overlay from "../../components/Overlay"
+import axios from "axios"
+import Message from "../../helpers/Message"
 
 const getUserInfo = (userId: Number) => {
   const user = users.find((user) => user.userId === userId)
@@ -31,8 +33,28 @@ const CardHeader = ({ secret }: any) => {
 }
 
 const Content = () => {
+  const [secretText, setSecretText] = useState("")
+  interface SecretInterface {
+    title: string
+    text: string
+    userId: number
+    createdAt?: string
+  }
+  const [loading, setLoading] = useState(false)
+  const handlePostSecret = async ({ title, text, userId }: SecretInterface) => {
+    setLoading(true)
+    const response = await axios.post("/api/secrets", { title, text, userId })
+    const result = await response.data
+    console.log(result)
+    if (result.status === 200) {
+      Message("success", "Successfully pushed secret")
+    } else {
+      Message("error", "Could not pushed, please try again")
+    }
+    setLoading(false)
+  }
   return (
-    <>
+    <Spin spinning={loading} delay={500} tip="Loading...">
       <Row justify="center" align="middle">
         <Col className={styles.ShareSecret} span={12}>
           <TextArea
@@ -43,8 +65,21 @@ const Content = () => {
             autoSize={{ minRows: 3, maxRows: 6 }}
             maxLength={300}
             placeholder="Share your secret..."
+            value={secretText}
+            onChange={(e) => setSecretText(e.target.value)}
           />
-          <Button type="primary">Submit</Button>
+          <Button
+            type="primary"
+            onClick={(e) =>
+              handlePostSecret({
+                title: secretText.substring(0, 10),
+                text: secretText,
+                userId: 1,
+              })
+            }
+          >
+            Submit
+          </Button>
         </Col>
       </Row>
       <Row
@@ -66,7 +101,7 @@ const Content = () => {
           ))}
         </Col>
       </Row>
-    </>
+    </Spin>
   )
 }
 
