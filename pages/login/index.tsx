@@ -1,9 +1,11 @@
-import React, { useReducer, useState } from "react"
+import React, { useContext, useReducer } from "react"
 import { Form, Input, Button, Checkbox, Spin } from "antd"
 import Message from "../../helpers/Message"
 import axios from "axios"
 import reducer from "./reducer"
 import { useCookies } from "react-cookie"
+import { UserContext } from "../../context/UserContext"
+import { useRouter } from "next/router"
 
 function Index() {
   const [cookies, setCookie] = useCookies(["jwt_token"])
@@ -14,7 +16,7 @@ function Index() {
     data: {},
   }
   const [state, dispatch] = useReducer(reducer, initialState)
-
+  const router = useRouter()
   const handleLogin = async (form: Object) => {
     dispatch({ type: "loading" })
     try {
@@ -28,7 +30,8 @@ function Index() {
         path: "/",
         expires: d,
       })
-      console.log(result)
+      setUser(result)
+      router.push("/dashboard")
     } catch (error) {
       console.log(error.response.data.error)
       dispatch({ type: "error", payload: error.response.data.error })
@@ -43,6 +46,9 @@ function Index() {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo)
   }
+
+  const { user, setUser } = useContext(UserContext)
+
   return (
     <Spin spinning={state.loading} delay={400}>
       <Form

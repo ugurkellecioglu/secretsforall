@@ -1,5 +1,5 @@
 import { Col, Row, Switch, Typography } from "antd"
-import React from "react"
+import React, { useContext } from "react"
 import { Layout } from "antd"
 import styles from "./style.module.css"
 import {
@@ -11,6 +11,7 @@ import {
 import Avatar from "antd/lib/avatar/avatar"
 import { Dropdown } from "antd"
 import MenuComp from "./Menu"
+import { UserContext } from "../context/UserContext"
 
 const { Header: Head } = Layout
 const menuData = [
@@ -31,6 +32,7 @@ const menuData = [
   },
 ]
 function Header() {
+  const { user, setUser } = useContext(UserContext)
   return (
     <div
       style={{
@@ -54,6 +56,11 @@ function Header() {
           <Col>
             <Typography.Title level={5}>Secrets for All</Typography.Title>
           </Col>
+          <Col>
+            <Typography.Text>
+              Welcome you little secret keeper {user.username}!
+            </Typography.Text>
+          </Col>
           <Col className={styles.col}>
             <Switch
               checkedChildren={<CheckOutlined />}
@@ -61,7 +68,7 @@ function Header() {
               defaultChecked
             />
             <Typography.Text italic={true} className="username">
-              sensetil0346
+              {user.username}
             </Typography.Text>
             <Dropdown
               className={styles.avatar}

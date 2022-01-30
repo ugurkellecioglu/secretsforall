@@ -10,21 +10,24 @@ import Avatar from "./Avatar"
 import AvatarController from "./AvatarController"
 import Vector from "../../public/Speech bubbles-bro.svg"
 import Image from "next/image"
+import { useRouter } from "next/router"
 
 const Home = () => {
   const [avatar, changeAvatar] = useAvatar()
   const [loading, setLoading] = useState(false)
   const [avatarLoading, setAvatarLoading] = useState(false)
+  const router = useRouter()
+
   const handleRegister = async (form: Object) => {
     setLoading(true)
     try {
       const response = await axios.post("/api/register", form)
       const result = await response.data
-      console.log(result)
       Message("success", "Successfully registered", [2])
     } catch (error) {
       Message("error", "Could not register, please try again", [2])
     }
+    router.push("/login")
     setLoading(false)
   }
 
