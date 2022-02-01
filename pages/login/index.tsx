@@ -1,15 +1,13 @@
 import React, { useContext, useReducer } from "react"
-import { Form, Input, Button, Checkbox, Spin } from "antd"
+import { Form, Input, Button, Checkbox, Spin, Card, Layout } from "antd"
 import Message from "../../helpers/Message"
 import axios from "axios"
 import reducer from "./reducer"
-import { useCookies } from "react-cookie"
 import { UserContext } from "../../context/UserContext"
 import { useRouter } from "next/router"
+import LoginForm from "./LoginForm"
 
 function Index() {
-  const [cookies, setCookie] = useCookies(["jwt_token"])
-
   const initialState = {
     loading: false,
     error: "",
@@ -22,6 +20,7 @@ function Index() {
     try {
       const response = await axios.post("/api/authorize", form)
       const result = await response.data
+      console.log(result)
       dispatch({ type: "success", payload: result })
       Message("success", "Successfully logged in", [2])
       let d = new Date()
@@ -30,6 +29,8 @@ function Index() {
         path: "/",
         expires: d,
       })
+      axios.defaults.headers.common["Authorization"] = response.data.jwt_token
+      console.log(axios.defaults.headers)
       setUser(result)
       router.push("/dashboard")
     } catch (error) {
@@ -39,59 +40,21 @@ function Index() {
     }
   }
 
-  const onFinish = async (values: any) => {
-    await handleLogin(values)
-  }
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log("Failed:", errorInfo)
-  }
-
   const { user, setUser } = useContext(UserContext)
 
   return (
-    <Spin spinning={state.loading} delay={400}>
-      <Form
-        name="basic"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete="off"
-      >
-        <Form.Item
-          label="Username"
-          name="username"
-          rules={[{ required: true, message: "Please input your username!" }]}
-        >
-          <Input />
-        </Form.Item>
-
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: "Please input your password!" }]}
-        >
-          <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{ offset: 8, span: 16 }}
-        >
-          <Checkbox>Remember me</Checkbox>
-        </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-      );
-    </Spin>
+    <Layout
+      style={{
+        width: "%100",
+        height: "100vh",
+        alignContent: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Spin spinning={state.loading} delay={400}>
+        <LoginForm handleLogin={handleLogin} />
+      </Spin>
+    </Layout>
   )
 }
 

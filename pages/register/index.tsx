@@ -11,7 +11,6 @@ import AvatarController from "./AvatarController"
 import Vector from "../../public/Speech bubbles-bro.svg"
 import Image from "next/image"
 import { useRouter } from "next/router"
-
 const Home = () => {
   const [avatar, changeAvatar] = useAvatar()
   const [loading, setLoading] = useState(false)
