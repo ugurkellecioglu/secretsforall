@@ -1,61 +1,59 @@
-import React, { useContext, useReducer } from "react"
-import { Form, Input, Button, Checkbox, Spin, Card, Layout } from "antd"
-import Message from "../../helpers/Message"
-import axios from "axios"
-import reducer from "./reducer"
-import { UserContext } from "../../context/UserContext"
-import { useRouter } from "next/router"
-import LoginForm from "./LoginForm"
+import React, { useContext, useReducer } from 'react';
+import { Spin, Layout } from 'antd';
+import Message from '../../helpers/Message';
+import axios from 'axios';
+import reducer from './reducer';
+import { UserContext } from '../../context/UserContext';
+import { useRouter } from 'next/router';
+import LoginForm from './LoginForm';
+import Cookies from 'js-cookie';
 
 function Index() {
   const initialState = {
     loading: false,
-    error: "",
-    data: {},
-  }
-  const [state, dispatch] = useReducer(reducer, initialState)
-  const router = useRouter()
+    error: '',
+    data: {}
+  };
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const router = useRouter();
   const handleLogin = async (form: Object) => {
-    dispatch({ type: "loading" })
+    dispatch({ type: 'loading' });
     try {
-      const response = await axios.post("/api/authorize", form)
-      const result = await response.data
-      console.log(result)
-      dispatch({ type: "success", payload: result })
-      Message("success", "Successfully logged in", [2])
-      let d = new Date()
-      d.setTime(d.getTime() + response.data.expires_in * 60 * 1000)
-      setCookie("jwt_token", response.data.jwt_token, {
-        path: "/",
-        expires: d,
-      })
-      axios.defaults.headers.common["Authorization"] = response.data.jwt_token
-      console.log(axios.defaults.headers)
-      setUser(result)
-      router.push("/dashboard")
+      const response = await axios.post('/api/authorize', form);
+      const result = await response.data;
+      dispatch({ type: 'success', payload: result });
+      Message('success', 'Successfully logged in', [2]);
+      let d = new Date();
+      d.setTime(d.getTime() + response.data.expires_in * 60 * 1000);
+      Cookies.set('jwt_token', response.data.jwt_token, {
+        path: '/',
+        expires: d
+      });
+      axios.defaults.headers.common['Authorization'] = response.data.jwt_token;
+      setUser(result);
+      router.push('/dashboard');
     } catch (error) {
-      console.log(error.response.data.error)
-      dispatch({ type: "error", payload: error.response.data.error })
-      Message("error", state.error, [2])
+      dispatch({ type: 'error', payload: error.response.data.error });
+      Message('error', state.error, [2]);
     }
-  }
+  };
 
-  const { user, setUser } = useContext(UserContext)
+  const { setUser } = useContext(UserContext);
 
   return (
     <Layout
       style={{
-        width: "%100",
-        height: "100vh",
-        alignContent: "center",
-        justifyContent: "center",
+        width: '%100',
+        height: '100vh',
+        alignContent: 'center',
+        justifyContent: 'center'
       }}
     >
       <Spin spinning={state.loading} delay={400}>
         <LoginForm handleLogin={handleLogin} />
       </Spin>
     </Layout>
-  )
+  );
 }
 
-export default Index
+export default Index;

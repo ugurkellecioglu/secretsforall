@@ -1,6 +1,6 @@
-import { Spin } from "antd"
-import Image from "next/image"
-import React from "react"
+import { Spin } from 'antd';
+import Image from 'next/image';
+import React from 'react';
 
 function Avatar({ avatarLoading, avatar }) {
   return (
@@ -17,7 +17,7 @@ function Avatar({ avatarLoading, avatar }) {
         />
       </Spin>
     </>
-  )
+  );
 }
 
-export default Avatar
+export default Avatar;

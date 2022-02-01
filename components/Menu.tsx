@@ -1,12 +1,12 @@
-import { Menu } from "antd"
+import { Menu } from 'antd';
 
 interface MenuProps {
-  divide?: boolean
+  divide?: boolean;
   data: Array<{
-    title: string
-    url: string
-    path?: string
-  }>
+    title: string;
+    url: string;
+    path?: string;
+  }>;
 }
 
 const MenuComp = (props: MenuProps) => (
@@ -20,6 +20,6 @@ const MenuComp = (props: MenuProps) => (
       </>
     ))}
   </Menu>
-)
+);
 
-export default MenuComp
+export default MenuComp;

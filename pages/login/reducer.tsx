@@ -1,14 +1,14 @@
 const reducer = (state, action) => {
   switch (action.type) {
-    case "loading":
-      return { ...state, loading: true }
-    case "error":
-      return { ...state, loading: false, error: action.payload }
-    case "success":
-      return { ...state, loading: false, data: action.payload }
+    case 'loading':
+      return { ...state, loading: true };
+    case 'error':
+      return { ...state, loading: false, error: action.payload };
+    case 'success':
+      return { ...state, loading: false, data: action.payload };
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default reducer
+export default reducer;

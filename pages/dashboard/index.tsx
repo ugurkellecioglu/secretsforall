@@ -1,58 +1,56 @@
-import { Card, Button, Col, Layout, Row, Input, Menu, Spin } from "antd"
-import React, { useState } from "react"
-import Header from "../../components/Header"
-import styles from "./style.module.css"
-import secrets from "../../secrets.js"
-import Avatar from "antd/lib/avatar/avatar"
-const { TextArea } = Input
-import users from "../../users.js"
-import Overlay from "../../components/Overlay"
-import axios from "axios"
-import Message from "../../helpers/Message"
+import { Card, Button, Col, Row, Input, Spin } from 'antd';
+import React, { useState } from 'react';
+import styles from './style.module.css';
+import secrets from '../../secrets.js';
+import Avatar from 'antd/lib/avatar/avatar';
+const { TextArea } = Input;
+import users from '../../users.js';
+import Overlay from '../../components/Overlay';
+import axios from 'axios';
+import Message from '../../helpers/Message';
 
 const getUserInfo = (userId: Number) => {
-  const user = users.find((user) => user.userId === userId)
-  return user
-}
+  const user = users.find((user) => user.userId === userId);
+  return user;
+};
 
 const CardHeader = ({ secret }: any) => {
-  const user = getUserInfo(Number(secret.userId))
+  const user = getUserInfo(Number(secret.userId));
   return (
     <>
       <Row align="middle">
-        <Avatar size="large" src={user.profilePic || ""} />
+        <Avatar size="large" src={user.profilePic || ''} />
         <div>
           <span className={styles.username}>{user.username}</span>
-          <p style={{ fontSize: "9px", color: "gray", fontWeight: "lighter" }}>
+          <p style={{ fontSize: '9px', color: 'gray', fontWeight: 'lighter' }}>
             {secret.createdAt}
           </p>
         </div>
       </Row>
     </>
-  )
-}
+  );
+};
 
 const Content = () => {
-  const [secretText, setSecretText] = useState("")
+  const [secretText, setSecretText] = useState('');
   interface SecretInterface {
-    title: string
-    text: string
-    userId: number
-    createdAt?: string
+    title: string;
+    text: string;
+    userId: number;
+    createdAt?: string;
   }
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const handlePostSecret = async ({ title, text, userId }: SecretInterface) => {
-    setLoading(true)
-    const response = await axios.post("/api/secrets", { title, text, userId })
-    const result = await response.data
-    console.log(result)
+    setLoading(true);
+    const response = await axios.post('/api/secrets', { title, text, userId });
+    const result = await response.data;
     if (result.status === 200) {
-      Message("success", "Successfully pushed secret")
+      Message('success', 'Successfully pushed secret');
     } else {
-      Message("error", "Could not pushed, please try again")
+      Message('error', 'Could not pushed, please try again');
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
   return (
     <Spin spinning={loading} delay={500} tip="Loading...">
       <Row justify="center" align="middle">
@@ -70,11 +68,11 @@ const Content = () => {
           />
           <Button
             type="primary"
-            onClick={(e) =>
+            onClick={() =>
               handlePostSecret({
                 title: secretText.substring(0, 10),
                 text: secretText,
-                userId: 1,
+                userId: 1
               })
             }
           >
@@ -83,30 +81,30 @@ const Content = () => {
         </Col>
       </Row>
       <Row
-        style={{ padding: "0 4px", display: "flex", flexWrap: "wrap" }}
+        style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap' }}
         gutter={4}
         justify="center"
       >
         <Col className={styles.col} span={48}>
-          {secrets.map((secret, index) => (
+          {secrets.map((secret) => (
             <Card
               key={secret.secretId}
               title={<CardHeader secret={secret} />}
               bordered={true}
               hoverable={true}
-              style={{ marginBottom: "10px", width: "50vw" }}
+              style={{ marginBottom: '10px', width: '50vw' }}
             >
-              {secret.secretText + "..."}
+              {secret.secretText + '...'}
             </Card>
           ))}
         </Col>
       </Row>
     </Spin>
-  )
-}
+  );
+};
 
 function index() {
-  return <Overlay Content={Content}></Overlay>
+  return <Overlay Content={Content}></Overlay>;
 }
 
-export default index
+export default index;

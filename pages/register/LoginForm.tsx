@@ -1,18 +1,19 @@
-import { Form, Input, Button, Checkbox } from "antd"
-import { UserOutlined, LockOutlined } from "@ant-design/icons"
-import { useState } from "react"
-import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons"
-import styles from "./style.module.css"
+import { Form, Input, Button } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import styles from './style.module.css';
 const LoginForm = ({ handleRegister }) => {
   const onFinish = (values: any) => {
-    handleRegister(values)
-  }
+    handleRegister(values);
+  };
 
   function onFinisFailed({ errorFields }) {
-    setError(true)
+    setError(true);
+    return errorFields;
   }
 
-  const [isError, setError] = useState(false)
+  const [isError, setError] = useState(false);
 
   return (
     <Form
@@ -25,9 +26,7 @@ const LoginForm = ({ handleRegister }) => {
       <Form.Item
         name="username"
         className={styles.formItem}
-        rules={[
-          { required: true, message: "Can you please provide an username?" },
-        ]}
+        rules={[{ required: true, message: 'Can you please provide an username?' }]}
       >
         <Input
           autoComplete="new-password"
@@ -40,21 +39,19 @@ const LoginForm = ({ handleRegister }) => {
         rules={[
           {
             required: true,
-            message: "It seems you forgot to enter a password.",
+            message: 'It seems you forgot to enter a password.'
           },
           {
             required: true,
-            type: "regexp",
+            type: 'regexp',
             pattern: new RegExp(/\d+/g),
-            message: "Wrong format!",
-          },
+            message: 'Wrong format!'
+          }
         ]}
       >
         <Input.Password
           autoComplete="new-password"
-          iconRender={(visible) =>
-            visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-          }
+          iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
           placeholder="Password"
@@ -75,6 +72,6 @@ const LoginForm = ({ handleRegister }) => {
         </Button>
       </Form.Item>
     </Form>
-  )
-}
-export default LoginForm
+  );
+};
+export default LoginForm;

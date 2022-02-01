@@ -1,5 +1,5 @@
-import { message } from "antd"
+import { message } from 'antd';
 const Message = (type: any, txt: String, ...rest) => {
-  message[type](txt, rest)
-}
-export default Message
+  message[type](txt, rest);
+};
+export default Message;

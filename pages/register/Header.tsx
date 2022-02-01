@@ -1,5 +1,5 @@
-import { Col, Typography } from "antd"
-import React from "react"
+import { Col, Typography } from 'antd';
+import React from 'react';
 
 function Header() {
   return (
@@ -8,12 +8,10 @@ function Header() {
         <Typography.Title level={1}>Sign Up</Typography.Title>
       </Col>
       <Col span={24}>
-        <Typography.Text>
-          Register and start sharing your secrets with everyone.
-        </Typography.Text>
+        <Typography.Text>Register and start sharing your secrets with everyone.</Typography.Text>
       </Col>
     </>
-  )
+  );
 }
 
-export default Header
+export default Header;
