@@ -61,20 +61,18 @@ const Content = () => {
     userId: number;
     createdAt?: string;
   }
-  const [loading, setLoading] = useState(false);
   const handlePostSecret = async ({ title, text }: SecretInterface) => {
-    setLoading(true);
     const response = await axios.post('/api/secrets', { title, text, ...user });
-    const result = await response.data;
-    if (result.status === 200) {
-      Message('success', 'Successfully pushed secret');
+    state.data.unshift({ title, text, ...user });
+    if (response.status === 200) {
+      Message('success', 'Successfully pushed secret', [2]);
     } else {
-      Message('error', 'Could not pushed, please try again');
+      Message('error', 'Could not pushed, please try again', [2]);
     }
-    setLoading(false);
+    setSecretText('');
   };
   return (
-    <Spin spinning={loading} delay={500} tip="Loading...">
+    <Spin spinning={state.loading} delay={500} tip="Loading...">
       <Row justify="center" align="middle">
         <Col className={styles.ShareSecret} span={12}>
           <TextArea
@@ -83,7 +81,6 @@ const Content = () => {
             bordered={true}
             showCount={true}
             autoSize={{ minRows: 3, maxRows: 6 }}
-            maxLength={300}
             placeholder="Share your secret..."
             value={secretText}
             onChange={(e) => setSecretText(e.target.value)}
@@ -102,7 +99,7 @@ const Content = () => {
         </Col>
       </Row>
       <Row
-        style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap' }}
+        style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
         gutter={4}
         justify="center">
         <Col className={styles.col} span={48}>

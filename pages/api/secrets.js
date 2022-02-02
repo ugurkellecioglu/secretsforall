@@ -8,14 +8,14 @@ export default async function handler(req, res) {
       return;
     }
     mongo('secretsforall', 'secrets', async (collection) => {
-      return collection.insertOne({ user, title, text }, (err, result) => {
+      collection.insertOne({ user, title, text }, (err, result) => {
         if (err) return res.status(400).send(err);
         return res.status(200).send(result);
       });
     });
   } else if (req.method === 'GET') {
     mongo('secretsforall', 'secrets', async (collection) => {
-      return collection.find().toArray((err, result) => {
+      collection.find().toArray((err, result) => {
         if (err) return res.status(400).send(err);
         if (result.length === 0) res.status(200).send({});
         return res.status(200).send(result);
