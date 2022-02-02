@@ -2,7 +2,7 @@ import React, { useContext, useReducer } from 'react';
 import { Spin, Layout } from 'antd';
 import Message from '../../helpers/Message';
 import axios from 'axios';
-import reducer from './reducer';
+import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
 import { useRouter } from 'next/router';
 import LoginForm from './LoginForm';

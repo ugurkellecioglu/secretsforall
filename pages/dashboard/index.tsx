@@ -1,25 +1,20 @@
 import { Card, Button, Col, Row, Input, Spin } from 'antd';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import styles from './style.module.css';
-import secrets from '../../secrets.js';
 import Avatar from 'antd/lib/avatar/avatar';
 const { TextArea } = Input;
-import users from '../../users.js';
 import Overlay from '../../components/Overlay';
 import axios from 'axios';
 import Message from '../../helpers/Message';
+import reducer from '../../reducers/reducer';
+import { UserContext } from '../../context/UserContext';
 
-const getUserInfo = (userId: Number) => {
-  const user = users.find((user) => user.userId === userId);
-  return user;
-};
-
-const CardHeader = ({ secret }: any) => {
-  const user = getUserInfo(Number(secret.userId));
+const CardHeader = ({ secret, user }: any) => {
+  // const user = getUserInfo(Number(secret.userId));
   return (
     <>
       <Row align="middle">
-        <Avatar size="large" src={user.profilePic || ''} />
+        <Avatar size="large" src={user?.profilePic} />
         <div>
           <span className={styles.username}>{user.username}</span>
           <p style={{ fontSize: '9px', color: 'gray', fontWeight: 'lighter' }}>
@@ -32,6 +27,33 @@ const CardHeader = ({ secret }: any) => {
 };
 
 const Content = () => {
+  const user = useContext(UserContext);
+  const initialState = {
+    loading: false,
+    error: '',
+    data: {
+      _id: String,
+      userId: Number,
+      title: String,
+      text: String
+    }
+  };
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const getPosts = async () => {
+    dispatch({ type: 'loading' });
+    try {
+      const response = await axios.get('/api/secrets');
+      const result = await response.data;
+      dispatch({ type: 'success', payload: result });
+      return result;
+    } catch (error) {
+      dispatch({ type: 'error' });
+    }
+  };
+  useEffect(() => {
+    getPosts();
+  }, []);
   const [secretText, setSecretText] = useState('');
   interface SecretInterface {
     title: string;
@@ -40,9 +62,9 @@ const Content = () => {
     createdAt?: string;
   }
   const [loading, setLoading] = useState(false);
-  const handlePostSecret = async ({ title, text, userId }: SecretInterface) => {
+  const handlePostSecret = async ({ title, text }: SecretInterface) => {
     setLoading(true);
-    const response = await axios.post('/api/secrets', { title, text, userId });
+    const response = await axios.post('/api/secrets', { title, text, ...user });
     const result = await response.data;
     if (result.status === 200) {
       Message('success', 'Successfully pushed secret');
@@ -72,10 +94,9 @@ const Content = () => {
               handlePostSecret({
                 title: secretText.substring(0, 10),
                 text: secretText,
-                userId: 1
+                userId: user._id
               })
-            }
-          >
+            }>
             Submit
           </Button>
         </Col>
@@ -83,28 +104,27 @@ const Content = () => {
       <Row
         style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap' }}
         gutter={4}
-        justify="center"
-      >
+        justify="center">
         <Col className={styles.col} span={48}>
-          {secrets.map((secret) => (
-            <Card
-              key={secret.secretId}
-              title={<CardHeader secret={secret} />}
-              bordered={true}
-              hoverable={true}
-              style={{ marginBottom: '10px', width: '50vw' }}
-            >
-              {secret.secretText + '...'}
-            </Card>
-          ))}
+          {state.data.length > 0 &&
+            state.data.map(({ user, title, text }) => (
+              <Card
+                key={user._id}
+                title={<CardHeader secret={title} user={user} />}
+                bordered={true}
+                hoverable={true}
+                style={{ marginBottom: '10px', width: '50vw' }}>
+                {text.substring(0, 100) + '...'}
+              </Card>
+            ))}
         </Col>
       </Row>
     </Spin>
   );
 };
 
-function index() {
+function Index() {
   return <Overlay Content={Content}></Overlay>;
 }
 
-export default index;
+export default Index;
