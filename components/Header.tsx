@@ -35,8 +35,7 @@ function Header() {
         height: '10vh',
         zIndex: '999',
         backgroundColor: 'white'
-      }}
-    >
+      }}>
       <Head
         style={{
           backgroundColor: 'white',
@@ -45,8 +44,7 @@ function Header() {
           position: 'fixed',
           width: '100vw',
           display: 'block'
-        }}
-      >
+        }}>
         <Row justify="space-between" align="middle">
           <Col>
             <Typography.Title level={5}>Secrets for All</Typography.Title>
@@ -68,8 +66,7 @@ function Header() {
             <Dropdown
               className={styles.avatar}
               overlay={<MenuComp divide={false} data={menuData} />}
-              trigger={['click']}
-            >
+              trigger={['click']}>
               <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                 <Avatar size={32} src={user.profilePic} />
               </a>

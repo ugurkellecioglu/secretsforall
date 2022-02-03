@@ -13,7 +13,7 @@ export async function middleware(req, ev) {
       return NextResponse.redirect('/dashboard');
     }
   } else {
-    if (pathname === '/dashboard') {
+    if (pathname !== '/login' && pathname !== '/register') {
       return NextResponse.redirect('/login');
     }
   }

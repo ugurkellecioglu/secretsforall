@@ -16,8 +16,7 @@ function LoginForm({ handleLogin }) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center'
-      }}
-    >
+      }}>
       <Form
         name="basic"
         wrapperCol={{ span: 16 }}
@@ -29,14 +28,12 @@ function LoginForm({ handleLogin }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center'
-        }}
-      >
+        }}>
         <Form.Item
           wrapperCol={{ span: 32 }}
           name="username"
           label="Username"
-          rules={[{ required: true, message: 'Please input your username!' }]}
-        >
+          rules={[{ required: true, message: 'Please input your username!' }]}>
           <Input />
         </Form.Item>
 
@@ -44,8 +41,7 @@ function LoginForm({ handleLogin }) {
           wrapperCol={{ span: 32 }}
           name="password"
           label="Password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
+          rules={[{ required: true, message: 'Please input your password!' }]}>
           <Input.Password />
         </Form.Item>
 

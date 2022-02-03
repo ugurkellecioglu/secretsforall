@@ -2,9 +2,10 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useReducer } from 'react';
 import reducer from '../../../reducers/reducer';
 import Overlay from '../../../components/Overlay';
-import { Card, Button, Col, Row, Input, Spin } from 'antd';
+import { Card, Button, Col, Row, Input, Spin, Divider } from 'antd';
 import axios from 'axios';
-
+import Comment from './Comment';
+import ReplyEditor from './ReplyEditor';
 function Post() {
   const router = useRouter();
   const { id } = router.query;
@@ -31,16 +32,20 @@ function Post() {
   return (
     <Spin spinning={state.loading} delay={500} tip="Loading...">
       {state.data ? (
-        <Row justify="center" align="middle">
-          <Col span={12}>
-            <Card
-              title={state.data.title}
-              extra={<Button type="primary">Edit</Button>}
-              style={{ width: '100%' }}>
-              <p>{state.data.text}</p>
-            </Card>
-          </Col>
-        </Row>
+        <>
+          <Row justify="center" align="middle">
+            <Col span={12}>
+              <Card
+                title={state.data.title}
+                extra={<Button type="primary">Edit</Button>}
+                style={{ width: '100%' }}>
+                <p>{state.data.text}</p>
+                <Divider />
+                <ReplyEditor />
+              </Card>
+            </Col>
+          </Row>
+        </>
       ) : null}
     </Spin>
   );
