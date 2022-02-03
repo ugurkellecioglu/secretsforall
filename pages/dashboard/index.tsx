@@ -1,4 +1,4 @@
-import { Col, Row, Spin, Skeleton, Divider } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
@@ -49,7 +49,12 @@ const Content = () => {
   }
   const handlePostSecret = async ({ title, text }: SecretInterface) => {
     const response = await axios.post('/api/secrets', { title, text, ...user });
-    state.data.unshift({ title, text, ...user });
+    if (state.data.length > 0) {
+      state.data.unshift({ title, text, ...user });
+    } else {
+      state.data.push({ title, text, ...user });
+    }
+
     if (response.status === 200) {
       Message('success', 'Successfully pushed secret', [2]);
     } else {

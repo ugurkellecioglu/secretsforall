@@ -27,7 +27,7 @@ function Secrets({ data, router }) {
         data.map(({ _id, user, title, text, updatedAt }) => (
           <Card
             onClick={() => router.push(`/dashboard/secrets/${_id}`)}
-            key={user._id}
+            key={_id}
             title={<CardHeader updatedAt={updatedAt} secret={title} user={user} />}
             bordered={true}
             hoverable={true}
