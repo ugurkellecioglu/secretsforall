@@ -27,7 +27,7 @@ function Overlay({ Content }: any) {
           </Menu>
         </Layout.Sider>
         <Layout.Content>
-          <div style={{ marginTop: '50px' }}>
+          <div style={{ marginTop: '30px' }}>
             <Content />
           </div>
         </Layout.Content>

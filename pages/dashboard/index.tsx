@@ -1,32 +1,15 @@
-import { Card, Button, Col, Row, Input, Spin, Skeleton, Divider, Space } from 'antd';
+import { Col, Row, Spin, Skeleton, Divider } from 'antd';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import styles from './style.module.css';
-import Avatar from 'antd/lib/avatar/avatar';
-const { TextArea } = Input;
 import Overlay from '../../components/Overlay';
 import axios from 'axios';
 import Message from '../../helpers/Message';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
 import { useRouter } from 'next/router';
-import moment from 'moment';
-const CardHeader = ({ updatedAt, user }: any) => {
-  // const user = getUserInfo(Number(secret.userId));
-  return (
-    <>
-      <Row align="middle">
-        <Avatar size="large" src={user?.profilePic} />
-        <div>
-          <span className={styles.username}>{user.username}</span>
-
-          <p style={{ fontSize: '9px', color: 'gray', fontWeight: 'lighter' }}>
-            {moment(updatedAt).fromNow()}
-          </p>
-        </div>
-      </Row>
-    </>
-  );
-};
+import ShareSecret from './ShareSecret';
+import Secrets from './Secrets';
+import _Skeleton from './Skeleton';
 
 const Content = () => {
   const user = useContext(UserContext);
@@ -77,48 +60,16 @@ const Content = () => {
   return (
     <Spin spinning={state.loading} delay={500} tip="Loading...">
       {state.loading ? (
-        <>
-          <Row justify="center" align="middle" style={{ paddingBottom: '30px' }}>
-            <Col span={12}>
-              <Skeleton.Input style={{ width: '50vw' }} active={true} size="large" />
-            </Col>
-          </Row>
-          {[1, 2, 3].map((i: number) => (
-            <>
-              <Row style={{ paddingBottom: '50px' }} key={i} justify="center" align="middle">
-                <Col span={12}>
-                  <Skeleton active paragraph={{ rows: 4 }} />
-                </Col>
-              </Row>
-              <Divider />
-            </>
-          ))}
-        </>
+        <_Skeleton />
       ) : (
         <>
-          <Row justify="center" align="middle">
+          <Row style={{ paddingBottom: '30px' }} justify="center" align="middle">
             <Col className={styles.ShareSecret} span={12}>
-              <TextArea
-                rows={4}
-                allowClear={true}
-                bordered={true}
-                showCount={true}
-                autoSize={{ minRows: 3, maxRows: 6 }}
-                placeholder="Share your secret..."
-                value={secretText}
-                onChange={(e) => setSecretText(e.target.value)}
+              <ShareSecret
+                setSecretText={setSecretText}
+                secretText={secretText}
+                handlePostSecret={handlePostSecret}
               />
-              <Button
-                type="primary"
-                onClick={() =>
-                  handlePostSecret({
-                    title: secretText.substring(0, 10),
-                    text: secretText,
-                    userId: user._id
-                  })
-                }>
-                Submit
-              </Button>
             </Col>
           </Row>
           <Row
@@ -126,18 +77,7 @@ const Content = () => {
             gutter={4}
             justify="center">
             <Col className={styles.col} span={48}>
-              {state.data.length > 0 &&
-                state.data.map(({ _id, user, title, text, updatedAt }) => (
-                  <Card
-                    onClick={() => router.push(`/dashboard/secrets/${_id}`)}
-                    key={user._id}
-                    title={<CardHeader updatedAt={updatedAt} secret={title} user={user} />}
-                    bordered={true}
-                    hoverable={true}
-                    style={{ marginBottom: '10px', width: '50vw' }}>
-                    {text.substring(0, 200) + '...'}
-                  </Card>
-                ))}
+              <Secrets data={state.data} router={router} />
             </Col>
           </Row>
         </>
