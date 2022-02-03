@@ -1,5 +1,5 @@
 import mongo from './client';
-
+import { ObjectId } from 'mongodb';
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { user, title, text } = req.body;
@@ -14,13 +14,22 @@ export default async function handler(req, res) {
       });
     });
   } else if (req.method === 'GET') {
-    mongo('secretsforall', 'secrets', async (collection) => {
-      collection.find().toArray((err, result) => {
-        if (err) return res.status(400).send(err);
-        if (result.length === 0) res.status(200).send({});
-        return res.status(200).send(result);
+    if (req.query.id) {
+      mongo('secretsforall', 'secrets', async (collection) => {
+        collection.findOne({ _id: ObjectId(req.query.id) }, (err, result) => {
+          if (err) return res.status(400).send(err);
+          return res.status(200).send(result);
+        });
       });
-    });
+    } else {
+      mongo('secretsforall', 'secrets', async (collection) => {
+        collection.find().toArray((err, result) => {
+          if (err) return res.status(400).send(err);
+          if (result.length === 0) res.status(200).send({});
+          return res.status(200).send(result);
+        });
+      });
+    }
   } else {
     return res.status(400).json({ error: 'Invalid method' });
   }

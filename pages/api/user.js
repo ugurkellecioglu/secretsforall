@@ -13,8 +13,8 @@ export default async function handler(req, res) {
       res.status(401).json({ error: 'Invalid token' });
       return;
     }
-    mongo('secretsforall', 'users', async (collection) => {
-      collection.findOne({ _id: ObjectId(decoded.id) }, (err, result) => {
+    return mongo('secretsforall', 'users', async (collection) => {
+      return collection.findOne({ _id: ObjectId(decoded.id) }, (err, result) => {
         const { password, ...rest } = result;
         if (err && result.username !== decoded.username) return res.status(400).send(err);
         return res.status(200).send({ ...rest, ...decoded });

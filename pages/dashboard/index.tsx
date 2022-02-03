@@ -8,6 +8,7 @@ import axios from 'axios';
 import Message from '../../helpers/Message';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
+import { useRouter } from 'next/router';
 
 const CardHeader = ({ secret, user }: any) => {
   // const user = getUserInfo(Number(secret.userId));
@@ -28,6 +29,7 @@ const CardHeader = ({ secret, user }: any) => {
 
 const Content = () => {
   const user = useContext(UserContext);
+  const router = useRouter();
   const initialState = {
     loading: false,
     error: '',
@@ -104,8 +106,9 @@ const Content = () => {
         justify="center">
         <Col className={styles.col} span={48}>
           {state.data.length > 0 &&
-            state.data.map(({ user, title, text }) => (
+            state.data.map(({ _id, user, title, text }) => (
               <Card
+                onClick={() => router.push(`/dashboard/secrets/${_id}`)}
                 key={user._id}
                 title={<CardHeader secret={title} user={user} />}
                 bordered={true}
