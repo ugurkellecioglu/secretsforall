@@ -1,4 +1,6 @@
+import { AppstoreTwoTone, StarTwoTone } from '@ant-design/icons';
 import { Menu, Layout } from 'antd';
+import Link from 'next/link';
 import React from 'react';
 import Header from './Header';
 
@@ -11,12 +13,17 @@ function Overlay({ Content }: any) {
           style={{
             overflow: 'auto',
             height: '100%',
-            position: 'fixed'
+            position: 'fixed',
+            zIndex: 100
           }}
           theme="light">
           <Menu mode="inline" defaultSelectedKeys={['1']}>
-            <Menu.Item key="1">Dashboard</Menu.Item>
-            <Menu.Item key="2">Random Secret</Menu.Item>
+            <Menu.Item key="1" icon={<AppstoreTwoTone />}>
+              <Link href="/dashboard"> Dashboard</Link>
+            </Menu.Item>
+            <Menu.Item key="2" icon={<StarTwoTone />}>
+              <Link href="/random-secret">Random Secret</Link>
+            </Menu.Item>
           </Menu>
         </Layout.Sider>
         <Layout.Content>

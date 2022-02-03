@@ -6,6 +6,7 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import reducer from '../reducers/reducer';
 import { Spin } from 'antd';
+import { verify } from 'jsonwebtoken';
 
 function MyApp({ Component, pageProps }) {
   const initialState = {
@@ -15,7 +16,7 @@ function MyApp({ Component, pageProps }) {
   };
   const [state, dispatch] = useReducer(reducer, initialState);
   const [user, setUser] = useState({});
-  useEffect(() => {
+  const verify = async () => {
     if (Object.keys(user).length > 0) return;
     const jwt_token = Cookies.get('jwt_token');
     if (jwt_token) {
@@ -34,6 +35,9 @@ function MyApp({ Component, pageProps }) {
           dispatch({ type: 'error', payload: err.response.data.message });
         });
     }
+  };
+  useEffect(() => {
+    verify();
   }, []);
 
   return (
