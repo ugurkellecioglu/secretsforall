@@ -1,4 +1,4 @@
-import { Card, Button, Col, Row, Input, Spin } from 'antd';
+import { Card, Button, Col, Row, Input, Spin, Skeleton, Divider, Space } from 'antd';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import styles from './style.module.css';
 import Avatar from 'antd/lib/avatar/avatar';
@@ -9,6 +9,7 @@ import Message from '../../helpers/Message';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
 import { useRouter } from 'next/router';
+import Meta from 'antd/lib/card/Meta';
 
 const CardHeader = ({ secret, user }: any) => {
   // const user = getUserInfo(Number(secret.userId));
@@ -75,50 +76,72 @@ const Content = () => {
   };
   return (
     <Spin spinning={state.loading} delay={500} tip="Loading...">
-      <Row justify="center" align="middle">
-        <Col className={styles.ShareSecret} span={12}>
-          <TextArea
-            rows={4}
-            allowClear={true}
-            bordered={true}
-            showCount={true}
-            autoSize={{ minRows: 3, maxRows: 6 }}
-            placeholder="Share your secret..."
-            value={secretText}
-            onChange={(e) => setSecretText(e.target.value)}
-          />
-          <Button
-            type="primary"
-            onClick={() =>
-              handlePostSecret({
-                title: secretText.substring(0, 10),
-                text: secretText,
-                userId: user._id
-              })
-            }>
-            Submit
-          </Button>
-        </Col>
-      </Row>
-      <Row
-        style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
-        gutter={4}
-        justify="center">
-        <Col className={styles.col} span={48}>
-          {state.data.length > 0 &&
-            state.data.map(({ _id, user, title, text }) => (
-              <Card
-                onClick={() => router.push(`/dashboard/secrets/${_id}`)}
-                key={user._id}
-                title={<CardHeader secret={title} user={user} />}
+      {state.loading ? (
+        <>
+          <Row justify="center" align="middle" style={{ paddingBottom: '30px' }}>
+            <Col span={12}>
+              <Skeleton.Input style={{ width: '50vw' }} active={true} size="large" />
+            </Col>
+          </Row>
+          {[1, 2, 3].map((i: number) => (
+            <>
+              <Row style={{ paddingBottom: '50px' }} key={i} justify="center" align="middle">
+                <Col span={12}>
+                  <Skeleton active paragraph={{ rows: 4 }} />
+                </Col>
+              </Row>
+              <Divider />
+            </>
+          ))}
+        </>
+      ) : (
+        <>
+          <Row justify="center" align="middle">
+            <Col className={styles.ShareSecret} span={12}>
+              <TextArea
+                rows={4}
+                allowClear={true}
                 bordered={true}
-                hoverable={true}
-                style={{ marginBottom: '10px', width: '50vw' }}>
-                {text.substring(0, 100) + '...'}
-              </Card>
-            ))}
-        </Col>
-      </Row>
+                showCount={true}
+                autoSize={{ minRows: 3, maxRows: 6 }}
+                placeholder="Share your secret..."
+                value={secretText}
+                onChange={(e) => setSecretText(e.target.value)}
+              />
+              <Button
+                type="primary"
+                onClick={() =>
+                  handlePostSecret({
+                    title: secretText.substring(0, 10),
+                    text: secretText,
+                    userId: user._id
+                  })
+                }>
+                Submit
+              </Button>
+            </Col>
+          </Row>
+          <Row
+            style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
+            gutter={4}
+            justify="center">
+            <Col className={styles.col} span={48}>
+              {state.data.length > 0 &&
+                state.data.map(({ _id, user, title, text }) => (
+                  <Card
+                    onClick={() => router.push(`/dashboard/secrets/${_id}`)}
+                    key={user._id}
+                    title={<CardHeader secret={title} user={user} />}
+                    bordered={true}
+                    hoverable={true}
+                    style={{ marginBottom: '10px', width: '50vw' }}>
+                    {text.substring(0, 100) + '...'}
+                  </Card>
+                ))}
+            </Col>
+          </Row>
+        </>
+      )}
     </Spin>
   );
 };
