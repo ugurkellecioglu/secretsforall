@@ -30,7 +30,19 @@ function Index() {
         expires: d
       });
       axios.defaults.headers.common['Authorization'] = response.data.jwt_token;
-      setUser(result);
+      axios
+        .get('/api/user', {
+          headers: {
+            Authorization: `Bearer ${response.data.jwt_token}`
+          }
+        })
+        .then((res) => {
+          setUser(res.data);
+          dispatch({ type: 'success', payload: res.data });
+        })
+        .catch((err) => {
+          dispatch({ type: 'error', payload: err.response.data.message });
+        });
       router.push('/dashboard');
     } catch (error) {
       dispatch({ type: 'error', payload: error.response.data.error });

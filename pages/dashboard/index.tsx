@@ -9,9 +9,8 @@ import Message from '../../helpers/Message';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
 import { useRouter } from 'next/router';
-import Meta from 'antd/lib/card/Meta';
-
-const CardHeader = ({ secret, user }: any) => {
+import moment from 'moment';
+const CardHeader = ({ updatedAt, user }: any) => {
   // const user = getUserInfo(Number(secret.userId));
   return (
     <>
@@ -19,8 +18,9 @@ const CardHeader = ({ secret, user }: any) => {
         <Avatar size="large" src={user?.profilePic} />
         <div>
           <span className={styles.username}>{user.username}</span>
+
           <p style={{ fontSize: '9px', color: 'gray', fontWeight: 'lighter' }}>
-            {secret.createdAt}
+            {moment(updatedAt).fromNow()}
           </p>
         </div>
       </Row>
@@ -127,15 +127,15 @@ const Content = () => {
             justify="center">
             <Col className={styles.col} span={48}>
               {state.data.length > 0 &&
-                state.data.map(({ _id, user, title, text }) => (
+                state.data.map(({ _id, user, title, text, updatedAt }) => (
                   <Card
                     onClick={() => router.push(`/dashboard/secrets/${_id}`)}
                     key={user._id}
-                    title={<CardHeader secret={title} user={user} />}
+                    title={<CardHeader updatedAt={updatedAt} secret={title} user={user} />}
                     bordered={true}
                     hoverable={true}
                     style={{ marginBottom: '10px', width: '50vw' }}>
-                    {text.substring(0, 100) + '...'}
+                    {text.substring(0, 200) + '...'}
                   </Card>
                 ))}
             </Col>

@@ -8,10 +8,13 @@ export default async function handler(req, res) {
       return;
     }
     mongo('secretsforall', 'secrets', async (collection) => {
-      collection.insertOne({ user, title, text }, (err, result) => {
-        if (err) return res.status(400).send(err);
-        return res.status(200).send(result);
-      });
+      collection.insertOne(
+        { user, title, text, createdAt: new Date(), updatedAt: new Date() },
+        (err, result) => {
+          if (err) return res.status(400).send(err);
+          return res.status(200).send(result);
+        }
+      );
     });
   } else if (req.method === 'GET') {
     if (req.query.id) {
@@ -23,11 +26,14 @@ export default async function handler(req, res) {
       });
     } else {
       mongo('secretsforall', 'secrets', async (collection) => {
-        collection.find().toArray((err, result) => {
-          if (err) return res.status(400).send(err);
-          if (result.length === 0) res.status(200).send({});
-          return res.status(200).send(result);
-        });
+        collection
+          .find()
+          .sort({ updatedAt: -1 })
+          .toArray((err, result) => {
+            if (err) return res.status(400).send(err);
+            if (result.length === 0) res.status(200).send({});
+            return res.status(200).send(result);
+          });
       });
     }
   } else {
