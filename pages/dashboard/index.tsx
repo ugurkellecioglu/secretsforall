@@ -10,8 +10,9 @@ import { useRouter } from 'next/router';
 import ShareSecret from './ShareSecret';
 import Secrets from './Secrets';
 import _Skeleton from './Skeleton';
-
+import Animate from 'rc-animate';
 const Content = () => {
+  const [show, setShow] = useState(false);
   const user = useContext(UserContext);
   const router = useRouter();
   const initialState = {
@@ -80,8 +81,7 @@ const Content = () => {
           <Row
             style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
             gutter={4}
-            justify="center"
-          >
+            justify="center">
             <Col className={styles.col} span={48}>
               <Secrets data={state.data} router={router} />
             </Col>

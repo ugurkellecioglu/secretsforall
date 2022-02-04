@@ -2,10 +2,9 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useReducer } from 'react';
 import reducer from '../../../reducers/reducer';
 import Overlay from '../../../components/Overlay';
-import { Card, Button, Col, Row, Input, Spin, Divider } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import axios from 'axios';
-import Comment from './Comment';
-import ReplyEditor from './ReplyEditor';
+import SecretPost from '../../../components/SecretPost';
 function Post() {
   const router = useRouter();
   const { id } = router.query;
@@ -20,6 +19,7 @@ function Post() {
       dispatch({ type: 'SECRET_LOADING' });
       const post = await axios.get(`/api/secrets?id=${id}`);
       const result = await post.data;
+      console.log('result is ', result);
       dispatch({ type: 'SECRET_SUCCESS', payload: post.data });
     } catch (error) {
       dispatch({ type: 'SECRET_ERROR' });
@@ -35,15 +35,7 @@ function Post() {
         <>
           <Row justify="center" align="middle">
             <Col span={12}>
-              <Card
-                title={state.data.title}
-                extra={<Button type="primary">Edit</Button>}
-                style={{ width: '100%' }}
-              >
-                <p>{state.data.text}</p>
-                <Divider />
-                <ReplyEditor />
-              </Card>
+              <SecretPost text={state.data.text} title={state.data.title} onClick={() => {}} />
             </Col>
           </Row>
         </>

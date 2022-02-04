@@ -59,8 +59,7 @@ function Index() {
         height: '100vh',
         alignContent: 'center',
         justifyContent: 'center'
-      }}
-    >
+      }}>
       <Spin spinning={state.loading} delay={400}>
         <LoginForm handleLogin={handleLogin} />
       </Spin>
