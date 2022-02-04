@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react';
 import Header from './Header';
 
-function Overlay({ Content }: any) {
+const Overlay = ({ Content }: any) => {
   return (
     <div style={{ overflowX: 'hidden', height: '100%', backgroundColor: '#f0f2f5' }}>
       <Header />
@@ -16,7 +16,8 @@ function Overlay({ Content }: any) {
             position: 'fixed',
             zIndex: 100
           }}
-          theme="light">
+          theme="light"
+        >
           <Menu mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item key="1" icon={<AppstoreTwoTone />}>
               <Link href="/dashboard"> Dashboard</Link>
@@ -34,6 +35,6 @@ function Overlay({ Content }: any) {
       </Layout>
     </div>
   );
-}
+};
 
 export default Overlay;

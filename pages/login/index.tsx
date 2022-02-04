@@ -1,6 +1,5 @@
 import React, { useContext, useReducer } from 'react';
-import { Spin, Layout } from 'antd';
-import Message from '../../helpers/Message';
+import { Spin, Layout, message } from 'antd';
 import axios from 'axios';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
@@ -22,18 +21,18 @@ function Index() {
       const response = await axios.post('/api/authorize', form);
       const result = await response.data;
       dispatch({ type: 'LOGIN_SUCCESS', payload: result });
-      Message('success', 'Successfully logged in', [2]);
-      let d = new Date();
+      message.success('Successfully logged in', 2);
+      const d = new Date();
       d.setTime(d.getTime() + response.data.expires_in * 60 * 1000);
-      Cookies.set('jwt_token', response.data.jwt_token, {
+      Cookies.set('jwtToken', response.data.jwtToken, {
         path: '/',
         expires: d
       });
-      axios.defaults.headers.common['Authorization'] = response.data.jwt_token;
+      axios.defaults.headers.common['Authorization'] = response.data.jwtToken;
       axios
         .get('/api/user', {
           headers: {
-            Authorization: `Bearer ${response.data.jwt_token}`
+            Authorization: `Bearer ${response.data.jwtToken}`
           }
         })
         .then((res) => {
@@ -46,7 +45,7 @@ function Index() {
       router.push('/dashboard');
     } catch (error) {
       dispatch({ type: 'LOGIN_ERROR', payload: error.response.data.error });
-      Message('error', state.error, [2]);
+      message.error(state.error, 2);
     }
   };
 
@@ -59,7 +58,8 @@ function Index() {
         height: '100vh',
         alignContent: 'center',
         justifyContent: 'center'
-      }}>
+      }}
+    >
       <Spin spinning={state.loading} delay={400}>
         <LoginForm handleLogin={handleLogin} />
       </Spin>

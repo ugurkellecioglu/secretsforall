@@ -1,16 +1,16 @@
-import { Spin, Card, Layout, Row, Space, Col } from 'antd';
+import { Spin, Card, Layout, Row, Space, Col, message } from 'antd';
 import { useState } from 'react';
 import axios from 'axios';
 import LoginForm from './LoginForm';
 import styles from './style.module.css';
 import useAvatar from './useAvatar';
-import Message from '../../helpers/Message';
 import Header from './Header';
 import Avatar from './Avatar';
 import AvatarController from './AvatarController';
 import Vector from '../../public/Speech bubbles-bro.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import React from 'react';
 const Home = () => {
   const [avatar, changeAvatar] = useAvatar();
   const [loading, setLoading] = useState(false);
@@ -22,9 +22,9 @@ const Home = () => {
     try {
       const response = await axios.post('/api/register', form);
       await response.data;
-      Message('success', 'Successfully registered', [2]);
+      message.success('Successfully registered', 2);
     } catch (error) {
-      Message('error', 'Could not register, please try again', [2]);
+      message.error('Could not register, please try again', 2);
     }
     router.push('/login');
     setLoading(false);

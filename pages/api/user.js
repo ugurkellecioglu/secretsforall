@@ -1,6 +1,6 @@
 import mongo from './client';
 import jwt from 'jsonwebtoken';
-import { ObjectId } from 'mongodb';
+import { ObjectId as objectId } from 'mongodb';
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const token = req.headers['authorization'];
@@ -14,7 +14,8 @@ export default async function handler(req, res) {
       return;
     }
     return mongo('secretsforall', 'users', async (collection) => {
-      return collection.findOne({ _id: ObjectId(decoded.id) }, (err, result) => {
+      return collection.findOne({ _id: objectId(decoded.id) }, (err, result) => {
+        // eslint-disable-next-line no-unused-vars
         const { password, ...rest } = result;
         if (err && result.username !== decoded.username) return res.status(400).send(err);
         return res.status(200).send({ ...rest, ...decoded });

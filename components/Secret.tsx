@@ -1,5 +1,6 @@
 import { Card } from 'antd';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Secret({ text, title, onClick }) {
   return (
@@ -12,5 +13,11 @@ function Secret({ text, title, onClick }) {
     </>
   );
 }
+
+Secret.propTypes = {
+  text: PropTypes.string,
+  title: PropTypes.string,
+  onClick: PropTypes.func
+};
 
 export default Secret;

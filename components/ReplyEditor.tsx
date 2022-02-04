@@ -3,6 +3,7 @@ import moment from 'moment';
 import React from 'react';
 import Comment from './Comment';
 const { TextArea } = Input;
+import PropTypes from 'prop-types';
 
 const CommentList = ({ comments }) => (
   <List
@@ -26,6 +27,7 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
   </>
 );
 
+// eslint-disable-next-line require-jsdoc
 class ReplyEditor extends React.Component {
   state = {
     comments: [
@@ -72,7 +74,7 @@ class ReplyEditor extends React.Component {
     }, 1000);
   };
 
-  handleChange = (e) => {
+  handleChange = (e: { target: { value: any } }) => {
     this.setState({
       value: e.target.value
     });
@@ -100,4 +102,14 @@ class ReplyEditor extends React.Component {
   }
 }
 
+CommentList.propTypes = {
+  comments: PropTypes.array.isRequired
+};
+
+Editor.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  submitting: PropTypes.bool.isRequired,
+  value: PropTypes.string.isRequired
+};
 export default ReplyEditor;

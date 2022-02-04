@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     }
     const user = { username, password, profilePic };
     const isUserFound = await collection.findOne({ username });
-    if (isUserFound) return res.status(400).json({ message: 'User already exists' });
+    if (isUserFound) return res.status(400).json({ Message: 'User already exists' });
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     user.password = hashedPassword;

@@ -1,6 +1,7 @@
 import { Button, Input } from 'antd';
 import React from 'react';
 const { TextArea } = Input;
+import PropTypes from 'prop-types';
 
 function ShareSecret({ secretText, setSecretText, handlePostSecret }) {
   return (
@@ -22,11 +23,18 @@ function ShareSecret({ secretText, setSecretText, handlePostSecret }) {
             title: secretText.substring(0, 25),
             text: secretText
           })
-        }>
+        }
+      >
         Submit
       </Button>
     </>
   );
 }
+
+ShareSecret.propTypes = {
+  secretText: PropTypes.string,
+  setSecretText: PropTypes.func,
+  handlePostSecret: PropTypes.func
+};
 
 export default ShareSecret;

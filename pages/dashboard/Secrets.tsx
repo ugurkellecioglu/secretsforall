@@ -1,10 +1,9 @@
-import { Avatar, Card, Col, Row } from 'antd';
+import { Avatar, Col, Row } from 'antd';
 import moment from 'moment';
 import React from 'react';
-import Secret from '../../components/Secret';
 import SecretPost from '../../components/SecretPost';
 import styles from './style.module.css';
-
+import PropTypes from 'prop-types';
 const CardHeader = ({ updatedAt, user }: any) => {
   return (
     <>
@@ -22,6 +21,11 @@ const CardHeader = ({ updatedAt, user }: any) => {
   );
 };
 
+CardHeader.propTypes = {
+  updatedAt: PropTypes.string,
+  user: PropTypes.object
+};
+
 function Secrets({ data, router }) {
   const handleOnClick = (_id) => {
     router.push(`/dashboard/secrets/${_id}`);
@@ -30,12 +34,13 @@ function Secrets({ data, router }) {
     <>
       <Row justify="center" align="middle">
         <Col span={12}>
-          {data.length > 0 &&
+          {data &&
+            data.length > 0 &&
             data.map(({ _id, user, title, text, updatedAt }) => (
               <SecretPost
                 key={_id}
                 text={text}
-                title={<CardHeader updatedAt={updatedAt} secret={title} user={user} />}
+                title={<CardHeader updatedAt={updatedAt} user={user} />}
                 onClick={() => handleOnClick(_id)}
               />
             ))}
@@ -45,4 +50,8 @@ function Secrets({ data, router }) {
   );
 }
 
+Secrets.propTypes = {
+  data: PropTypes.array,
+  router: PropTypes.object
+};
 export default Secrets;

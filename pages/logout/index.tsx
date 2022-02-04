@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 function Index() {
   const router = useRouter();
   useEffect(() => {
-    Cookies.remove('jwt_token');
+    Cookies.remove('jwtToken');
     router.push('/login');
   }, [router]);
 

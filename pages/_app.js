@@ -6,8 +6,8 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import reducer from '../reducers/reducer';
 import { Spin } from 'antd';
-import { verify } from 'jsonwebtoken';
-
+import PropTypes from 'prop-types';
+import React from 'react';
 function MyApp({ Component, pageProps }) {
   const initialState = {
     loading: false,
@@ -18,13 +18,13 @@ function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState({});
   const verify = async () => {
     if (Object.keys(user).length > 0) return;
-    const jwt_token = Cookies.get('jwt_token');
-    if (jwt_token) {
+    const jwtToken = Cookies.get('jwtToken');
+    if (jwtToken) {
       dispatch({ type: 'USER_LOADING' });
       axios
         .get('/api/user', {
           headers: {
-            Authorization: `Bearer ${jwt_token}`
+            Authorization: `Bearer ${jwtToken}`
           }
         })
         .then((res) => {
@@ -32,7 +32,7 @@ function MyApp({ Component, pageProps }) {
           dispatch({ type: 'USER_SUCCESS', payload: res.data });
         })
         .catch((err) => {
-          dispatch({ type: 'USER_ERROR', payload: err.response.data.message });
+          dispatch({ type: 'USER_ERROR', payload: err.response.data.Message });
         });
     }
   };
@@ -49,4 +49,8 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
+MyApp.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  pageProps: PropTypes.object.isRequired
+};
 export default MyApp;

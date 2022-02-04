@@ -1,5 +1,5 @@
 import mongo from './client';
-import { ObjectId } from 'mongodb';
+import { ObjectId as objectId } from 'mongodb';
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { user, title, text } = req.body;
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   } else if (req.method === 'GET') {
     if (req.query.id) {
       mongo('secretsforall', 'secrets', async (collection) => {
-        collection.findOne({ _id: ObjectId(req.query.id) }, (err, result) => {
+        collection.findOne({ _id: objectId(req.query.id) }, (err, result) => {
           if (err) return res.status(400).send(err);
           return res.status(200).send(result);
         });

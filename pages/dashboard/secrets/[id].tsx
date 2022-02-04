@@ -14,7 +14,7 @@ function Post() {
     data: {}
   };
   const [state, dispatch] = useReducer(reducer, initialState);
-  const getPost = async (id) => {
+  const getPost = async (id: string | string[]) => {
     try {
       dispatch({ type: 'SECRET_LOADING' });
       const post = await axios.get(`/api/secrets?id=${id}`);

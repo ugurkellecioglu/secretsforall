@@ -2,7 +2,9 @@ import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import PropTypes from 'prop-types';
 import styles from './style.module.css';
+import React from 'react';
 const LoginForm = ({ handleRegister }) => {
   const onFinish = (values: any) => {
     handleRegister(values);
@@ -21,11 +23,13 @@ const LoginForm = ({ handleRegister }) => {
       className="register"
       onFinish={onFinish}
       scrollToFirstError={true}
-      onFinishFailed={onFinisFailed}>
+      onFinishFailed={onFinisFailed}
+    >
       <Form.Item
         name="username"
         className={styles.formItem}
-        rules={[{ required: true, message: 'Can you please provide an username?' }]}>
+        rules={[{ required: true, Message: 'Can you please provide an username?' } as any]}
+      >
         <Input
           autoComplete="new-password"
           prefix={<UserOutlined className="site-form-item-icon" />}
@@ -37,15 +41,16 @@ const LoginForm = ({ handleRegister }) => {
         rules={[
           {
             required: true,
-            message: 'It seems you forgot to enter a password.'
-          },
+            Message: 'It seems you forgot to enter a password.'
+          } as any,
           {
             required: true,
             type: 'regexp',
             pattern: new RegExp(/\d+/g),
-            message: 'Wrong format!'
+            Message: 'Wrong format!'
           }
-        ]}>
+        ]}
+      >
         <Input.Password
           autoComplete="new-password"
           iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
@@ -63,11 +68,15 @@ const LoginForm = ({ handleRegister }) => {
           type="primary"
           htmlType="submit"
           className="login-form-button"
-          danger={isError}>
+          danger={isError}
+        >
           Register
         </Button>
       </Form.Item>
     </Form>
   );
+};
+LoginForm.propTypes = {
+  handleRegister: PropTypes.func
 };
 export default LoginForm;

@@ -1,18 +1,15 @@
-import { Col, Row, Spin } from 'antd';
+import { Col, message, Row, Spin } from 'antd';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
 import axios from 'axios';
-import Message from '../../helpers/Message';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
 import { useRouter } from 'next/router';
 import ShareSecret from './ShareSecret';
 import Secrets from './Secrets';
 import _Skeleton from './Skeleton';
-import Animate from 'rc-animate';
 const Content = () => {
-  const [show, setShow] = useState(false);
   const user = useContext(UserContext);
   const router = useRouter();
   const initialState = {
@@ -57,9 +54,9 @@ const Content = () => {
     }
 
     if (response.status === 200) {
-      Message('success', 'Successfully pushed secret', [2]);
+      message.success('Successfully pushed secret', 2);
     } else {
-      Message('error', 'Could not pushed, please try again', [2]);
+      message.error('Could not pushed, please try again', 2);
     }
     setSecretText('');
   };
@@ -81,7 +78,8 @@ const Content = () => {
           <Row
             style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
             gutter={4}
-            justify="center">
+            justify="center"
+          >
             <Col className={styles.col} span={48}>
               <Secrets data={state.data} router={router} />
             </Col>

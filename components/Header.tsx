@@ -1,8 +1,7 @@
-import { Col, Row, Switch, Typography } from 'antd';
+import { Col, Row, Typography } from 'antd';
 import React, { useContext } from 'react';
 import { Layout } from 'antd';
 import styles from './style.module.css';
-import { UserOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import Avatar from 'antd/lib/avatar/avatar';
 import { Dropdown } from 'antd';
 import MenuComp from './Menu';
@@ -26,7 +25,8 @@ const menuData = [
     path: '/logout'
   }
 ];
-function Header() {
+
+const Header = () => {
   const { user } = useContext(UserContext);
   return (
     <div
@@ -35,7 +35,8 @@ function Header() {
         height: '10vh',
         zIndex: '999',
         backgroundColor: 'white'
-      }}>
+      }}
+    >
       <Head
         style={{
           backgroundColor: 'white',
@@ -44,7 +45,8 @@ function Header() {
           position: 'fixed',
           width: '100vw',
           display: 'block'
-        }}>
+        }}
+      >
         <Row justify="space-between" align="middle">
           <Col>
             <Typography.Title level={5}>Secrets for All</Typography.Title>
@@ -66,7 +68,8 @@ function Header() {
             <Dropdown
               className={styles.avatar}
               overlay={<MenuComp divide={false} data={menuData} />}
-              trigger={['click']}>
+              trigger={['click']}
+            >
               <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                 <Avatar size={32} src={user.profilePic} />
               </a>
@@ -76,6 +79,6 @@ function Header() {
       </Head>
     </div>
   );
-}
+};
 
 export default Header;
