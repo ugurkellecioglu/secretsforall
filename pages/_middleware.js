@@ -11,8 +11,8 @@ export async function middleware(req, ev) {
       NextResponse.redirect('/dashboard');
     }
   } else {
-    if (pathname !== '/login' && pathname !== '/register') {
-      NextResponse.redirect('/login');
+    if (pathname === '/dashboard') {
+      return NextResponse.redirect('/login');
     }
   }
   return NextResponse.next();

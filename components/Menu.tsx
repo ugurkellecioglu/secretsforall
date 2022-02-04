@@ -13,7 +13,7 @@ const MenuComp = (props: MenuProps) => (
   <Menu>
     {props.data.map((item, index) => (
       <>
-        <Menu.Item key={index}>
+        <Menu.Item key={index + index}>
           <a href={item.url}>{item.title}</a>
         </Menu.Item>
         {props.divide ? <Menu.Divider /> : null}

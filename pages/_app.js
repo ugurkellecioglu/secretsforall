@@ -19,7 +19,7 @@ function MyApp({ Component, pageProps }) {
   const verify = async () => {
     if (Object.keys(user).length > 0) return;
     const jwtToken = Cookies.get('jwtToken');
-    if (jwtToken) {
+    if (jwtToken !== undefined) {
       dispatch({ type: 'USER_LOADING' });
       axios
         .get('/api/user', {
@@ -53,4 +53,23 @@ MyApp.propTypes = {
   Component: PropTypes.elementType.isRequired,
   pageProps: PropTypes.object.isRequired
 };
+
+export async function getServerSideProps(context) {
+  const res = await fetch(`https://.../data`);
+  const data = await res.json();
+  // or use context.resolvedUrl for conditional redirect
+  // if(context.resolvedUrl == "/")
+  if (!data) {
+    return {
+      redirect: {
+        destination: '/hello-nextjs',
+        permanent: false
+      }
+    };
+  }
+
+  return {
+    props: {} // will be passed to the page component as props
+  };
+}
 export default MyApp;

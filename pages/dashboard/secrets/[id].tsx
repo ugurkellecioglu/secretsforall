@@ -18,8 +18,6 @@ function Post() {
     try {
       dispatch({ type: 'SECRET_LOADING' });
       const post = await axios.get(`/api/secrets?id=${id}`);
-      const result = await post.data;
-      console.log('result is ', result);
       dispatch({ type: 'SECRET_SUCCESS', payload: post.data });
     } catch (error) {
       dispatch({ type: 'SECRET_ERROR' });

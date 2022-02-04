@@ -16,7 +16,7 @@ function Secret({ text, title, onClick }) {
 
 Secret.propTypes = {
   text: PropTypes.string,
-  title: PropTypes.string,
+  title: PropTypes.element,
   onClick: PropTypes.func
 };
 

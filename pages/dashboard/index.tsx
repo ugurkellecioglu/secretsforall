@@ -1,5 +1,5 @@
 import { Col, message, Row, Spin } from 'antd';
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useReducer, useState } from 'react';
 import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
 import axios from 'axios';
@@ -15,26 +15,24 @@ const Content = () => {
   const initialState = {
     loading: false,
     error: '',
-    data: {
-      _id: String,
-      userId: Number,
-      title: String,
-      text: String
-    }
+    data: []
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const getPosts = async () => {
-    dispatch({ type: 'SECRETS_LOADING' });
-    try {
-      const response = await axios.get('/api/secrets');
-      const result = await response.data;
-      dispatch({ type: 'SECRETS_SUCCESS', payload: result });
-      return result;
-    } catch (error) {
-      dispatch({ type: 'SECRETS_ERROR' });
-    }
-  };
+  const getPosts = useCallback(() => {
+    async () => {
+      dispatch({ type: 'SECRETS_LOADING' });
+      try {
+        const response = await axios.get('/api/secrets');
+        const result = await response.data;
+        dispatch({ type: 'SECRETS_SUCCESS', payload: result });
+        return result;
+      } catch (error) {
+        dispatch({ type: 'SECRETS_ERROR' });
+      }
+    };
+  }, []);
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -60,6 +58,7 @@ const Content = () => {
     }
     setSecretText('');
   };
+  console.log('index');
   return (
     <Spin spinning={state.loading} delay={500} tip="Loading...">
       {state.loading ? (
