@@ -22,7 +22,8 @@ function ShareSecret({ secretText, setSecretText, handlePostSecret }) {
             title: secretText.substring(0, 25),
             text: secretText
           })
-        }>
+        }
+      >
         Submit
       </Button>
     </>

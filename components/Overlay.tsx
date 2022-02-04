@@ -16,7 +16,8 @@ function Overlay({ Content }: any) {
             position: 'fixed',
             zIndex: 100
           }}
-          theme="light">
+          theme="light"
+        >
           <Menu mode="inline" defaultSelectedKeys={['1']}>
             <Menu.Item key="1" icon={<AppstoreTwoTone />}>
               <Link href="/dashboard"> Dashboard</Link>

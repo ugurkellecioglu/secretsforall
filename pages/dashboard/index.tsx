@@ -27,14 +27,14 @@ const Content = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const getPosts = async () => {
-    dispatch({ type: 'loading' });
+    dispatch({ type: 'SECRETS_LOADING' });
     try {
       const response = await axios.get('/api/secrets');
       const result = await response.data;
-      dispatch({ type: 'success', payload: result });
+      dispatch({ type: 'SECRETS_SUCCESS', payload: result });
       return result;
     } catch (error) {
-      dispatch({ type: 'error' });
+      dispatch({ type: 'SECRETS_ERROR' });
     }
   };
   useEffect(() => {
@@ -80,7 +80,8 @@ const Content = () => {
           <Row
             style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
             gutter={4}
-            justify="center">
+            justify="center"
+          >
             <Col className={styles.col} span={48}>
               <Secrets data={state.data} router={router} />
             </Col>

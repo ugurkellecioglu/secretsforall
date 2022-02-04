@@ -17,12 +17,12 @@ function Post() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const getPost = async (id) => {
     try {
-      dispatch({ type: 'loading' });
+      dispatch({ type: 'SECRET_LOADING' });
       const post = await axios.get(`/api/secrets?id=${id}`);
       const result = await post.data;
-      dispatch({ type: 'success', payload: post.data });
+      dispatch({ type: 'SECRET_SUCCESS', payload: post.data });
     } catch (error) {
-      dispatch({ type: 'error' });
+      dispatch({ type: 'SECRET_ERROR' });
     }
   };
   useEffect(() => {
@@ -38,7 +38,8 @@ function Post() {
               <Card
                 title={state.data.title}
                 extra={<Button type="primary">Edit</Button>}
-                style={{ width: '100%' }}>
+                style={{ width: '100%' }}
+              >
                 <p>{state.data.text}</p>
                 <Divider />
                 <ReplyEditor />

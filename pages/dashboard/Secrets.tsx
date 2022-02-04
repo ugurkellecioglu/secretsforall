@@ -31,7 +31,8 @@ function Secrets({ data, router }) {
             title={<CardHeader updatedAt={updatedAt} secret={title} user={user} />}
             bordered={true}
             hoverable={true}
-            style={{ marginBottom: '10px', width: '50vw' }}>
+            style={{ marginBottom: '10px', width: '50vw' }}
+          >
             {text.substring(0, 200) + '...'}
           </Card>
         ))}

@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }) {
     if (Object.keys(user).length > 0) return;
     const jwt_token = Cookies.get('jwt_token');
     if (jwt_token) {
-      dispatch({ type: 'loading' });
+      dispatch({ type: 'USER_LOADING' });
       axios
         .get('/api/user', {
           headers: {
@@ -29,10 +29,10 @@ function MyApp({ Component, pageProps }) {
         })
         .then((res) => {
           setUser(res.data);
-          dispatch({ type: 'success', payload: res.data });
+          dispatch({ type: 'USER_SUCCESS', payload: res.data });
         })
         .catch((err) => {
-          dispatch({ type: 'error', payload: err.response.data.message });
+          dispatch({ type: 'USER_ERROR', payload: err.response.data.message });
         });
     }
   };

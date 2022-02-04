@@ -17,11 +17,11 @@ function Index() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const router = useRouter();
   const handleLogin = async (form: Object) => {
-    dispatch({ type: 'loading' });
+    dispatch({ type: 'LOGIN_LOADING' });
     try {
       const response = await axios.post('/api/authorize', form);
       const result = await response.data;
-      dispatch({ type: 'success', payload: result });
+      dispatch({ type: 'LOGIN_SUCCESS', payload: result });
       Message('success', 'Successfully logged in', [2]);
       let d = new Date();
       d.setTime(d.getTime() + response.data.expires_in * 60 * 1000);
@@ -38,14 +38,14 @@ function Index() {
         })
         .then((res) => {
           setUser(res.data);
-          dispatch({ type: 'success', payload: res.data });
+          dispatch({ type: 'USER_SUCCESS', payload: res.data });
         })
         .catch((err) => {
-          dispatch({ type: 'error', payload: err.response.data.message });
+          dispatch({ type: 'USER_ERROR', payload: err.response.data });
         });
       router.push('/dashboard');
     } catch (error) {
-      dispatch({ type: 'error', payload: error.response.data.error });
+      dispatch({ type: 'LOGIN_ERROR', payload: error.response.data.error });
       Message('error', state.error, [2]);
     }
   };
@@ -59,7 +59,8 @@ function Index() {
         height: '100vh',
         alignContent: 'center',
         justifyContent: 'center'
-      }}>
+      }}
+    >
       <Spin spinning={state.loading} delay={400}>
         <LoginForm handleLogin={handleLogin} />
       </Spin>
