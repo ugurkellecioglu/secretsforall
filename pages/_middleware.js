@@ -10,11 +10,11 @@ export async function middleware(req, ev) {
   if (token) {
     isAuth = Object.keys(checkJwt(token)).length > 0;
     if (isAuth && (pathname === '/api/login' || pathname === '/api/register')) {
-      return NextResponse.redirect('/dashboard');
+      NextResponse.redirect('/dashboard');
     }
   } else {
     if (pathname !== '/login' && pathname !== '/register') {
-      return NextResponse.redirect('/login');
+      NextResponse.redirect('/login');
     }
   }
   return NextResponse.next();
