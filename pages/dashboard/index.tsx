@@ -1,5 +1,5 @@
 import { Col, message, Row, Spin } from 'antd';
-import React, { useCallback, useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
 import axios from 'axios';
@@ -19,19 +19,17 @@ const Content = () => {
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const getPosts = useCallback(() => {
-    async () => {
-      dispatch({ type: 'SECRETS_LOADING' });
-      try {
-        const response = await axios.get('/api/secrets');
-        const result = await response.data;
-        dispatch({ type: 'SECRETS_SUCCESS', payload: result });
-        return result;
-      } catch (error) {
-        dispatch({ type: 'SECRETS_ERROR' });
-      }
-    };
-  }, []);
+  const getPosts = async () => {
+    dispatch({ type: 'SECRETS_LOADING' });
+    try {
+      const response = await axios.get('/api/secrets');
+      const result = await response.data;
+      dispatch({ type: 'SECRETS_SUCCESS', payload: result });
+      return result;
+    } catch (error) {
+      dispatch({ type: 'SECRETS_ERROR' });
+    }
+  };
 
   useEffect(() => {
     getPosts();
@@ -48,7 +46,7 @@ const Content = () => {
     if (state.data.length > 0) {
       state.data.unshift({ title, text, ...user });
     } else {
-      state.data.push({ title, text, ...user });
+      state.data = [{ title, text, ...user }];
     }
 
     if (response.status === 200) {
@@ -58,34 +56,36 @@ const Content = () => {
     }
     setSecretText('');
   };
-  console.log('index');
+
   return (
-    <Spin spinning={state.loading} delay={500} tip="Loading...">
-      {state.loading ? (
-        <_Skeleton />
-      ) : (
-        <>
-          <Row style={{ paddingBottom: '30px' }} justify="center" align="middle">
-            <Col className={styles.ShareSecret} span={12}>
-              <ShareSecret
-                setSecretText={setSecretText}
-                secretText={secretText}
-                handlePostSecret={handlePostSecret}
-              />
-            </Col>
-          </Row>
-          <Row
-            style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
-            gutter={4}
-            justify="center"
-          >
-            <Col className={styles.col} span={48}>
-              <Secrets data={state.data} router={router} />
-            </Col>
-          </Row>
-        </>
-      )}
-    </Spin>
+    <>
+      <Spin spinning={state.loading} delay={500} tip="Loading...">
+        {state.loading ? (
+          <_Skeleton />
+        ) : (
+          <>
+            <Row style={{ paddingBottom: '30px' }} justify="center" align="middle">
+              <Col className={styles.ShareSecret} span={12}>
+                <ShareSecret
+                  setSecretText={setSecretText}
+                  secretText={secretText}
+                  handlePostSecret={handlePostSecret}
+                />
+              </Col>
+            </Row>
+            <Row
+              style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
+              gutter={4}
+              justify="center"
+            >
+              <Col className={styles.col} span={48}>
+                <Secrets user={user} data={state.data} router={router} />
+              </Col>
+            </Row>
+          </>
+        )}
+      </Spin>
+    </>
   );
 };
 

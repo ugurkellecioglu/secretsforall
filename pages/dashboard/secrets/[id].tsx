@@ -4,7 +4,7 @@ import reducer from '../../../reducers/reducer';
 import Overlay from '../../../components/Overlay';
 import { Col, Row, Spin } from 'antd';
 import axios from 'axios';
-import SecretPost from '../../../components/SecretPost';
+import SecretPost from '../SecretPost';
 function Post() {
   const router = useRouter();
   const { id } = router.query;

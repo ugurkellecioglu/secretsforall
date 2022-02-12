@@ -11,6 +11,7 @@ const mongo = async function (db, collection, handler) {
   try {
     const cl = await client.connect();
     const d = cl.db(db);
+    if (!collection) return d;
     const c = d.collection(collection);
     await handler(c);
   } catch (error) {

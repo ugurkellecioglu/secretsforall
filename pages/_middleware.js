@@ -9,10 +9,12 @@ export async function middleware(req, ev) {
     const isAuth = Object.keys(checkJwt(token)).length > 0;
     if (isAuth && (pathname === '/api/login' || pathname === '/api/register')) {
       NextResponse.redirect('/dashboard');
-    }
+    } else if (isAuth && pathname === '/') return NextResponse.redirect('/dashboard');
   } else {
     if (pathname === '/dashboard') {
       return NextResponse.redirect('/login');
+    } else if (pathname === '/') {
+      return NextResponse.redirect('/dashboard');
     }
   }
   return NextResponse.next();
