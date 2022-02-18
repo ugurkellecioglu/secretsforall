@@ -6,6 +6,7 @@ import Avatar from 'antd/lib/avatar/avatar';
 import { Dropdown } from 'antd';
 import MenuComp from './Menu';
 import { UserContext } from '../context/UserContext';
+import Link from 'next/link';
 
 const { Header: Head } = Layout;
 const menuData = [
@@ -49,7 +50,9 @@ const Header = () => {
       >
         <Row justify="space-between" align="middle">
           <Col>
-            <Typography.Title level={5}>Secrets for All</Typography.Title>
+            <Typography.Title level={5}>
+              <Link href="/dashboard">Secrets for All</Link>
+            </Typography.Title>
           </Col>
           <Col>
             <Typography.Text>

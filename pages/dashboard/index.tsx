@@ -59,6 +59,7 @@ const Content = () => {
 
   return (
     <>
+      <p>{JSON.stringify(state.data)}</p>
       <Spin spinning={state.loading} delay={500} tip="Loading...">
         {state.loading ? (
           <_Skeleton />

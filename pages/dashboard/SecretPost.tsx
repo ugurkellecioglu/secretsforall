@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
+import styles from './index.module.css';
 function SecretPost({ postId, title, text, onClick, comments }) {
   const { user } = useContext(UserContext);
   const [commentss, setComments] = useState([]);
@@ -58,7 +59,7 @@ function SecretPost({ postId, title, text, onClick, comments }) {
   };
 
   return (
-    <Card>
+    <Card className={styles.card}>
       <Secret title={title} text={text} onClick={onClick} />
       <Comment />
       <ReplyEditor

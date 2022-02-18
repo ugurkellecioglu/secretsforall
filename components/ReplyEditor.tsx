@@ -1,5 +1,5 @@
-import { Avatar, Form, Button, List, Input } from 'antd';
-import React, { useContext } from 'react';
+import { Form, Button, List, Input } from 'antd';
+import React from 'react';
 import Comment from './Comment';
 const { TextArea } = Input;
 import PropTypes from 'prop-types';
@@ -10,7 +10,7 @@ const CommentList = ({ comments }) => {
       dataSource={comments}
       header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
       itemLayout="horizontal"
-      renderItem={(props) => <Comment {...props} />}
+      renderItem={(props) => <Comment {...props} id="asdgasd" />}
     />
   );
 };
@@ -30,10 +30,8 @@ const Editor = ({ onChange, onSubmit, submitting, value }) => (
 
 import { useState, useEffect } from 'react';
 import moment from 'moment';
-import { UserContext } from '../context/UserContext';
 // eslint-disable-next-line require-jsdoc
 const ReplyEditor = ({ postId, comments, submitting, handleChange, handleSubmit, value }) => {
-  const data = useContext(UserContext);
   console.log('reply', comments);
   const [commentData, setcommentData] = useState([]);
   useEffect(() => {
@@ -53,16 +51,11 @@ const ReplyEditor = ({ postId, comments, submitting, handleChange, handleSubmit,
   return (
     <>
       {comments.length > 0 && <CommentList comments={commentData} />}
-      <Comment
-        avatar={<Avatar src={data.user.profilePic} alt="Han Solo" />}
-        content={
-          <Editor
-            onChange={(e) => handleChange(e)}
-            onSubmit={(e) => handleSubmit()}
-            submitting={submitting}
-            value={value}
-          />
-        }
+      <Editor
+        onChange={(e) => handleChange(e)}
+        onSubmit={(e) => handleSubmit()}
+        submitting={submitting}
+        value={value}
       />
     </>
   );

@@ -1,8 +1,23 @@
 import { Col, Row, Spin } from 'antd';
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 import Overlay from '../../components/Overlay';
 
 function RandomSecret() {
+  const getRandomSecret = async () => {
+    try {
+      const response = await axios.get('/api/secrets?random-secret');
+      const result = await response.data;
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getRandomSecret();
+  }, []);
+
   return (
     <Spin spinning={false}>
       <Row>
