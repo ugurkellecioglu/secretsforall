@@ -5,13 +5,11 @@ import Overlay from '../../components/Overlay';
 import axios from 'axios';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
-import { useRouter } from 'next/router';
 import ShareSecret from './ShareSecret';
 import Secrets from './Secrets';
 import _Skeleton from './Skeleton';
 const Content = () => {
   const user = useContext(UserContext);
-  const router = useRouter();
   const initialState = {
     loading: false,
     error: '',
@@ -87,7 +85,7 @@ const Content = () => {
               justify="center"
             >
               <Col className={styles.col} span={48}>
-                <Secrets user={user} data={state.data} router={router} />
+                <Secrets user={user} data={state.data} />
               </Col>
             </Row>
           </>

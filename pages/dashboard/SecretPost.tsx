@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import ReplyEditor from '../../components/ReplyEditor';
 import Secret from '../../components/Secret';
-import Comment from '../../components/Comment';
 import { Card, notification } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -70,7 +69,6 @@ function SecretPost({ postId, title, text, onClick, comments }) {
   return (
     <Card className={styles.card}>
       <Secret title={title} text={text} onClick={onClick} />
-      <Comment />
       <ReplyEditor
         postId={postId}
         submitting={submitting}

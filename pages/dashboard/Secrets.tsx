@@ -5,6 +5,7 @@ import SecretPost from './SecretPost';
 import styles from './style.module.css';
 import PropTypes from 'prop-types';
 import { PostContext } from '../../context/PostContext';
+import { useRouter } from 'next/router';
 const CardHeader = ({ updatedAt, user }: any) => {
   return (
     <>
@@ -27,7 +28,9 @@ CardHeader.propTypes = {
   user: PropTypes.object
 };
 
-function Secrets({ user, data, router }) {
+function Secrets({ user, data }) {
+  const router = useRouter();
+
   const handleOnClick = (_id) => {
     router.push(`/dashboard/secrets/${_id}`);
   };
@@ -62,7 +65,11 @@ function Secrets({ user, data, router }) {
 
 Secrets.propTypes = {
   user: PropTypes.object,
-  data: PropTypes.array,
-  router: PropTypes.object
+  data: PropTypes.array
 };
+Secrets.defaultProps = {
+  user: {},
+  data: []
+};
+
 export default React.memo(Secrets);
