@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import ReplyEditor from '../../components/ReplyEditor';
-import Secret from '../../components/Secret';
+import Secret from './Secret';
 import { Card, notification } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 import styles from './index.module.css';
+import ReplyEditor from './ReplyEditor';
 function SecretPost({ postId, title, text, onClick, comments }) {
   const { user } = useContext(UserContext);
   const [commentss, setComments] = useState([]);
@@ -66,17 +66,18 @@ function SecretPost({ postId, title, text, onClick, comments }) {
     setValue(e.target.value);
   };
 
+  const props = {
+    postId,
+    submitting,
+    handleSubmit,
+    handleChange,
+    comments: commentss,
+    value
+  };
   return (
     <Card className={styles.card}>
       <Secret title={title} text={text} onClick={onClick} />
-      <ReplyEditor
-        postId={postId}
-        submitting={submitting}
-        handleSubmit={handleSubmit}
-        handleChange={handleChange}
-        comments={commentss}
-        value={value}
-      />
+      <ReplyEditor {...props} />
     </Card>
   );
 }
