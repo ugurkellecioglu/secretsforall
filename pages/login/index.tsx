@@ -1,5 +1,5 @@
 import React, { useContext, useReducer } from 'react';
-import { Spin, Layout, message } from 'antd';
+import { Spin, Layout, notification } from 'antd';
 import axios from 'axios';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
@@ -28,7 +28,13 @@ function Index() {
       const response = await axios.post('/api/authorize', form);
       const result = await response.data;
       dispatch({ type: 'LOGIN_SUCCESS', payload: result });
-      message.success('Successfully logged in', 2);
+
+      notification.success({
+        message: 'Login Success',
+        description: 'You have successfully logged in.',
+        placement: 'topRight'
+      });
+
       const d = new Date();
       d.setTime(d.getTime() + response.data.expires_in * 60 * 1000);
       Cookies.set('jwtToken', response.data.jwtToken, {
@@ -52,7 +58,11 @@ function Index() {
       router.push('/dashboard');
     } catch (error) {
       dispatch({ type: 'LOGIN_ERROR', payload: error.response.data.error });
-      message.error(state.error, 2);
+      notification.warning({
+        message: 'Login Error',
+        description: 'Invalid username or password.',
+        placement: 'topRight'
+      });
     }
   };
 
@@ -66,7 +76,8 @@ function Index() {
           height: '100vh',
           display: 'flex',
           flexDirection: 'row'
-        }}>
+        }}
+      >
         <div
           style={{
             width: '100vw',
@@ -79,7 +90,8 @@ function Index() {
             position: 'relative',
             boxShadow: '1px -5px 300px #000000'
           }}
-          className="wrapper">
+          className="wrapper"
+        >
           <div className="content" style={{ zIndex: '5' }}>
             <Title style={{ color: 'white' }} level={1}>
               Welcome back.
@@ -91,28 +103,34 @@ function Index() {
           </div>
           <div className="images" style={{ zIndex: '1' }}>
             <div
-              style={{ position: 'absolute', left: '10%', top: '10%', width: '4%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '10%', top: '10%', width: '4%', zIndex: '9' }}
+            >
               <Image src={Plus} alt="Layer1" />
             </div>
             <div
-              style={{ position: 'absolute', left: '50%', top: '40%', width: '3%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '50%', top: '40%', width: '3%', zIndex: '9' }}
+            >
               <Image src={Plus} alt="Layer1" />
             </div>
             <div
-              style={{ position: 'absolute', left: '30%', top: '15%', width: '3%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '30%', top: '15%', width: '3%', zIndex: '9' }}
+            >
               <Image src={Ellipse} alt="Layer1" />
             </div>
             <div
-              style={{ position: 'absolute', left: '80%', top: '90%', width: '5%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '80%', top: '90%', width: '5%', zIndex: '9' }}
+            >
               <Image src={Ellipse} alt="Layer1" />
             </div>
 
             <div
-              style={{ position: 'absolute', left: '28%', top: '67%', width: '4%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '28%', top: '67%', width: '4%', zIndex: '9' }}
+            >
               <Image src={Triangle} alt="Layer1" />
             </div>
             <div
-              style={{ position: 'absolute', left: '68%', top: '48%', width: '2%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '68%', top: '48%', width: '2%', zIndex: '9' }}
+            >
               <Image src={Triangle} alt="Layer1" />
             </div>
             <div style={{ position: 'absolute', left: '0', bottom: '0', width: '80%' }}>
@@ -134,7 +152,8 @@ function Index() {
             justifyContent: 'center',
             alignItems: 'center',
             position: 'relative'
-          }}>
+          }}
+        >
           <LoginForm
             handleLogin={handleLogin}
             cardStyles={{

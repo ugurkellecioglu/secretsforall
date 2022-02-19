@@ -5,7 +5,6 @@ const Demo = (props) => {
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState(null);
-  console.log('demo is working', props);
   const like = () => {
     setLikes(1);
     setDislikes(0);

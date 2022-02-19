@@ -52,7 +52,6 @@ export default async function handler(req, res) {
           const { profilePic, username } = users.find(
             (user) => user._id.toString() === comment.userId.toString()
           );
-          console.log(profilePic, username);
           return { ...comment, profilePic, username };
         });
         secret.comments = secretComments;

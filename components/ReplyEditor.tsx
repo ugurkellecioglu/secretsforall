@@ -32,7 +32,6 @@ import { useState, useEffect } from 'react';
 import moment from 'moment';
 // eslint-disable-next-line require-jsdoc
 const ReplyEditor = ({ postId, comments, submitting, handleChange, handleSubmit, value }) => {
-  console.log('reply', comments);
   const [commentData, setcommentData] = useState([]);
   useEffect(() => {
     setcommentData(

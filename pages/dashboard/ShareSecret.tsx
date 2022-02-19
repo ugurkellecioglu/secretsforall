@@ -37,4 +37,4 @@ ShareSecret.propTypes = {
   handlePostSecret: PropTypes.func
 };
 
-export default ShareSecret;
+export default React.memo(ShareSecret);

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import ReplyEditor from '../../components/ReplyEditor';
 import Secret from '../../components/Secret';
 import Comment from '../../components/Comment';
-import { Card } from 'antd';
+import { Card, notification } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { UserContext } from '../../context/UserContext';
@@ -13,8 +13,6 @@ function SecretPost({ postId, title, text, onClick, comments }) {
   const [commentss, setComments] = useState([]);
   const [value, setValue] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
-  console.log('comments', comments);
 
   useEffect(() => {
     if (comments) {
@@ -28,7 +26,19 @@ function SecretPost({ postId, title, text, onClick, comments }) {
       postId,
       text
     });
-    console.log(response);
+    if (response.status === 200) {
+      notification.success({
+        message: 'Comment Posted',
+        description: 'You have successfully posted a comment.',
+        placement: 'topRight'
+      });
+    } else {
+      notification.warning({
+        message: 'Comment Post Error',
+        description: 'There was an error posting your comment.',
+        placement: 'topRight'
+      });
+    }
   };
 
   const handleSubmit = () => {
@@ -41,7 +51,6 @@ function SecretPost({ postId, title, text, onClick, comments }) {
     setTimeout(() => {
       setSubmitting(false);
       setValue('');
-      console.log(user);
       setComments([
         ...commentss,
         {
@@ -82,4 +91,4 @@ SecretPost.propTypes = {
   onClick: PropTypes.func
 };
 
-export default SecretPost;
+export default React.memo(SecretPost);

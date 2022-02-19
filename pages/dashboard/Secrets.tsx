@@ -65,4 +65,4 @@ Secrets.propTypes = {
   data: PropTypes.array,
   router: PropTypes.object
 };
-export default Secrets;
+export default React.memo(Secrets);

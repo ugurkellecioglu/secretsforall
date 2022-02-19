@@ -1,4 +1,4 @@
-import { Spin, Card, Layout, Row, Space, Col, message } from 'antd';
+import { Spin, Card, Layout, Row, Space, Col, notification } from 'antd';
 import { useState } from 'react';
 import axios from 'axios';
 import LoginForm from './LoginForm';
@@ -22,9 +22,17 @@ const Home = () => {
     try {
       const response = await axios.post('/api/register', form);
       await response.data;
-      message.success('Successfully registered', 2);
+      notification.success({
+        message: 'Registration Successful',
+        description: 'You have successfully registered.',
+        placement: 'topRight'
+      });
     } catch (error) {
-      message.error('Could not register, please try again', 2);
+      notification.warning({
+        message: 'Registration Error',
+        description: 'There was an error registering your account.',
+        placement: 'topRight'
+      });
     }
     router.push('/login');
     setLoading(false);

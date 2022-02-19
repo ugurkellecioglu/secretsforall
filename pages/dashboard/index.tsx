@@ -1,4 +1,4 @@
-import { Col, message, Row, Spin } from 'antd';
+import { Col, notification, Row, Spin } from 'antd';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
@@ -50,16 +50,23 @@ const Content = () => {
     }
 
     if (response.status === 200) {
-      message.success('Successfully pushed secret', 2);
+      notification.success({
+        message: 'Secret Posted',
+        description: 'You have successfully posted a secret.',
+        placement: 'topRight'
+      });
     } else {
-      message.error('Could not pushed, please try again', 2);
+      notification.warning({
+        message: 'Secret Post Error',
+        description: 'There was an error posting your secret.',
+        placement: 'topRight'
+      });
     }
     setSecretText('');
   };
 
   return (
     <>
-      <p>{JSON.stringify(state.data)}</p>
       <Spin spinning={state.loading} delay={500} tip="Loading...">
         {state.loading ? (
           <_Skeleton />
