@@ -1,10 +1,10 @@
 import { Avatar, Col, Row } from 'antd';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React from 'react';
 import SecretPost from './SecretPost';
 import styles from './style.module.css';
 import PropTypes from 'prop-types';
-import { PostContext } from '../../context/PostContext';
+import { PostProvider } from '../../context/PostContext';
 import { useRouter } from 'next/router';
 const CardHeader = ({ updatedAt, user }: any) => {
   return (
@@ -34,11 +34,9 @@ function Secrets({ user, data }) {
   const handleOnClick = (_id) => {
     router.push(`/dashboard/secrets/${_id}`);
   };
-  const [comment, setComment] = useState('');
-  const handleReply = async () => console.log('we are replying now');
 
   return (
-    <PostContext.Provider value={{ comment, setComment, handleReply }}>
+    <PostProvider>
       <Row justify="center" align="middle" style={{ width: '100%' }}>
         <Col span={6} />
         <Col span={12}>
@@ -59,7 +57,7 @@ function Secrets({ user, data }) {
         </Col>
         <Col span={6} />
       </Row>
-    </PostContext.Provider>
+    </PostProvider>
   );
 }
 

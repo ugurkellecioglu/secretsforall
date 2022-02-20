@@ -11,6 +11,8 @@ export const CommentProvider = ({ children }) => {
   );
 };
 
+export default CommentContext;
+
 CommentProvider.propTypes = {
   children: PropTypes.node
 };

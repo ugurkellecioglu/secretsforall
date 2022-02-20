@@ -13,6 +13,7 @@ const ReplyEditor = ({ postId, comments, submitting, handleChange, handleSubmit,
       comments.map((item) => {
         if (item.author) return item;
         return {
+          ...item,
           author: item.username,
           content: item.text,
           avatar: item.profilePic,
