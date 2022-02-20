@@ -4,10 +4,17 @@ import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-d
 import Editor from './Editor';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import CommentList from './CommentList';
+import axios from 'axios';
 const Demo = (props): any => {
+  console.log('props', props);
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState(null);
+  const [value, setValue] = useState('');
+  const handleChange = (e: { target: { value: any } }) => {
+    setValue(e.target.value);
+  };
   const like = () => {
     setLikes(1);
     setDislikes(0);
@@ -23,6 +30,16 @@ const Demo = (props): any => {
   const [isReply, setIsReply] = useState(false);
   const handleReply = () => {
     console.log('we are replying to', props);
+    console.log('with value', value);
+    axios
+      .post(`/api/reply`, {
+        userId: props.userId,
+        postId: props.postId,
+        commentId: props.id,
+        text: value
+      })
+      .then((res) => {})
+      .catch((err) => {});
   };
 
   const actions = [
@@ -46,6 +63,7 @@ const Demo = (props): any => {
   return (
     <>
       <Comment actions={actions} {...props} />
+      {props.comments.length > 0 && <CommentList comments={props.comments} />}
       <AnimatePresence>
         {isReply && (
           <motion.div
@@ -55,7 +73,7 @@ const Demo = (props): any => {
             transition={{ duration: 0.5 }}>
             <Row>
               <Col span={20} style={{ marginLeft: '7%' }}>
-                <Editor maxRow={2} />
+                <Editor maxRow={2} onSubmit={handleReply} value={value} onChange={handleChange} />
               </Col>
             </Row>
           </motion.div>

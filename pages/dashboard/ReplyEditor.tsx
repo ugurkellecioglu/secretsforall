@@ -11,9 +11,9 @@ const ReplyEditor = ({ postId, comments, submitting, handleChange, handleSubmit,
   useEffect(() => {
     setcommentData(
       comments.map((item) => {
-        if (item.author) return item;
         return {
           ...item,
+          postId,
           author: item.username,
           content: item.text,
           avatar: item.profilePic,
