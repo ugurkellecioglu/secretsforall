@@ -23,7 +23,8 @@ export const PostProvider = ({ children }: PostProviderProps) => {
   const [isReply, setIsReply] = useState(false);
   return (
     <PostContext.Provider
-      value={{ handleReply, comment, setComment, comments, setComments, isReply, setIsReply }}>
+      value={{ handleReply, comment, setComment, comments, setComments, isReply, setIsReply }}
+    >
       {children}
     </PostContext.Provider>
   );

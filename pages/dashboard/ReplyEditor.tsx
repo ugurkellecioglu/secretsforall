@@ -45,4 +45,12 @@ ReplyEditor.propTypes = {
   value: PropTypes.string.isRequired
 };
 
+ReplyEditor.defaultProps = {
+  comments: [],
+  submitting: false,
+  handleChange: () => {},
+  handleSubmit: () => {},
+  value: ''
+};
+
 export default ReplyEditor;

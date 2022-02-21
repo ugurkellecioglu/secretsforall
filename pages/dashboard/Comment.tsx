@@ -1,12 +1,13 @@
-import React, { createElement, useContext, useState } from 'react';
+import React, { createElement, useState } from 'react';
 import { Col, Comment, Row, Tooltip } from 'antd';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import Editor from './Editor';
-
+import PropTypes from 'prop-types';
 import { motion, AnimatePresence } from 'framer-motion';
 import CommentList from './CommentList';
 import axios from 'axios';
-const Demo = (props): any => {
+
+const Demo = (props) => {
   console.log('props', props);
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
@@ -62,7 +63,7 @@ const Demo = (props): any => {
 
   return (
     <>
-      <Comment actions={actions} {...props} />
+      <Comment content={null} actions={actions} {...props} />
       {props.comments.length > 0 && <CommentList comments={props.comments} />}
       <AnimatePresence>
         {isReply && (
@@ -81,6 +82,27 @@ const Demo = (props): any => {
       </AnimatePresence>
     </>
   );
+};
+
+Demo.propTypes = {
+  comments: PropTypes.array,
+  userId: PropTypes.number,
+  postId: PropTypes.number,
+  id: PropTypes.number,
+  props: PropTypes.object
+};
+Demo.defaultProps = {
+  likes: 0,
+  dislikes: 0,
+  comments: [],
+  props: {
+    userId: 0,
+    postId: 0,
+    id: 0,
+    comments: [],
+    likes: 0,
+    dislikes: 0
+  }
 };
 
 export default Demo;

@@ -1,11 +1,11 @@
 import { DislikeFilled, LikeFilled, NotificationFilled } from '@ant-design/icons';
 import { Card, Col, Row } from 'antd';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import React from 'react';
 import styles from './index.module.css';
 const Index = () => {
-  const router = useRouter();
-  const { id } = router.query;
+  // const router = useRouter();
+  // const { id } = router.query;
   return (
     <>
       <div className={styles.cover}>

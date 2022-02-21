@@ -8,7 +8,7 @@ interface ProfileProviderProps {
 const ProfileContext = createContext({} as ProfileProviderProps);
 
 export const ProfileProvider = ({ children }: ProfileProviderProps) => {
-  return <ProfileContext.Provider value={{}}>{children}</ProfileContext.Provider>;
+  return <ProfileContext.Provider value={null}>{children}</ProfileContext.Provider>;
 };
 
 export default ProfileContext;

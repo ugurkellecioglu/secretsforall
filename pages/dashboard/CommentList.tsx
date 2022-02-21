@@ -18,4 +18,8 @@ CommentList.propTypes = {
   comments: PropTypes.array
 };
 
+CommentList.defaultProps = {
+  comments: []
+};
+
 export default CommentList;
