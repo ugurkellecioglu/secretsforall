@@ -71,7 +71,8 @@ const Demo = (props) => {
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}>
+            transition={{ duration: 0.5 }}
+          >
             <Row>
               <Col span={20} style={{ marginLeft: '7%' }}>
                 <Editor maxRow={2} onSubmit={handleReply} value={value} onChange={handleChange} />

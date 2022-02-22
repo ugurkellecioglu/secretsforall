@@ -54,22 +54,4 @@ MyApp.propTypes = {
   pageProps: PropTypes.object.isRequired
 };
 
-export async function getServerSideProps(context) {
-  const res = await fetch(`https://.../data`);
-  const data = await res.json();
-  // or use context.resolvedUrl for conditional redirect
-  // if(context.resolvedUrl == "/")
-  if (!data) {
-    return {
-      redirect: {
-        destination: '/hello-nextjs',
-        permanent: false
-      }
-    };
-  }
-
-  return {
-    props: {} // will be passed to the page component as props
-  };
-}
 export default MyApp;

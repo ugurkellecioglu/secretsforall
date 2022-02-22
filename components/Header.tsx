@@ -7,6 +7,7 @@ import { Dropdown } from 'antd';
 import MenuComp from './Menu';
 import { UserContext } from '../context/UserContext';
 import Link from 'next/link';
+import { MinusSquareFilled, PlusSquareFilled } from '@ant-design/icons';
 
 const { Header: Head } = Layout;
 const menuData = [
@@ -29,6 +30,7 @@ const menuData = [
 
 const Header = () => {
   const { user } = useContext(UserContext);
+  const [collapse, setCollapse] = React.useState(false);
   return (
     <div
       style={{
@@ -36,8 +38,7 @@ const Header = () => {
         height: '10vh',
         zIndex: '999',
         backgroundColor: 'white'
-      }}
-    >
+      }}>
       <Head
         style={{
           backgroundColor: 'white',
@@ -46,10 +47,10 @@ const Header = () => {
           position: 'fixed',
           width: '100vw',
           display: 'block'
-        }}
-      >
+        }}>
         <Row justify="space-between" align="middle">
-          <Col>
+          <Col style={{ display: 'flex' }}>
+            <MinusSquareFilled style={{ fontSize: '25px', marginRight: '15px' }} />
             <Typography.Title level={5}>
               <Link href="/dashboard">Secrets for All</Link>
             </Typography.Title>
@@ -71,8 +72,7 @@ const Header = () => {
             <Dropdown
               className={styles.avatar}
               overlay={<MenuComp divide={false} data={menuData} />}
-              trigger={['click']}
-            >
+              trigger={['click']}>
               <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                 <Avatar size={32} src={user.profilePic} />
               </a>
