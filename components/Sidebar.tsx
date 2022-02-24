@@ -2,6 +2,7 @@ import React from 'react';
 import { AppstoreTwoTone, StarTwoTone } from '@ant-design/icons';
 import { Menu, Layout } from 'antd';
 import Link from 'next/link';
+import PropTypes from 'prop-types';
 function Sidebar({ collapsed }) {
   return (
     <>
@@ -13,7 +14,8 @@ function Sidebar({ collapsed }) {
           zIndex: 100
         }}
         collapsed={collapsed}
-        theme="light">
+        theme="light"
+      >
         <Menu mode="inline" defaultSelectedKeys={['1']}>
           <Menu.Item key="1" icon={<AppstoreTwoTone />}>
             <Link href="/dashboard"> Dashboard</Link>
@@ -26,5 +28,13 @@ function Sidebar({ collapsed }) {
     </>
   );
 }
+
+Sidebar.propTypes = {
+  collapsed: PropTypes.bool
+};
+
+Sidebar.defaultProps = {
+  collapsed: false
+};
 
 export default Sidebar;

@@ -1,14 +1,5 @@
-import {
-  DislikeFilled,
-  DislikeTwoTone,
-  LikeFilled,
-  LikeOutlined,
-  LikeTwoTone,
-  NotificationFilled,
-  NotificationTwoTone
-} from '@ant-design/icons';
-import { Card, Col, Divider, Row, Tag } from 'antd';
-import Image from 'next/image';
+import { DislikeTwoTone, LikeTwoTone, NotificationTwoTone } from '@ant-design/icons';
+import { Card, Col, Row, Tag } from 'antd';
 // import { useRouter } from 'next/router';
 import React from 'react';
 import Overlay from '../../components/Overlay';
@@ -22,7 +13,8 @@ const Content = () => {
       <div className={styles.cover}>
         <img
           className={styles.coverImg}
-          src="https://images.unsplash.com/photo-1560931296-2dccce3dcf2d"></img>
+          src="https://images.unsplash.com/photo-1560931296-2dccce3dcf2d"
+        ></img>
         <div className={styles['profile-section']}>
           <div className={styles['profile-img']}>
             <img
@@ -81,7 +73,8 @@ const Content = () => {
                     <Col span={6}>
                       <Card
                         size="small"
-                        className={[styles.card, styles.lastActivityCard].join(' ')}>
+                        className={[styles.card, styles.lastActivityCard].join(' ')}
+                      >
                         <div>
                           <NotificationTwoTone
                             twoToneColor={'#ffb84d'}

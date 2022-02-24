@@ -8,6 +8,7 @@ import MenuComp from './Menu';
 import { UserContext } from '../context/UserContext';
 import Link from 'next/link';
 import { MinusSquareFilled, PlusSquareFilled } from '@ant-design/icons';
+import PropTypes from 'prop-types';
 
 const { Header: Head } = Layout;
 const menuData = [
@@ -28,9 +29,8 @@ const menuData = [
   }
 ];
 
-const Header = () => {
+const Header = ({ collapsed, setCollapsed }) => {
   const { user } = useContext(UserContext);
-  const [collapse, setCollapse] = React.useState(false);
   return (
     <div
       style={{
@@ -38,7 +38,8 @@ const Header = () => {
         height: '10vh',
         zIndex: '999',
         backgroundColor: 'white'
-      }}>
+      }}
+    >
       <Head
         style={{
           backgroundColor: 'white',
@@ -47,10 +48,20 @@ const Header = () => {
           position: 'fixed',
           width: '100vw',
           display: 'block'
-        }}>
+        }}
+      >
         <Row justify="space-between" align="middle">
           <Col style={{ display: 'flex' }}>
-            <MinusSquareFilled style={{ fontSize: '25px', marginRight: '15px' }} />
+            <span
+              onClick={() => setCollapsed((prev) => !prev)}
+              style={{ cursor: 'pointer', alignItems: 'center', justifyContent: 'center' }}
+            >
+              {collapsed ? (
+                <PlusSquareFilled style={{ fontSize: '25px', marginRight: '15px' }} />
+              ) : (
+                <MinusSquareFilled style={{ fontSize: '25px', marginRight: '15px' }} />
+              )}
+            </span>
             <Typography.Title level={5}>
               <Link href="/dashboard">Secrets for All</Link>
             </Typography.Title>
@@ -72,7 +83,8 @@ const Header = () => {
             <Dropdown
               className={styles.avatar}
               overlay={<MenuComp divide={false} data={menuData} />}
-              trigger={['click']}>
+              trigger={['click']}
+            >
               <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                 <Avatar size={32} src={user.profilePic} />
               </a>
@@ -84,4 +96,14 @@ const Header = () => {
   );
 };
 
-export default Header;
+Header.propTypes = {
+  collapsed: PropTypes.bool,
+  setCollapsed: PropTypes.func
+};
+
+Header.defaultProps = {
+  collapsed: false,
+  setCollapsed: () => {}
+};
+
+export default React.memo(Header);
