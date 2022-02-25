@@ -50,3 +50,8 @@
 .registerIcon:hover > .registerLabel {
   width: 80px;
 }
+
+.card :global(.ant-card-head-title) {
+  font-weight: bolder;
+  font-size: 20px;
+}
