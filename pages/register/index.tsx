@@ -1,7 +1,7 @@
 import { Spin, Card, Layout, Row, Space, Col, notification } from 'antd';
-import { useState } from 'react';
+import { useContext, useReducer, useState } from 'react';
 import axios from 'axios';
-import LoginForm from './LoginForm';
+import LoginForm from './RegisterForm';
 import styles from './style.module.css';
 import useAvatar from './useAvatar';
 import Header from './Header';
@@ -11,22 +11,61 @@ import Vector from '../../public/Speech bubbles-bro.svg';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
+import reducer from '../../reducers/reducer';
+import Cookies from 'js-cookie';
+import { UserContext } from '../../context/UserContext';
+
 const Home = () => {
   const [avatar, changeAvatar] = useAvatar();
   const [loading, setLoading] = useState(false);
   const [avatarLoading, setAvatarLoading] = useState(false);
   const router = useRouter();
 
+  const initialState = {
+    loading: false,
+    error: '',
+    data: {}
+  };
+  const [dispatch] = useReducer(reducer, initialState);
+  const { setUser } = useContext(UserContext);
+
   const handleRegister = async (form: Object) => {
     setLoading(true);
     try {
       const response = await axios.post('/api/register', form);
       await response.data;
+      dispatch({ type: 'LOGIN_LOADING' });
+      const login = await axios.post('/api/authorize', form);
+      const result = await login.data;
+      dispatch({ type: 'LOGIN_SUCCESS', payload: result });
+      const d = new Date();
+      d.setTime(d.getTime() + result.expires_in * 60 * 1000);
+      Cookies.set('jwtToken', result.jwtToken, {
+        path: '/',
+        expires: d
+      });
+      axios.defaults.headers.common['Authorization'] = result.jwtToken;
+      axios
+        .get('/api/user', {
+          headers: {
+            Authorization: `Bearer ${result.jwtToken}`
+          }
+        })
+        .then((res) => {
+          setUser(res.data);
+          dispatch({ type: 'USER_SUCCESS', payload: res.data });
+        })
+        .catch((err) => {
+          dispatch({ type: 'USER_ERROR', payload: err.response.data });
+        });
+      router.push('/dashboard');
       notification.success({
         message: 'Registration Successful',
-        description: 'You have successfully registered.',
+        description:
+          'You have successfully registered. You will redirect to dashboard in a few seconds.',
         placement: 'topRight'
       });
+      router.push('/dashboard');
     } catch (error) {
       notification.warning({
         message: 'Registration Error',
@@ -34,7 +73,6 @@ const Home = () => {
         placement: 'topRight'
       });
     }
-    router.push('/login');
     setLoading(false);
   };
 

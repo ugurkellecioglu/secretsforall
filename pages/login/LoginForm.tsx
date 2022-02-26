@@ -24,13 +24,13 @@ function LoginForm({ handleLogin, cardStyles }) {
         flexDirection: 'column',
         alignItems: 'center',
         ...cardStyles
-      }}>
+      }}
+    >
       <div className={styles.registerIconWrapper}>
         <div className={styles.registerIcon}>
           <LeftSquareFilled
             className={styles.registerIconComponent}
             onClick={() => router.push('/register')}
-            
           />
           <div className={styles.registerLabel}>
             <span className={styles.registerLabelSpan}>Register</span>
@@ -48,14 +48,16 @@ function LoginForm({ handleLogin, cardStyles }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center'
-        }}>
+        }}
+      >
         <Form.Item
           wrapperCol={{ span: 32 }}
           name="username"
           style={{ width: '300px' }}
           label="Username"
           className={styles.formLabel}
-          rules={[{ required: true, Message: 'Please input your username!' } as any]}>
+          rules={[{ required: true, Message: 'Please input your username!' } as any]}
+        >
           <Input suffix={<UserOutlined />} />
         </Form.Item>
 
@@ -65,7 +67,8 @@ function LoginForm({ handleLogin, cardStyles }) {
           label="Password"
           style={{ width: '300px' }}
           className={styles.formLabel}
-          rules={[{ required: true, Message: 'Please input your password!' } as any]}>
+          rules={[{ required: true, Message: 'Please input your password!' } as any]}
+        >
           <Input.Password />
         </Form.Item>
 
