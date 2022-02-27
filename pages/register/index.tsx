@@ -26,7 +26,8 @@ const Home = () => {
     error: '',
     data: {}
   };
-  const [dispatch] = useReducer(reducer, initialState);
+  // eslint-disable-next-line no-unused-vars
+  const [state, dispatch] = useReducer(reducer, initialState);
   const { setUser } = useContext(UserContext);
 
   const handleRegister = async (form: Object) => {
@@ -67,6 +68,7 @@ const Home = () => {
       });
       router.push('/dashboard');
     } catch (error) {
+      console.log('error', error);
       notification.warning({
         message: 'Registration Error',
         description: 'There was an error registering your account.',
