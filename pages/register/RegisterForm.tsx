@@ -1,4 +1,4 @@
-import { Form, Input, Button, Card } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
@@ -6,13 +6,10 @@ import PropTypes from 'prop-types';
 import styles from './style.module.css';
 import React from 'react';
 
-
-
 const LoginForm = ({ handleRegister }) => {
   const onFinish = (values: any) => {
     handleRegister(values);
   };
-
 
   function onFinisFailed({ errorFields }) {
     setError(true);
@@ -22,7 +19,6 @@ const LoginForm = ({ handleRegister }) => {
   const [isError, setError] = useState(false);
 
   return (
-
     <Form
       name="register"
       className="register"
@@ -79,7 +75,6 @@ const LoginForm = ({ handleRegister }) => {
         </Button>
       </Form.Item>
     </Form>
-    
   );
 };
 LoginForm.propTypes = {

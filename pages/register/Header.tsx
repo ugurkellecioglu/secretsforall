@@ -1,12 +1,10 @@
-import { Col, Typography, Card } from 'antd';
-import {RightSquareFilled } from '@ant-design/icons';
+import { Col, Typography } from 'antd';
+import { RightSquareFilled } from '@ant-design/icons';
 import React from 'react';
 import { useRouter } from 'next/router';
 import styles from './style.module.css';
 
-
 function Header() {
-  
   const router = useRouter();
 
   return (
@@ -28,7 +26,6 @@ function Header() {
       <Col span={24}>
         <Typography.Text>Register and start sharing your secrets with everyone.</Typography.Text>
       </Col>
-     
     </>
   );
 }
