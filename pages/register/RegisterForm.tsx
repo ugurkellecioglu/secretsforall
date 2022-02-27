@@ -5,6 +5,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import styles from './style.module.css';
 import React from 'react';
+
 const LoginForm = ({ handleRegister }) => {
   const onFinish = (values: any) => {
     handleRegister(values);
