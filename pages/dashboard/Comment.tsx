@@ -8,7 +8,7 @@ import CommentList from './CommentList';
 import axios from 'axios';
 
 const Demo = (props) => {
-  console.log('props', props);
+  const { userId, postId, id, content, author, avatar, comments } = props;
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState(null);
@@ -34,9 +34,9 @@ const Demo = (props) => {
     console.log('with value', value);
     axios
       .post(`/api/reply`, {
-        userId: props.userId,
-        postId: props.postId,
-        commentId: props.id,
+        userId: userId,
+        postId: postId,
+        commentId: id,
         text: value
       })
       .then((res) => {})
@@ -63,16 +63,15 @@ const Demo = (props) => {
 
   return (
     <>
-      <Comment content={null} actions={actions} {...props} />
-      {props.comments.length > 0 && <CommentList comments={props.comments} />}
+      <Comment actions={actions} author={author} avatar={avatar} content={content} />
+      {comments.length > 0 && <CommentList comments={comments} />}
       <AnimatePresence>
         {isReply && (
           <motion.div
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+            transition={{ duration: 0.5 }}>
             <Row>
               <Col span={20} style={{ marginLeft: '7%' }}>
                 <Editor maxRow={2} onSubmit={handleReply} value={value} onChange={handleChange} />
@@ -87,23 +86,23 @@ const Demo = (props) => {
 
 Demo.propTypes = {
   comments: PropTypes.array,
-  userId: PropTypes.number,
-  postId: PropTypes.number,
-  id: PropTypes.number,
-  props: PropTypes.object
+  userId: PropTypes.string,
+  postId: PropTypes.string,
+  id: PropTypes.string,
+  content: PropTypes.string,
+  avatar: PropTypes.string,
+  author: PropTypes.string
 };
 Demo.defaultProps = {
   likes: 0,
   dislikes: 0,
+  userId: '',
+  postId: '',
+  id: '',
   comments: [],
-  props: {
-    userId: 0,
-    postId: 0,
-    id: 0,
-    comments: [],
-    likes: 0,
-    dislikes: 0
-  }
+  content: '',
+  avatar: '',
+  author: ''
 };
 
 export default Demo;

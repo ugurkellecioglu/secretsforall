@@ -41,18 +41,15 @@ function Secrets({ user, data }) {
         <Col span={6} />
         <Col span={12}>
           {data &&
-            data.length > 0 &&
             data.map(({ _id, user, title, text, updatedAt, comments }) => (
-              <>
-                <SecretPost
-                  key={_id}
-                  postId={_id}
-                  text={text}
-                  comments={comments}
-                  title={<CardHeader updatedAt={updatedAt} user={user} />}
-                  onClick={() => handleOnClick(_id)}
-                />
-              </>
+              <SecretPost
+                key={_id}
+                postId={_id}
+                text={text}
+                comments={comments}
+                title={<CardHeader updatedAt={updatedAt} user={user} />}
+                onClick={() => handleOnClick(_id)}
+              />
             ))}
         </Col>
         <Col span={6} />

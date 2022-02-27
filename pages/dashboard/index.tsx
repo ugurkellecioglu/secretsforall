@@ -32,14 +32,9 @@ const Content = () => {
   useEffect(() => {
     getPosts();
   }, []);
+
   const [secretText, setSecretText] = useState('');
-  interface SecretInterface {
-    title: string;
-    text: string;
-    userId: number;
-    createdAt?: string;
-  }
-  const handlePostSecret = async ({ title, text }: SecretInterface) => {
+  const handlePostSecret = async ({ title, text }) => {
     const response = await axios.post('/api/secrets', { title, text, ...user });
     if (state.data.length > 0) {
       state.data.unshift({ title, text, ...user });
@@ -82,8 +77,7 @@ const Content = () => {
             <Row
               style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
               gutter={4}
-              justify="center"
-            >
+              justify="center">
               <Col className={styles.col} span={48}>
                 <Secrets user={user} data={state.data} />
               </Col>
