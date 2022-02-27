@@ -1,5 +1,5 @@
 import React, { createElement, useState } from 'react';
-import { Col, Comment, Row, Tooltip } from 'antd';
+import { Col, Comment, Divider, Row, Tooltip } from 'antd';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import Editor from './Editor';
 import PropTypes from 'prop-types';
@@ -30,8 +30,6 @@ const Demo = (props) => {
 
   const [isReply, setIsReply] = useState(false);
   const handleReply = () => {
-    console.log('we are replying to', props);
-    console.log('with value', value);
     axios
       .post(`/api/reply`, {
         userId: userId,
@@ -39,10 +37,21 @@ const Demo = (props) => {
         commentId: id,
         text: value
       })
-      .then((res) => {})
+      .then((result) => {})
       .catch((err) => {});
   };
 
+  const CheckIfReply = () => {
+    return (
+      <>
+        {props.isReply === false ? (
+          <span key="comment-basic-reply-to" onClick={(e) => setIsReply(!isReply)}>
+            {isReply ? <b>Replying..</b> : <>Reply to</>}
+          </span>
+        ) : null}
+      </>
+    );
+  };
   const actions = [
     <Tooltip key="comment-basic-like" title="Like">
       <span onClick={like}>
@@ -56,22 +65,36 @@ const Demo = (props) => {
         <span className="comment-action">{dislikes}</span>
       </span>
     </Tooltip>,
-    <span key="comment-basic-reply-to" onClick={(e) => setIsReply(!isReply)}>
-      {isReply ? <b>Replying..</b> : <>Reply to</>}
-    </span>
+    <CheckIfReply key="comment-basic-reply-to" />
   ];
 
   return (
     <>
+      {props.isReply === false ? <Divider /> : null}
       <Comment actions={actions} author={author} avatar={avatar} content={content} />
-      {comments.length > 0 && <CommentList comments={comments} />}
+
+      {comments.length > 0 && (
+        <div style={{ width: '70%', marginLeft: '50px' }}>
+          <CommentList
+            isReply={true}
+            comments={comments.map((comment) => {
+              return {
+                author: comment.username,
+                avatar: comment.profilePic,
+                content: comment.text
+              };
+            })}
+          />
+        </div>
+      )}
       <AnimatePresence>
         {isReply && (
           <motion.div
             initial={{ y: -20 }}
             animate={{ y: 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}>
+            transition={{ duration: 0.5 }}
+          >
             <Row>
               <Col span={20} style={{ marginLeft: '7%' }}>
                 <Editor maxRow={2} onSubmit={handleReply} value={value} onChange={handleChange} />
@@ -91,7 +114,8 @@ Demo.propTypes = {
   id: PropTypes.string,
   content: PropTypes.string,
   avatar: PropTypes.string,
-  author: PropTypes.string
+  author: PropTypes.string,
+  isReply: PropTypes.bool
 };
 Demo.defaultProps = {
   likes: 0,
@@ -102,7 +126,8 @@ Demo.defaultProps = {
   comments: [],
   content: '',
   avatar: '',
-  author: ''
+  author: '',
+  isReply: false
 };
 
 export default Demo;
