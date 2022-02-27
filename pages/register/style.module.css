@@ -17,3 +17,51 @@
 .formItem > div > div > div {
   font-size: 10px;
 }
+
+.loginIconWrapper {
+  position: absolute;
+  top: 0;
+  right: 30px;
+}
+
+.loginIcon {
+  font-size: 30px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s;
+  width: 0px;
+  height: 30px;
+  margin-top: 30px;
+  margin-right: 30px;
+  cursor: default;
+}
+
+.loginIcon > span {
+  z-index: 10;
+}
+
+.loginIcon > .loginLabel {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  transition: all 0.7s;
+  background-color: rgb(38, 38, 38);
+  width: 0px;
+  right: 0px;
+  height: 25px;
+  color: white;
+  z-index:2 ;
+}
+.loginIconComponent {
+  cursor: pointer;
+}
+.loginLabelSpan {
+  padding-left: 5px;
+  font-weight: lighter;
+  font-size: 14px;
+}
+.loginIcon:hover > .loginLabel {
+  width: 80px;
+}
