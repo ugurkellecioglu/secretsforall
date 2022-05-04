@@ -1,97 +1,50 @@
-import { CameraFilled, DislikeTwoTone, LikeTwoTone, NotificationTwoTone } from '@ant-design/icons';
+import { DislikeTwoTone, LikeTwoTone, NotificationTwoTone } from '@ant-design/icons';
 import { Button, Card, Col, Row, Tag } from 'antd';
+import { Upload, message } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 // import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Overlay from '../../components/Overlay';
 import { UserContext } from '../../context/UserContext';
 import styles from './index.module.css';
 
 const Content = () => {
-  // const router = useRouter();
-  // const { id } = router.query;
   const userCtx = React.useContext(UserContext);
 
-  const [x, setX] = useState();
-  const [y, setY] = useState();
-  const squareRef = React.useRef();
-  const cutImageRef = React.useRef();
-  const [isHovered, setHovered] = useState(false);
-  useEffect(() => {
-    const update = (e) => {
-      if (cutImageRef.current) {
-        const border = cutImageRef.current;
-        // get the borders of the image
-        const { top, height } = border.getBoundingClientRect();
-        const bottom = top + height;
-        // set hover false if the cursor is outside the image
-        if (e.clientY < top || e.clientY > bottom) {
-          setHovered(false);
-        }
+  const uploadPhotoProps = {
+    name: 'files',
+    accept: 'image/*',
+    action: 'http://localhost:3000/api/user',
+    headers: {
+      authorization: 'authorization-text'
+    },
+    onChange(info) {
+      console.log('info', info);
+      if (info.file.status !== 'uploading') {
+        console.log(info.file, info.fileList);
       }
-      setX(e.x);
-      setY(e.y);
-    };
-    window.addEventListener('mousemove', update);
-    window.addEventListener('touchmove', update);
-    return () => {
-      window.removeEventListener('mousemove', update);
-      window.removeEventListener('touchmove', update);
-    };
-  }, [setX, setY]);
-
-  useEffect(() => {
-    if (isHovered) {
-      const height = squareRef.current.clientHeight;
-      squareRef.current.style.top = y - height - height / 2 + 'px';
-    }
-  }, [x, y]);
-
-  const handleOnClick = (e) => {
-    const border = cutImageRef.current;
-    // get the borders of the image
-    const b = border.getBoundingClientRect();
-    // get y
-    const height = squareRef.current.clientHeight;
-    const top = e.clientY - height / 2;
-    const bottom = e.clientY + height / 2;
-    // create a square
-    const square = document.createElement('div');
-    square.className = styles.square2;
-    square.style.top = y - height - height / 2 + 'px';
-    square.style.left = 0;
-    square.style.width = '100%';
-    square.style.height = height + 'px';
-    square.style.position = 'absolute';
-    square.style.backgroundColor = '#fff';
-    // add the square to the image
-    cutImageRef.current.appendChild(square);
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully`);
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    progress: { strokeWidth: 2, showInfo: true }
   };
   return (
     <>
       <div className={styles.cover}>
         <div className={styles.coverWrapperImage}>
-          <div
-            onMouseOver={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-            ref={cutImageRef}
-            className={styles.cutImage}></div>
-          <div
-            ref={squareRef}
-            onMouseOver={() => setHovered(true)}
-            onClick={(e) => handleOnClick(e)}
-            className={styles.square}></div>
+          <div className={styles.cutImage}></div>
+          <div></div>
 
           <img
             className={styles.coverImg}
             src="https://images.unsplash.com/photo-1560931296-2dccce3dcf2d"
           />
-          <Button
-            className={styles.addCoverPhoto}
-            type="primary"
-            icon={<CameraFilled />}
-            size="small">
-            Add Cover Photo
-          </Button>
+          <Upload className={styles.addCoverPhoto} {...uploadPhotoProps}>
+            <Button icon={<UploadOutlined />}>Click to Upload</Button>
+          </Upload>
         </div>
         <div className={styles['profile-section']}>
           <div className={styles['profile-img']}>
@@ -148,7 +101,8 @@ const Content = () => {
                     <Col span={6}>
                       <Card
                         size="small"
-                        className={[styles.card, styles.lastActivityCard].join(' ')}>
+                        className={[styles.card, styles.lastActivityCard].join(' ')}
+                      >
                         <div>
                           <NotificationTwoTone
                             twoToneColor={'#ffb84d'}

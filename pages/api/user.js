@@ -1,6 +1,7 @@
 import mongo from './client';
 import jwt from 'jsonwebtoken';
 import { ObjectId as objectId } from 'mongodb';
+
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const token = req.headers['authorization'];
@@ -21,5 +22,8 @@ export default async function handler(req, res) {
         return res.status(200).send({ ...rest, ...decoded });
       });
     });
+  }
+  if (req.method === 'POST') {
+    return res.status(200).send({});
   }
 }

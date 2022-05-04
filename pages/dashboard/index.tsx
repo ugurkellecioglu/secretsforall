@@ -5,9 +5,10 @@ import Overlay from '../../components/Overlay';
 import axios from 'axios';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
-import ShareSecret from './ShareSecret';
+import ShareSecret from '../../components/Dashboard/ShareSecret/ShareSecret';
 import Secrets from './Secrets';
 import _Skeleton from './Skeleton';
+import { DashboardProvider } from '../../context/DasboardContext';
 const Content = () => {
   const user = useContext(UserContext);
   const initialState = {
@@ -59,7 +60,11 @@ const Content = () => {
   };
 
   return (
-    <>
+    <DashboardProvider
+      setSecretText={setSecretText}
+      secretText={secretText}
+      handlePostSecret={handlePostSecret}
+    >
       <Spin spinning={state.loading} delay={500} tip="Loading...">
         {state.loading ? (
           <_Skeleton />
@@ -67,11 +72,7 @@ const Content = () => {
           <>
             <Row style={{ paddingBottom: '30px' }} justify="center" align="middle">
               <Col className={styles.ShareSecret} span={12}>
-                <ShareSecret
-                  setSecretText={setSecretText}
-                  secretText={secretText}
-                  handlePostSecret={handlePostSecret}
-                />
+                <ShareSecret />
               </Col>
             </Row>
             <Row
@@ -86,7 +87,7 @@ const Content = () => {
           </>
         )}
       </Spin>
-    </>
+    </DashboardProvider>
   );
 };
 

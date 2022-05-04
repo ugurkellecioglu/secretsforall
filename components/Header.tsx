@@ -62,7 +62,7 @@ const Header = ({ collapsed, setCollapsed }) => {
                 <MinusSquareFilled style={{ fontSize: '25px', marginRight: '15px' }} />
               )}
             </span>
-            <Typography.Title level={5}>
+            <Typography.Title level={5} style={{ display: 'flex', alignItems: 'center' }}>
               <Link href="/dashboard">Secrets for All</Link>
             </Typography.Title>
           </Col>
