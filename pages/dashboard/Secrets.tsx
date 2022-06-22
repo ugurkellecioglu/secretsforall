@@ -28,7 +28,7 @@ CardHeader.propTypes = {
   user: PropTypes.object
 };
 
-function Secrets({ user, data }) {
+function Secrets({ data }) {
   const router = useRouter();
 
   const handleOnClick = (_id) => {
@@ -41,7 +41,7 @@ function Secrets({ user, data }) {
         <Col span={6} />
         <Col span={12}>
           {data &&
-            data.map(({ _id, user, title, text, updatedAt, comments }) => (
+            data.map(({ _id, user, text, updatedAt, comments }) => (
               <SecretPost
                 key={_id}
                 postId={_id}
@@ -59,11 +59,9 @@ function Secrets({ user, data }) {
 }
 
 Secrets.propTypes = {
-  user: PropTypes.object,
   data: PropTypes.array
 };
 Secrets.defaultProps = {
-  user: {},
   data: []
 };
 

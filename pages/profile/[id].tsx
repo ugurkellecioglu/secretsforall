@@ -1,12 +1,14 @@
-import { DislikeTwoTone, LikeTwoTone, NotificationTwoTone } from '@ant-design/icons';
-import { Button, Card, Col, Row, Tag } from 'antd';
+import { Button, Col, Row, Tag } from 'antd';
 import { Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 // import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Overlay from '../../components/Overlay';
 import { UserContext } from '../../context/UserContext';
 import styles from './index.module.css';
+import Secrets from '../dashboard/Secrets';
+import { useRouter } from 'next/router';
+import axios from '../../helpers/axios';
 
 const Content = () => {
   const userCtx = React.useContext(UserContext);
@@ -31,6 +33,15 @@ const Content = () => {
     },
     progress: { strokeWidth: 2, showInfo: true }
   };
+
+  const router = useRouter();
+  useEffect(() => {
+    const id = router.query.id;
+    if (!id) return;
+    axios.get('/api/user/' + id).then((res) => {
+      console.log('res', res);
+    });
+  }, [router.query]);
   return (
     <>
       <div className={styles.cover}>
@@ -69,58 +80,11 @@ const Content = () => {
             <Tag color="gold">cat lover</Tag>
             <Tag color="geekblue">fascinated by stars</Tag>
           </div>
-          <Row className={styles.feed} align="middle">
-            <Col span={24} className={styles.stats}>
-              <Row align="middle">
-                <Col span={18}>
-                  <Row gutter={24}>
-                    <Col span={6}>
-                      <Card size="small" className={[styles.card, styles.likeCard].join(' ')}>
-                        <div>
-                          <LikeTwoTone twoToneColor={'#52c41a'} style={{ fontSize: '32px' }} />
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <h3 style={{ margin: ' 0 0 0 15px' }}>
-                            <b>3</b> likes
-                          </h3>
-                        </div>
-                      </Card>
-                    </Col>
-                    <Col span={6}>
-                      <Card size="small" className={[styles.card, styles.dislikeCard].join(' ')}>
-                        <div>
-                          <DislikeTwoTone twoToneColor={'#ff4d4f'} style={{ fontSize: '32px' }} />
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <h3 style={{ margin: ' 0 0 0 15px' }}>
-                            <b>13</b> dislikes
-                          </h3>
-                        </div>
-                      </Card>
-                    </Col>
-                    <Col span={6}>
-                      <Card
-                        size="small"
-                        className={[styles.card, styles.lastActivityCard].join(' ')}
-                      >
-                        <div>
-                          <NotificationTwoTone
-                            twoToneColor={'#ffb84d'}
-                            style={{ fontSize: '32px' }}
-                          />
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                          <h3 style={{ margin: ' 0 0 0 15px' }}>
-                            <b>7</b> day ago
-                          </h3>
-                        </div>
-                      </Card>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col className={styles.col} span={48}>
+          <Secrets data={[]} />
         </Col>
       </Row>
     </>

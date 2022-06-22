@@ -81,7 +81,7 @@ const Content = () => {
               justify="center"
             >
               <Col className={styles.col} span={48}>
-                <Secrets user={user} data={state.data} />
+                <Secrets data={state.data} />
               </Col>
             </Row>
           </>

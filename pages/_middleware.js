@@ -7,6 +7,7 @@ export async function middleware(req, ev) {
   const token = req.headers?.get('cookie')?.split('jwtToken=')[1];
   if (token) {
     const isAuth = Object.keys(checkJwt(token)).length > 0;
+
     if (isAuth && (pathname === '/api/login' || pathname === '/api/register')) {
       NextResponse.redirect('/dashboard');
     } else if (isAuth && pathname === '/') return NextResponse.redirect('/dashboard');

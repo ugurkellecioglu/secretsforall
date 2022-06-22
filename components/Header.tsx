@@ -11,26 +11,27 @@ import { MinusSquareFilled, PlusSquareFilled } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 
 const { Header: Head } = Layout;
-const menuData = [
-  {
-    title: 'Dashboard',
-    url: '/dashboard',
-    path: '/dashboard'
-  },
-  {
-    title: 'Profile',
-    url: '/profile',
-    path: '/profile'
-  },
-  {
-    title: 'Logout',
-    url: '/logout',
-    path: '/logout'
-  }
-];
 
 const Header = ({ collapsed, setCollapsed }) => {
   const { user } = useContext(UserContext);
+  const menuData = [
+    {
+      title: 'Dashboard',
+      url: '/dashboard',
+      path: '/dashboard'
+    },
+    {
+      title: 'Profile',
+      url: `/profile/${user.username}`,
+      path: '/profile'
+    },
+    {
+      title: 'Logout',
+      url: '/logout',
+      path: '/logout'
+    }
+  ];
+
   return (
     <div
       style={{
@@ -82,7 +83,7 @@ const Header = ({ collapsed, setCollapsed }) => {
             </Typography.Text>
             <Dropdown
               className={styles.avatar}
-              overlay={<MenuComp divide={false} data={menuData} />}
+              overlay={<MenuComp divide={false} data={[...menuData]} />}
               trigger={['click']}
             >
               <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
