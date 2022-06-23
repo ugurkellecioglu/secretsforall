@@ -1,6 +1,6 @@
 import { Button, Col, Row, Tag } from 'antd';
 // import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Overlay from '../../components/Overlay';
 import { UserContext } from '../../context/UserContext';
 import styles from './index.module.css';
@@ -9,8 +9,10 @@ import axios from '../../helpers/axios';
 import jwt from 'jsonwebtoken';
 import mongoDB from '../../helpers/MongoDB';
 import EditProfileModal from './EditProfileModal';
+import { HeaderContext } from '../../context/HeaderContext';
 const Index: React.FC<any> = ({ data }) => {
-  const userCtx = React.useContext(UserContext);
+  const userCtx = useContext(UserContext);
+  const { setCollapsed } = useContext(HeaderContext);
   const [image, setImage] = useState(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
 
@@ -37,6 +39,10 @@ const Index: React.FC<any> = ({ data }) => {
         console.log(err);
       });
   }, [image]);
+
+  useEffect(() => {
+    setCollapsed(true);
+  }, []);
 
   return (
     <Overlay>

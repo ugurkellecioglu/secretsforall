@@ -11,6 +11,7 @@ import React from 'react';
 import NProgress from 'nprogress';
 import Router from 'next/router';
 import 'nprogress/nprogress.css';
+import { HeaderProvider } from '../context/HeaderContext';
 NProgress.configure({
   minimum: 0.3,
   easing: 'ease',
@@ -61,7 +62,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Spin spinning={state.loading} delay={500} tip="Loading...">
-        <Component {...pageProps} />
+        <HeaderProvider>
+          <Component {...pageProps} />
+        </HeaderProvider>
       </Spin>
     </UserContext.Provider>
   );
