@@ -38,7 +38,7 @@ const Content = () => {
   const handlePostSecret = async ({ title, text }) => {
     const response = await axios.post('/api/secrets', { title, text, ...user });
     if (state.data.length > 0) {
-      state.data.unshift({ title, text, ...user });
+      state.data.unshift({ title, text, ...user, _id: response.data.result.insertedId });
     } else {
       state.data = [{ title, text, ...user }];
     }
@@ -64,7 +64,7 @@ const Content = () => {
       setSecretText={setSecretText}
       secretText={secretText}
       handlePostSecret={handlePostSecret}
-    >
+      >
       <Spin spinning={state.loading} delay={500} tip="Loading...">
         {state.loading ? (
           <_Skeleton />
@@ -75,12 +75,8 @@ const Content = () => {
                 <ShareSecret />
               </Col>
             </Row>
-            <Row
-              style={{ padding: '0 4px', display: 'flex', flexWrap: 'wrap', height: '100%' }}
-              gutter={4}
-              justify="center"
-            >
-              <Col className={styles.col} span={48}>
+            <Row justify="center" align="middle">
+              <Col className={styles.col} span={12}>
                 <Secrets data={state.data} />
               </Col>
             </Row>

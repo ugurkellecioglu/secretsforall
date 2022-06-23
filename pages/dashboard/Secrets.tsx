@@ -37,9 +37,8 @@ function Secrets({ data }) {
 
   return (
     <PostProvider>
-      <Row justify="center" align="middle" style={{ width: '100%' }}>
-        <Col span={6} />
-        <Col span={12}>
+      <Row justify="center" align="middle">
+        <Col span={24}>
           {data &&
             data.map(({ _id, user, text, updatedAt, comments }) => (
               <SecretPost
@@ -52,7 +51,6 @@ function Secrets({ data }) {
               />
             ))}
         </Col>
-        <Col span={6} />
       </Row>
     </PostProvider>
   );
@@ -65,4 +63,4 @@ Secrets.defaultProps = {
   data: []
 };
 
-export default React.memo(Secrets);
+export default Secrets;
