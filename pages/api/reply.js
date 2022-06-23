@@ -35,7 +35,14 @@ export default async function handler(req, res) {
         },
         { upsert: true }
       );
-      return res.status(200).json({ Message: 'Comment added.' });
+      return res.status(200).json({
+        userId,
+        username,
+        profilePic,
+        commentId,
+        text,
+        postId
+      });
     } catch (error) {
       return res.status(500).json({ error: error.toString() });
     }

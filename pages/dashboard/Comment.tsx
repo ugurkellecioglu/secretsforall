@@ -8,11 +8,13 @@ import CommentList from './CommentList';
 import axios from 'axios';
 
 const Demo = (props) => {
-  const { userId, postId, id, content, author, avatar, comments } = props;
+  const { userId, postId, id, content, author, avatar, comments: initialComments } = props;
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
   const [action, setAction] = useState(null);
   const [value, setValue] = useState('');
+  const [comments, setComments] = useState(initialComments);
+
   const handleChange = (e: { target: { value: any } }) => {
     setValue(e.target.value);
   };
@@ -37,7 +39,11 @@ const Demo = (props) => {
         commentId: id,
         text: value
       })
-      .then((result) => {})
+      .then((result) => {
+        setComments((prevState) => {
+          return [...prevState, result.data];
+        });
+      })
       .catch((err) => {});
   };
 
@@ -94,7 +100,7 @@ const Demo = (props) => {
             animate={{ y: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-          >
+            >
             <Row>
               <Col span={20} style={{ marginLeft: '7%' }}>
                 <Editor maxRow={2} onSubmit={handleReply} value={value} onChange={handleChange} />
