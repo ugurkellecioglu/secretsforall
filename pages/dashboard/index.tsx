@@ -9,7 +9,7 @@ import ShareSecret from '../../components/Dashboard/ShareSecret/ShareSecret';
 import Secrets from './Secrets';
 import _Skeleton from './Skeleton';
 import { DashboardProvider } from '../../context/DasboardContext';
-const Content = () => {
+const Index = () => {
   const user = useContext(UserContext);
   const initialState = {
     loading: false,
@@ -63,32 +63,29 @@ const Content = () => {
     <DashboardProvider
       setSecretText={setSecretText}
       secretText={secretText}
-      handlePostSecret={handlePostSecret}
-      >
-      <Spin spinning={state.loading} delay={500} tip="Loading...">
-        {state.loading ? (
-          <_Skeleton />
-        ) : (
-          <>
-            <Row style={{ paddingBottom: '30px' }} justify="center" align="middle">
-              <Col className={styles.ShareSecret} span={12}>
-                <ShareSecret />
-              </Col>
-            </Row>
-            <Row justify="center" align="middle">
-              <Col className={styles.col} span={12}>
-                <Secrets data={state.data} />
-              </Col>
-            </Row>
-          </>
-        )}
-      </Spin>
+      handlePostSecret={handlePostSecret}>
+      <Overlay>
+        <Spin spinning={state.loading} delay={500} tip="Loading...">
+          {state.loading ? (
+            <_Skeleton />
+          ) : (
+            <>
+              <Row style={{ paddingBottom: '30px' }} justify="center" align="middle">
+                <Col className={styles.ShareSecret} span={12}>
+                  <ShareSecret />
+                </Col>
+              </Row>
+              <Row justify="center" align="middle">
+                <Col className={styles.col} span={24}>
+                  <Secrets data={state.data} />
+                </Col>
+              </Row>
+            </>
+          )}
+        </Spin>
+      </Overlay>
     </DashboardProvider>
   );
 };
-
-function Index() {
-  return <Overlay Content={Content}></Overlay>;
-}
 
 export default Index;

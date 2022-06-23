@@ -1,32 +1,10 @@
-import { Avatar, Col, Row } from 'antd';
-import moment from 'moment';
+import { Col, Row } from 'antd';
 import React from 'react';
 import SecretPost from './SecretPost';
-import styles from './style.module.css';
 import PropTypes from 'prop-types';
 import { PostProvider } from '../../context/PostContext';
 import { useRouter } from 'next/router';
-const CardHeader = ({ updatedAt, user }: any) => {
-  return (
-    <>
-      <Row align="middle">
-        <Avatar size="large" src={user?.profilePic} />
-        <div>
-          <span className={styles.username}>{user.username}</span>
-
-          <p style={{ fontSize: '9px', color: 'gray', fontWeight: 'lighter' }}>
-            {moment(updatedAt).fromNow()}
-          </p>
-        </div>
-      </Row>
-    </>
-  );
-};
-
-CardHeader.propTypes = {
-  updatedAt: PropTypes.string,
-  user: PropTypes.object
-};
+import CardHeader from '../../components/CardHeader.tsx';
 
 function Secrets({ data }) {
   const router = useRouter();
@@ -38,7 +16,7 @@ function Secrets({ data }) {
   return (
     <PostProvider>
       <Row justify="center" align="middle">
-        <Col span={24}>
+        <Col span={12}>
           {data &&
             data.map(({ _id, user, text, updatedAt, comments }) => (
               <SecretPost

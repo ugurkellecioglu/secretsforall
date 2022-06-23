@@ -8,7 +8,7 @@ import Secrets from '../dashboard/Secrets';
 import { useRouter } from 'next/router';
 import axios from '../../helpers/axios';
 
-const Content = () => {
+const Index = () => {
   const userCtx = React.useContext(UserContext);
   const [image, setImage] = useState(null);
   const onLoad = (event) => {
@@ -44,7 +44,7 @@ const Content = () => {
     });
   }, [router.query]);
   return (
-    <>
+    <Overlay>
       <div className={styles.cover}>
         <div className={styles.coverWrapperImage}>
           <div className={styles.cutImage}></div>
@@ -89,12 +89,8 @@ const Content = () => {
           <Secrets data={[]} />
         </Col>
       </Row>
-    </>
+    </Overlay>
   );
 };
-
-function Index() {
-  return <Overlay Content={Content}></Overlay>;
-}
 
 export default Index;

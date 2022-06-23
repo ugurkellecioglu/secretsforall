@@ -1,36 +1,51 @@
-import { Col, Row, Spin } from 'antd';
-import axios from 'axios';
-import React, { useEffect } from 'react';
+import { Spin } from 'antd';
+import React from 'react';
 import Overlay from '../../components/Overlay';
+import PropTypes from 'prop-types';
+import mongoDb from '../../helpers/MongoDB';
+import Secrets from '../dashboard/Secrets';
 
-function RandomSecret() {
-  const getRandomSecret = async () => {
-    try {
-      const response = await axios.get('/api/secrets?type=random');
-      const result = await response.data;
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getRandomSecret();
-  }, []);
-
+function RandomSecret({ data }) {
   return (
-    <Spin spinning={false}>
-      <Row>
-        <Col span={24}>
-          <h1>Random Secret</h1>
-        </Col>
-      </Row>
-    </Spin>
+    <Overlay>
+      <Spin spinning={false}>{data && <Secrets data={data} />}</Spin>
+    </Overlay>
   );
 }
 
-function Index() {
-  return <Overlay Content={RandomSecret} />;
+RandomSecret.propTypes = {
+  data: PropTypes.object.isRequired
+};
+
+RandomSecret.defaultProps = {
+  data: {}
+};
+
+export async function getServerSideProps(context) {
+  const db = await mongoDb.getDB(mongoDb.dbNames.SECRETSFORALL);
+  const collection = db.collection(mongoDb.collections.SECRETS);
+  try {
+    const result = await collection.aggregate([{ $sample: { size: 1 } }]).toArray();
+    if (!result)
+      return {
+        props: {
+          data: {}
+        }
+      };
+
+    return {
+      props: {
+        data: JSON.parse(JSON.stringify(result))
+      }
+    };
+  } catch (error) {
+    console.log('random-secret, 42', error);
+    return {
+      props: {
+        data: {}
+      }
+    };
+  }
 }
 
-export default Index;
+export default RandomSecret;

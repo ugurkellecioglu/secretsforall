@@ -5,7 +5,7 @@ import Overlay from '../../../components/Overlay';
 import { Col, Row, Spin } from 'antd';
 import axios from 'axios';
 import SecretPost from '../SecretPost';
-function Post() {
+function Index() {
   const router = useRouter();
   const { id } = router.query;
   const initialState = {
@@ -28,21 +28,20 @@ function Post() {
     getPost(id);
   }, [id]);
   return (
-    <Spin spinning={state.loading} delay={500} tip="Loading...">
-      {state.data ? (
-        <>
-          <Row justify="center" align="middle">
-            <Col span={12}>
-              <SecretPost text={state.data.text} title={state.data.title} onClick={() => {}} />
-            </Col>
-          </Row>
-        </>
-      ) : null}
-    </Spin>
+    <Overlay>
+      <Spin spinning={state.loading} delay={500} tip="Loading...">
+        {state.data ? (
+          <>
+            <Row justify="center" align="middle">
+              <Col span={12}>
+                <SecretPost text={state.data.text} title={state.data.title} onClick={() => {}} />
+              </Col>
+            </Row>
+          </>
+        ) : null}
+      </Spin>
+    </Overlay>
   );
 }
 
-function Index() {
-  return <Overlay Content={Post}></Overlay>;
-}
 export default Index;
