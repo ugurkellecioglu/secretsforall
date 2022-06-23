@@ -15,7 +15,8 @@ const HeaderProvider: React.FC<React.ReactNode> = ({ children }) => {
         collapsed,
         setCollapsed,
         toggle
-      }}>
+      }}
+    >
       {children}
     </HeaderContext.Provider>
   );

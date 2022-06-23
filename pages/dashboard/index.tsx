@@ -1,9 +1,8 @@
 import { Col, notification, Row, Spin } from 'antd';
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
 import axios from 'axios';
-import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
 import ShareSecret from '../../components/Dashboard/ShareSecret/ShareSecret';
 import Secrets from './Secrets';
@@ -44,7 +43,8 @@ const Index: React.FC<any> = ({ data }) => {
     <DashboardProvider
       setSecretText={setSecretText}
       secretText={secretText}
-      handlePostSecret={handlePostSecret}>
+      handlePostSecret={handlePostSecret}
+    >
       <Overlay>
         <Spin spinning={loading} delay={500} tip="Loading...">
           {loading ? (

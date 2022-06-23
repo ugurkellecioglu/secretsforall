@@ -102,3 +102,7 @@
   left: 0;
   cursor: pointer;
 }
+
+.tagWrapper {
+  cursor: default;
+}

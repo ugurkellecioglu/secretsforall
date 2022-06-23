@@ -1,20 +1,26 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import propTypes from 'prop-types';
 import { Modal, notification, Row, Typography } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import axios from '../../helpers/axios';
 import { UserContext } from '../../context/UserContext';
-import TagCreator from './TagCreator';
-const EditProfileModal = ({ show, setShow }) => {
+import TagCreator from '../../components/TagCreator';
+const EditProfileModal = ({ show, setShow, userTags, setUserTags }) => {
   const { user, setUser } = useContext(UserContext);
-  const [info, setInfo] = useState('');
+  const [info, setInfo] = useState(user.info);
+  useEffect(() => {
+    setInfo(user.info);
+  }, [user.info]);
+
   const handleCancel = () => {
     setShow(false);
+    setUserTags((prevState) => prevState.filter((tag) => user.tags.find((tg) => tg.id === tag.id)));
   };
   const handleOk = async () => {
     try {
       const response = await axios.put(`/api/user/${user.username}`, {
-        info
+        info,
+        tags: userTags
       });
       if (response.status === 200) {
         setShow(false);
@@ -38,9 +44,10 @@ const EditProfileModal = ({ show, setShow }) => {
       visible={show}
       onOk={handleOk}
       onCancel={handleCancel}
-      okText="Edit"
+      okText="Save"
       centered
-      title="Edit Your Profile">
+      title="Edit Your Profile"
+    >
       <Row>
         <Typography.Title level={5}>Profile Info</Typography.Title>
       </Row>
@@ -57,7 +64,7 @@ const EditProfileModal = ({ show, setShow }) => {
         onClick={() => setShow(true)}
       />
       <Row>
-        <TagCreator />
+        <TagCreator userTags={userTags} setUserTags={setUserTags} />
       </Row>
     </Modal>
   );
@@ -65,6 +72,8 @@ const EditProfileModal = ({ show, setShow }) => {
 
 EditProfileModal.propTypes = {
   show: propTypes.bool,
-  setShow: propTypes.func
+  setShow: propTypes.func,
+  userTags: propTypes.array,
+  setUserTags: propTypes.func
 };
 export default EditProfileModal;

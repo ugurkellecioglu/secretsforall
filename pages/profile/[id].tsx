@@ -15,7 +15,7 @@ const Index: React.FC<any> = ({ data }) => {
   const { setCollapsed } = useContext(HeaderContext);
   const [image, setImage] = useState(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-
+  const [userTags, setUserTags] = useState(data.tags || []);
   const onLoad = (event) => {
     const element = event.target;
     const file = element.files[0];
@@ -74,11 +74,17 @@ const Index: React.FC<any> = ({ data }) => {
                 type="primary"
                 onClick={() => setShowEditProfileModal(true)}
                 shape="round"
-                className={styles['profile-edit-btn']}>
+                className={styles['profile-edit-btn']}
+              >
                 Edit Profile
               </Button>
             ) : null}
-            <EditProfileModal show={showEditProfileModal} setShow={setShowEditProfileModal} />
+            <EditProfileModal
+              userTags={userTags}
+              setUserTags={setUserTags}
+              show={showEditProfileModal}
+              setShow={setShowEditProfileModal}
+            />
             <div className={styles['profile-info']}>
               <span>{userCtx.user.username === data.username ? userCtx.user.info : data.info}</span>
             </div>
@@ -88,11 +94,12 @@ const Index: React.FC<any> = ({ data }) => {
 
       <Row align="middle" justify="center" style={{ marginTop: '10px', marginLeft: '190px' }}>
         <Col span={18}>
-          <div>
-            <Tag color="magenta">day dreamer</Tag>
-            <Tag color="volcano">guitarist</Tag>
-            <Tag color="gold">cat lover</Tag>
-            <Tag color="geekblue">fascinated by stars</Tag>
+          <div className={styles.tagWrapper}>
+            {userTags.map((tag, idx) => (
+              <Tag key={`${tag.text}-${idx}`} color={tag.color}>
+                {tag.text}
+              </Tag>
+            ))}
           </div>
         </Col>
       </Row>
@@ -129,6 +136,7 @@ export async function getServerSideProps({ query, req, res }) {
   if (id) {
     try {
       const result = await collection.findOne({ username: id });
+      // eslint-disable-next-line no-unused-vars
       const { password, ...user } = result;
       return {
         props: {

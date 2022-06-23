@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Secret from './Secret';
 import { Card, notification } from 'antd';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 import styles from './index.module.css';
