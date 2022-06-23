@@ -4,6 +4,7 @@ import { Modal, notification, Row, Typography } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import axios from '../../helpers/axios';
 import { UserContext } from '../../context/UserContext';
+import TagCreator from './TagCreator';
 const EditProfileModal = ({ show, setShow }) => {
   const { user, setUser } = useContext(UserContext);
   const [info, setInfo] = useState('');
@@ -37,9 +38,9 @@ const EditProfileModal = ({ show, setShow }) => {
       visible={show}
       onOk={handleOk}
       onCancel={handleCancel}
-      okText="Share"
+      okText="Edit"
       centered
-      title="Share Secret">
+      title="Edit Your Profile">
       <Row>
         <Typography.Title level={5}>Profile Info</Typography.Title>
       </Row>
@@ -55,6 +56,9 @@ const EditProfileModal = ({ show, setShow }) => {
         }}
         onClick={() => setShow(true)}
       />
+      <Row>
+        <TagCreator />
+      </Row>
     </Modal>
   );
 };
