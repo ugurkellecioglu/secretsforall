@@ -1,10 +1,10 @@
-import mongo from './client';
 const bcrypt = require('bcryptjs');
 const saltRounds = 10;
-
+import mongoDB from '../../helpers/MongoDB';
 export default async function handler(req, res) {
-  mongo('secretsforall', 'users', async (collection) => {
-    if (req.method !== 'POST') return;
+  const db = await mongoDB.getDB('users');
+  const collection = db.collection('users');
+  if (req.method === 'POST') {
     const body = req.body;
     const { username, password, profilePic } = body;
     if (!username || !password || !profilePic) {
@@ -16,9 +16,11 @@ export default async function handler(req, res) {
 
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     user.password = hashedPassword;
-    return collection.insertOne(user, (err, result) => {
-      if (err) return res.status(400).send(err);
-      return res.status(200).send(result);
-    });
-  });
+    try {
+      const result = await collection.insertOne(user);
+      return res.status(200).json({ Message: 'User created successfully', result });
+    } catch (error) {
+      return res.status(500).json({ error: error.toString() });
+    }
+  }
 }

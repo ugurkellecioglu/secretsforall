@@ -1,7 +1,7 @@
 import { ObjectId as objectId } from 'mongodb';
-import mongo from './client';
-
+import mongoDB from '../../helpers/MongoDB';
 export default async function handler(req, res) {
+  const db = await mongoDB.getDB('secretsforall');
   if (req.method === 'POST') {
     const { commentId, userId, text, postId } = req.body;
 
@@ -9,14 +9,12 @@ export default async function handler(req, res) {
       return res.status(400).json({ Message: 'Use id, comment text, postId is required.' });
     }
 
-    const db = await mongo('secretsforall');
     // const secretsCollection = await db.collection('secrets');
     const usersCollection = await db.collection('users');
 
     const { username, profilePic } = await usersCollection.findOne({ _id: objectId(userId) });
-
-    await mongo('secretsforall', 'secrets', async (collection) => {
-      // find the post comments that has the commentId
+    try {
+      const collection = await db.collection('secrets');
       await collection.update(
         {
           _id: objectId(postId),
@@ -37,8 +35,9 @@ export default async function handler(req, res) {
         },
         { upsert: true }
       );
-
       return res.status(200).json({ Message: 'Comment added.' });
-    });
+    } catch (error) {
+      return res.status(500).json({ error: error.toString() });
+    }
   }
 }

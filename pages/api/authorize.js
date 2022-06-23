@@ -1,5 +1,5 @@
-import mongo from './client';
-
+import { serialize } from 'cookie';
+import mongoDB from '../../helpers/MongoDB';
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secret = process.env.SECRET;
@@ -16,21 +16,28 @@ export default async function handler(req, res) {
     res.status(400).json({ error: 'username and password are required' });
     return;
   }
-
-  mongo('secretsforall', 'users', async (collection) => {
+  const db = await mongoDB.getDB('secretsforall');
+  const collection = db.collection('users');
+  // find the user
+  try {
     const user = await collection.findOne({ username });
+    // if user is not found
     if (!user) {
-      res.status(400).json({ error: 'User not found' });
+      res.status(400).json({ error: 'user not found' });
       return;
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      res.status(400).json({ error: 'Invalid password' });
+    // if password is not correct
+    if (!bcrypt.compareSync(password, user.password)) {
+      res.status(400).json({ error: 'password is not correct' });
       return;
     }
+    // if everything is correct
     const token = jwt.sign({ id: user._id, username: user.username }, secret, {
       expiresIn: '1h'
     });
-    res.status(200).json({ username: user.username, jwtToken: token, expires_in: 60 });
-  });
+    res.setHeader('Set-Cookie', serialize('jwtToken', token, { httpOnly: true }));
+    return res.status(200).json({ username: user.username, jwtToken: token, expires_in: 60 });
+  } catch (error) {
+    return res.status(400).json({ error: error.toString() });
+  }
 }

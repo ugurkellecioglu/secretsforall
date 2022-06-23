@@ -6,7 +6,7 @@ import Overlay from '../../components/Overlay';
 function RandomSecret() {
   const getRandomSecret = async () => {
     try {
-      const response = await axios.get('/api/secrets?random-secret');
+      const response = await axios.get('/api/secrets?type=random');
       const result = await response.data;
       console.log(result);
     } catch (error) {

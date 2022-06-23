@@ -1,51 +1,53 @@
-import mongo from './client';
 import { ObjectId as objectId } from 'mongodb';
 export default async function handler(req, res) {
+  const db = await mongoDB('secretsforall');
+
   if (req.method === 'POST') {
     const { user, title, text } = req.body;
     if (!user || !title || !text) {
       res.status(400).json({ error: 'Missing user, title, text or img' });
       return;
     }
-    mongo('secretsforall', 'secrets', async (collection) => {
-      collection.insertOne(
-        {
-          user,
-          title,
-          text,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          comments: [],
-          likes: [],
-          dislikes: []
-        },
-        (err, result) => {
-          if (err) return res.status(400).send(err);
-          return res.status(200).send(result);
-        }
-      );
-    });
+    const collection = db.collection('secrets');
+    try {
+      const result = await collection.insertOne({
+        user,
+        title,
+        text,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        comments: [],
+        likes: [],
+        dislikes: []
+      });
+      res.status(200).json({ Message: 'Secret added.', result });
+    } catch (error) {
+      return res.status(500).json({ error: error.toString() });
+    }
   } else if (req.method === 'GET') {
     if (req.query.id) {
-      mongo('secretsforall', 'secrets', async (collection) => {
-        collection.findOne({ _id: objectId(req.query.id) }, (err, result) => {
-          if (err) return res.status(400).send(err);
-          return res.status(200).send(result);
-        });
-      });
-    } else if (req.query.random) {
-      mongo('secretsforall', 'secrets', async (collection) => {
-        collection.aggregate([{ $sample: { size: 1 } }], (err, result) => {
-          if (err) return res.status(400).send(err);
-          return res.status(200).send(result);
-        });
-      });
+      const collection = db.collection('secrets');
+      try {
+        const result = await collection.findOne({ _id: objectId(req.query.id) });
+        if (!result) return res.status(400).json({ Message: 'Secret not found.' });
+        return res.status(200).json({ Message: 'Secret found.', result });
+      } catch (error) {
+        return res.status(500).json({ error: error.toString() });
+      }
+    } else if (req.query.type === 'random') {
+      const collection = db.collection('secrets');
+      try {
+        const result = await collection.aggregate([{ $sample: { size: 1 } }]).toArray();
+        if (!result) return res.status(400).json({ Message: 'Secret not found.' });
+        return res.status(200).json({ Message: 'Secret found.', result });
+      } catch (error) {
+        return res.status(500).json({ error: error.toString() });
+      }
     } else {
-      const db = await mongo('secretsforall');
       const secretsCollection = await db.collection('secrets');
-      const usersCollection = await db.collection('users');
-
       const secrets = await secretsCollection.find({}).sort({ updatedAt: -1 }).toArray();
+
+      const usersCollection = await db.collection('users');
       const users = await usersCollection.find({}).toArray();
       secrets.forEach((secret) => {
         const secretComments = secret.comments.map((comment) => {
