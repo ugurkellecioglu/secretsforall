@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import mongoDB from '../../../helpers/MongoDB';
 export default async function handler(req, res) {
-  const db = await mongoDB.getDB('users');
-  const collection = db.collection('users');
+  const db = await mongoDB.getDB(mongoDB.dbNames.SECRETSFORALL);
+  const collection = db.collection(mongoDB.collections.USERS);
   if (req.method === 'GET') {
     const token = req.cookies.jwtToken;
     if (!token) {
@@ -26,13 +26,12 @@ export default async function handler(req, res) {
   if (req.method === 'PUT') {
     const { id } = req.query;
     try {
-      collection.updateOne({ username: id }, { $set: req.body }, (err, result) => {
-        if (err) return res.status(400).send(err);
-        return res.status(200).send(result);
-      });
+      const result = await collection.updateOne({ username: id }, { $set: req.body });
+      if (result.modifiedCount === 0) return res.status(400).send({ error: 'No user found' });
+      return res.status(200).send({ success: 'User updated', result });
     } catch (error) {
       return res.status(500).json({ error: error.toString() });
     }
   }
-  return res.status(200).send({ error: 'selma' });
+  return res.status(500).json({ error: 'Invalid method' });
 }

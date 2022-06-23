@@ -11,7 +11,6 @@ import axios from '../../helpers/axios';
 const Content = () => {
   const userCtx = React.useContext(UserContext);
   const [image, setImage] = useState(null);
-  console.log(userCtx);
   const onLoad = (event) => {
     const element = event.target;
     const file = element.files[0];
@@ -49,9 +48,7 @@ const Content = () => {
       <div className={styles.cover}>
         <div className={styles.coverWrapperImage}>
           <div className={styles.cutImage}></div>
-          <div></div>
-
-          <img className={styles.coverImg} src={userCtx.user.cover} />
+          <img className={styles.coverImg} src={image || userCtx.user.cover} />
           <label htmlFor="img">Select image:</label>
           <input
             type="file"
