@@ -7,17 +7,11 @@ import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 import styles from './index.module.css';
 import ReplyEditor from './ReplyEditor';
-function SecretPost({ postId, title, text, onClick, comments }) {
+function SecretPost({ postId, title, text, onClick, comments: initialComments }) {
   const { user } = useContext(UserContext);
-  const [commentss, setComments] = useState([]);
+  const [comments, setComments] = useState(initialComments);
   const [value, setValue] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    if (comments) {
-      setComments(comments);
-    }
-  }, [comments]);
 
   const postComment = async (userId, postId, text) => {
     const response = await axios.post(`/api/comments`, {
@@ -31,6 +25,7 @@ function SecretPost({ postId, title, text, onClick, comments }) {
         description: 'You have successfully posted a comment.',
         placement: 'topRight'
       });
+      setComments((prevState) => [...prevState, response.data]);
     } else {
       notification.warning({
         message: 'Comment Post Error',
@@ -50,15 +45,6 @@ function SecretPost({ postId, title, text, onClick, comments }) {
     setTimeout(() => {
       setSubmitting(false);
       setValue('');
-      setComments([
-        ...commentss,
-        {
-          author: user.username,
-          avatar: user.profilePic,
-          content: <p>{value}</p>,
-          datetime: moment().fromNow()
-        }
-      ]);
     }, 1000);
   };
 
@@ -71,7 +57,7 @@ function SecretPost({ postId, title, text, onClick, comments }) {
     submitting,
     handleSubmit,
     handleChange,
-    comments: commentss,
+    comments,
     value
   };
   return (

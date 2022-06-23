@@ -12,25 +12,26 @@ export default async function handler(req, res) {
     try {
       const result = await collection.findOne({ _id: objectId(postId) });
       if (!result) return res.status(400).json({ Message: 'Post not found.' });
+      const data = {
+        id: objectId(),
+        userId,
+        text,
+        comments: [],
+        likes: [],
+        dislikes: [],
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
       await collection.updateOne(
         { _id: objectId(postId) },
         {
           $push: {
-            comments: {
-              id: objectId(),
-              userId,
-              text,
-              comments: [],
-              likes: [],
-              dislikes: [],
-              createdAt: new Date(),
-              updatedAt: new Date()
-            }
+            comments: data
           }
         },
         { upsert: true }
       );
-      return res.status(200).json({ Message: 'Comment added.', postId, userId, text });
+      return res.status(200).json({ Message: 'Comment added.', ...data, ...result.user });
     } catch (error) {
       return res.status(500).json({ error: error.toString() });
     }
