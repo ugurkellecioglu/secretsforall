@@ -1,18 +1,19 @@
-import { Col, Row, Tag } from 'antd';
+import { Button, Col, Row, Tag } from 'antd';
 // import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import Overlay from '../../components/Overlay';
 import { UserContext } from '../../context/UserContext';
 import styles from './index.module.css';
 import Secrets from '../dashboard/Secrets';
-import { useRouter } from 'next/router';
 import axios from '../../helpers/axios';
 import jwt from 'jsonwebtoken';
 import mongoDB from '../../helpers/MongoDB';
+import EditProfileModal from './EditProfileModal';
 const Index: React.FC<any> = ({ data }) => {
-  console.log('data is', data);
   const userCtx = React.useContext(UserContext);
   const [image, setImage] = useState(null);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
+
   const onLoad = (event) => {
     const element = event.target;
     const file = element.files[0];
@@ -62,10 +63,18 @@ const Index: React.FC<any> = ({ data }) => {
           </div>
           <div className={styles['profile-infos']}>
             <h1 className={styles['profile-fullname']}>{data?.username}</h1>
+            {userCtx.user.username === data.username ? (
+              <Button
+                type="primary"
+                onClick={() => setShowEditProfileModal(true)}
+                shape="round"
+                className={styles['profile-edit-btn']}>
+                Edit Profile
+              </Button>
+            ) : null}
+            <EditProfileModal show={showEditProfileModal} setShow={setShowEditProfileModal} />
             <div className={styles['profile-info']}>
-              <span>
-                Just one guy who are thrilled for the idea of being an secret keeper for everyone
-              </span>
+              <span>{userCtx.user.username === data.username ? userCtx.user.info : data.info}</span>
             </div>
           </div>
         </div>
