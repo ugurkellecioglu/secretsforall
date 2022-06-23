@@ -15,7 +15,8 @@ export default async function handler(req, res) {
     if (req.query.id) {
       try {
         const result = await collection.findOne({ username: req.query.id });
-        if (result.username !== decoded.username) return res.status(400).send(err);
+        if (result.username !== decoded.username)
+          return res.status(400).send({ error: 'Invalid token' });
         return res.status(200).send({ ...result, ...decoded });
       } catch (error) {
         return res.status(500).json({ error: error.toString() });

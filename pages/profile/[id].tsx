@@ -7,8 +7,10 @@ import styles from './index.module.css';
 import Secrets from '../dashboard/Secrets';
 import { useRouter } from 'next/router';
 import axios from '../../helpers/axios';
-
-const Index = () => {
+import jwt from 'jsonwebtoken';
+import mongoDB from '../../helpers/MongoDB';
+const Index: React.FC<any> = ({ data }) => {
+  console.log('data is', data);
   const userCtx = React.useContext(UserContext);
   const [image, setImage] = useState(null);
   const onLoad = (event) => {
@@ -35,36 +37,31 @@ const Index = () => {
       });
   }, [image]);
 
-  const router = useRouter();
-  useEffect(() => {
-    const id = router.query.id;
-    if (!id) return;
-    axios.get('/api/user/' + id).then((res) => {
-      console.log('res', res);
-    });
-  }, [router.query]);
   return (
     <Overlay>
       <div className={styles.cover}>
         <div className={styles.coverWrapperImage}>
-          <div className={styles.cutImage}></div>
-          <img className={styles.coverImg} src={image || userCtx.user.cover} />
-          <label htmlFor="img">Select image:</label>
-          <input
-            type="file"
-            id="image"
-            name="img"
-            className={styles.addCoverPhoto}
-            accept="image/*"
-            onChange={(e) => onLoad(e)}
-          />
+          <img className={styles.coverImg} src={image || data.cover} />
+          {userCtx.user.username === data.username ? (
+            <div>
+              <label htmlFor="img">Select image:</label>
+              <input
+                type="file"
+                id="image"
+                name="img"
+                className={styles.addCoverPhoto}
+                accept="image/*"
+                onChange={(e) => onLoad(e)}
+              />
+            </div>
+          ) : null}
         </div>
         <div className={styles['profile-section']}>
           <div className={styles['profile-img']}>
-            <img src={userCtx.user.profilePic} style={{ objectFit: 'none' }} />
+            <img src={data?.profilePic || ''} style={{ objectFit: 'none' }} />
           </div>
           <div className={styles['profile-infos']}>
-            <h1 className={styles['profile-fullname']}>{userCtx?.user?.username}</h1>
+            <h1 className={styles['profile-fullname']}>{data?.username}</h1>
             <div className={styles['profile-info']}>
               <span>
                 Just one guy who are thrilled for the idea of being an secret keeper for everyone
@@ -93,4 +90,40 @@ const Index = () => {
   );
 };
 
+export async function getServerSideProps({ query, req, res }) {
+  const db = await mongoDB.getDB(mongoDB.dbNames.SECRETSFORALL);
+  const collection = db.collection(mongoDB.collections.USERS);
+  const { id } = query;
+  console.log('id is', id);
+  const token = req.cookies.jwtToken;
+  if (!token) {
+    return {
+      props: {
+        data: {}
+      }
+    };
+  }
+  const decoded = jwt.verify(token, process.env.SECRET);
+  if (!decoded) {
+    return {
+      props: {
+        data: {}
+      }
+    };
+  }
+  if (id) {
+    try {
+      const result = await collection.findOne({ username: id });
+      const { password, ...user } = result;
+      return {
+        props: {
+          data: JSON.parse(JSON.stringify({ ...user }))
+        }
+      };
+    } catch (error) {
+      return { props: { data: {} } };
+    }
+  }
+  return res.status(500).json({ error: 'Missing id' });
+}
 export default Index;
