@@ -1,6 +1,7 @@
 import { ObjectId as objectId } from 'mongodb';
+import mongoDB from '../../helpers/MongoDB';
 export default async function handler(req, res) {
-  const db = await mongoDB('secretsforall');
+  const db = await mongoDB.getDB('secretsforall');
 
   if (req.method === 'POST') {
     const { user, title, text } = req.body;
@@ -49,12 +50,14 @@ export default async function handler(req, res) {
 
       const usersCollection = await db.collection('users');
       const users = await usersCollection.find({}).toArray();
+      console.log(users);
       secrets.forEach((secret) => {
         const secretComments = secret.comments.map((comment) => {
-          const { profilePic, username } = users.find(
-            (user) => user._id.toString() === comment.userId.toString()
-          );
-          return { ...comment, profilePic, username };
+          const commented = users.find((user) => user._id.toString() === comment.userId.toString());
+          if (commented) {
+            const { profilePic, username } = commented;
+            return { ...comment, profilePic, username };
+          }
         });
         secret.comments = secretComments;
       });

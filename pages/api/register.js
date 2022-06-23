@@ -2,8 +2,8 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 import mongoDB from '../../helpers/MongoDB';
 export default async function handler(req, res) {
-  const db = await mongoDB.getDB('users');
-  const collection = db.collection('users');
+  const db = await mongoDB.getDB(mongoDB.dbNames.SECRETSFORALL);
+  const collection = db.collection(mongoDB.collections.USERS);
   if (req.method === 'POST') {
     const body = req.body;
     const { username, password, profilePic } = body;

@@ -11,6 +11,13 @@ class MongoDB {
   constructor() {
     this.client = client;
     this.db = null;
+    this.collections = {
+      SECRETS: 'secrets',
+      USERS: 'users'
+    };
+    this.dbNames = {
+      SECRETSFORALL: 'secretsforall'
+    };
   }
 
   async getDB(db) {
