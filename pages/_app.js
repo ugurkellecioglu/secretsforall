@@ -8,6 +8,24 @@ import reducer from '../reducers/reducer';
 import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
+import NProgress from 'nprogress';
+import Router from 'next/router';
+import 'nprogress/nprogress.css';
+NProgress.configure({
+  minimum: 0.3,
+  easing: 'ease',
+  speed: 800,
+  showSpinner: true
+});
+Router.events.on('routeChangeStart', () => {
+  return NProgress.start();
+});
+Router.events.on('routeChangeComplete', () => {
+  return NProgress.done();
+});
+Router.events.on('routeChangeError', () => {
+  return NProgress.done();
+});
 function MyApp({ Component, pageProps }) {
   const initialState = {
     loading: false,
