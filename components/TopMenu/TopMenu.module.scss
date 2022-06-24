@@ -1,0 +1,10 @@
+.wrapper {
+  transition: all 0.3s ease-in-out;
+  visibility: hidden;
+  height: 0px;
+}
+
+.active {
+  visibility: visible !important;
+  height: auto !important;
+}
