@@ -1,9 +1,9 @@
-import { Button, Col, Row, Tag } from 'antd';
+import { Button, Tag } from 'antd';
 // import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import Overlay from '../../components/Overlay';
 import { UserContext } from '../../context/UserContext';
-import styles from './index.module.css';
+import styles from './index.module.scss';
 import Secrets from '../dashboard/Secrets';
 import axios from '../../helpers/axios';
 import jwt from 'jsonwebtoken';
@@ -39,7 +39,6 @@ const Index: React.FC<any> = ({ data }) => {
         console.log(err);
       });
   }, [image]);
-
   useEffect(() => {
     setCollapsed(true);
   }, []);
@@ -49,19 +48,6 @@ const Index: React.FC<any> = ({ data }) => {
       <div className={styles.cover}>
         <div className={styles.coverWrapperImage}>
           <img className={styles.coverImg} src={image || data.cover} />
-          {userCtx.user.username === data.username ? (
-            <div>
-              <label htmlFor="img">Select image:</label>
-              <input
-                type="file"
-                id="image"
-                name="img"
-                className={styles.addCoverPhoto}
-                accept="image/*"
-                onChange={(e) => onLoad(e)}
-              />
-            </div>
-          ) : null}
         </div>
         <div className={styles['profile-section']}>
           <div className={styles['profile-img']}>
@@ -88,26 +74,35 @@ const Index: React.FC<any> = ({ data }) => {
             <div className={styles['profile-info']}>
               <span>{userCtx.user.username === data.username ? userCtx.user.info : data.info}</span>
             </div>
+            <div>
+              {userTags.map((tag, idx) => (
+                <Tag key={`${tag.text}-${idx}`} color={tag.color}>
+                  {tag.text}
+                </Tag>
+              ))}
+            </div>
           </div>
+          {userCtx.user.username === data.username ? (
+            <div className={styles.uploadACoverWrapper}>
+              <label htmlFor="image" className={styles.uploadACover}>
+                <div className="ant-btn ant-btn-primary">Upload a cover</div>
+              </label>
+              <input
+                type="file"
+                id="image"
+                name="img"
+                className={styles.addCoverPhoto}
+                accept="image/*"
+                onChange={(e) => onLoad(e)}
+                style={{ display: 'none' }}
+              />
+            </div>
+          ) : null}
         </div>
       </div>
-
-      <Row align="middle" justify="center" style={{ marginTop: '10px', marginLeft: '190px' }}>
-        <Col span={18}>
-          <div className={styles.tagWrapper}>
-            {userTags.map((tag, idx) => (
-              <Tag key={`${tag.text}-${idx}`} color={tag.color}>
-                {tag.text}
-              </Tag>
-            ))}
-          </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col className={styles.col} span={48}>
-          <Secrets data={[]} />
-        </Col>
-      </Row>
+      <div className={styles.posts}>
+        <Secrets data={data.posts} />
+      </div>
     </Overlay>
   );
 };
@@ -137,6 +132,18 @@ export async function getServerSideProps({ query, req, res }) {
       const result = await collection.findOne({ username: id });
       // eslint-disable-next-line no-unused-vars
       const { password, ...user } = result;
+      const secretsCollection = db.collection(mongoDB.collections.SECRETS);
+      try {
+        const result = await secretsCollection.find({ 'user.username': id }).toArray();
+        if (!result) return res.status(400).json({ Message: 'Secret not found.' });
+        user.posts = result;
+      } catch (error) {
+        return {
+          props: {
+            data: {}
+          }
+        };
+      }
       return {
         props: {
           data: JSON.parse(JSON.stringify({ ...user }))

@@ -24,11 +24,13 @@ const LoginForm = ({ handleRegister }) => {
       className="register"
       onFinish={onFinish}
       scrollToFirstError={true}
-      onFinishFailed={onFinisFailed}>
+      onFinishFailed={onFinisFailed}
+    >
       <Form.Item
         name="username"
         className={styles.formItem}
-        rules={[{ required: true, Message: 'Can you please provide an username?' } as any]}>
+        rules={[{ required: true, Message: 'Can you please provide an username?' } as any]}
+      >
         <Input
           autoComplete="new-password"
           prefix={<UserOutlined className="site-form-item-icon" />}
@@ -48,7 +50,8 @@ const LoginForm = ({ handleRegister }) => {
             pattern: new RegExp(/\d+/g),
             Message: 'Wrong format!'
           }
-        ]}>
+        ]}
+      >
         <Input.Password
           autoComplete="new-password"
           iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
@@ -66,7 +69,8 @@ const LoginForm = ({ handleRegister }) => {
           type="primary"
           htmlType="submit"
           className="login-form-button"
-          danger={isError}>
+          danger={isError}
+        >
           Register
         </Button>
       </Form.Item>

@@ -1,4 +1,4 @@
-import { div, Row, Typography } from 'antd';
+import { Row, Typography } from 'antd';
 import React, { useContext } from 'react';
 import { Layout } from 'antd';
 import '../style.module.css';
@@ -43,7 +43,8 @@ const Header = () => {
         zIndex: '999',
         backgroundColor: 'white'
       }}
-      className={styles.header}>
+      className={styles.header}
+    >
       <Head
         style={{
           backgroundColor: 'white',
@@ -52,12 +53,14 @@ const Header = () => {
           position: 'fixed',
           width: '100vw',
           display: 'block'
-        }}>
+        }}
+      >
         <Row justify="space-between" align="middle">
           <div style={{ display: 'flex' }}>
             <span
               onClick={() => setCollapsed((prev) => !prev)}
-              style={{ cursor: 'pointer', alignItems: 'center', justifyContent: 'center' }}>
+              style={{ cursor: 'pointer', alignItems: 'center', justifyContent: 'center' }}
+            >
               {collapsed ? (
                 <PlusSquareFilled style={{ fontSize: '25px', marginRight: '15px' }} />
               ) : (
@@ -80,7 +83,8 @@ const Header = () => {
             <Dropdown
               className={styles.avatar}
               overlay={<MenuComp divide={false} data={[...menuData]} />}
-              trigger={['click']}>
+              trigger={['click']}
+            >
               <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                 <Avatar size={32} src={user.profilePic} />
               </a>

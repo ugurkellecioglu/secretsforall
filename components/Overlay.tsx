@@ -16,7 +16,7 @@ const Overlay: React.FC<Props> = ({ children }) => {
       <Layout style={{ height: '90vh', width: '100%' }}>
         {!isMobile && <Sidebar collapsed={collapsed} />}
         <Layout.Content>
-          <div style={{ marginTop: '30px' }}>{children}</div>
+          <div>{children}</div>
         </Layout.Content>
       </Layout>
     </div>

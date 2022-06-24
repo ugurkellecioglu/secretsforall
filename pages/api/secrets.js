@@ -35,6 +35,15 @@ export default async function handler(req, res) {
       } catch (error) {
         return res.status(500).json({ error: error.toString() });
       }
+    } else if (req.query.username) {
+      const collection = db.collection('secrets');
+      try {
+        const result = await collection.find({ 'user.username': req.query.username }).toArray();
+        if (!result) return res.status(400).json({ Message: 'Secret not found.' });
+        return res.status(200).json({ Message: 'Secret found.', result });
+      } catch (error) {
+        return res.status(500).json({ error: error.toString() });
+      }
     } else if (req.query.type === 'random') {
       const collection = db.collection('secrets');
       try {

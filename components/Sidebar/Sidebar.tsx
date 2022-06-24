@@ -15,7 +15,8 @@ function Sidebar({ collapsed }) {
           zIndex: 100
         }}
         collapsed={collapsed}
-        theme="light">
+        theme="light"
+      >
         <Menu mode="inline" defaultSelectedKeys={['1']}>
           <Menu.Item key="1" icon={<AppstoreTwoTone />}>
             <Link href="/dashboard"> Dashboard</Link>

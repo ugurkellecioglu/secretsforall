@@ -77,7 +77,8 @@ function Index() {
           height: '100vh',
           display: 'flex',
           flexDirection: 'row'
-        }}>
+        }}
+      >
         <div
           style={{
             width: '100vw',
@@ -90,7 +91,8 @@ function Index() {
             position: 'relative',
             boxShadow: '1px -5px 300px #000000'
           }}
-          className={styles.wrapper}>
+          className={styles.wrapper}
+        >
           <div className="content" style={{ zIndex: '5' }}>
             <Title style={{ color: 'white' }} level={1}>
               Welcome back.
@@ -102,28 +104,34 @@ function Index() {
           </div>
           <div className="images" style={{ zIndex: '1' }}>
             <div
-              style={{ position: 'absolute', left: '10%', top: '10%', width: '4%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '10%', top: '10%', width: '4%', zIndex: '9' }}
+            >
               <Image src={Plus} alt="Layer1" />
             </div>
             <div
-              style={{ position: 'absolute', left: '50%', top: '40%', width: '3%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '50%', top: '40%', width: '3%', zIndex: '9' }}
+            >
               <Image src={Plus} alt="Layer1" />
             </div>
             <div
-              style={{ position: 'absolute', left: '30%', top: '15%', width: '3%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '30%', top: '15%', width: '3%', zIndex: '9' }}
+            >
               <Image src={Ellipse} alt="Layer1" />
             </div>
             <div
-              style={{ position: 'absolute', left: '80%', top: '90%', width: '5%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '80%', top: '90%', width: '5%', zIndex: '9' }}
+            >
               <Image src={Ellipse} alt="Layer1" />
             </div>
 
             <div
-              style={{ position: 'absolute', left: '28%', top: '67%', width: '4%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '28%', top: '67%', width: '4%', zIndex: '9' }}
+            >
               <Image src={Triangle} alt="Layer1" />
             </div>
             <div
-              style={{ position: 'absolute', left: '68%', top: '48%', width: '2%', zIndex: '9' }}>
+              style={{ position: 'absolute', left: '68%', top: '48%', width: '2%', zIndex: '9' }}
+            >
               <Image src={Triangle} alt="Layer1" />
             </div>
             <div style={{ position: 'absolute', left: '0', bottom: '0', width: '80%' }}>
