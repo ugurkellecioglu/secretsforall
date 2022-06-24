@@ -116,7 +116,6 @@ export async function getServerSideProps({ query, req, res }) {
   const db = await mongoDB.getDB(mongoDB.dbNames.SECRETSFORALL);
   const collection = db.collection(mongoDB.collections.USERS);
   const { id } = query;
-  console.log('id is', id);
   const token = req.cookies.jwtToken;
   if (!token) {
     return {

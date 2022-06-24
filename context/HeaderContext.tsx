@@ -5,9 +5,6 @@ const HeaderContext = createContext(null);
 const HeaderProvider: React.FC<React.ReactNode> = ({ children }) => {
   const [collapsed, setCollapsed] = React.useState(false);
   const toggle = () => setCollapsed((prev) => !prev);
-  React.useEffect(() => {
-    console.log('collapsed', collapsed);
-  }, [collapsed]);
 
   return (
     <HeaderContext.Provider

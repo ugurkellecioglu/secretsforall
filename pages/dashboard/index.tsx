@@ -12,7 +12,6 @@ import { DashboardProvider } from '../../context/DasboardContext';
 import mongoDB from '../../helpers/MongoDB';
 const Index: React.FC<any> = ({ data }) => {
   const user = useContext(UserContext);
-  console.log('data is', data);
   const loading = false;
   const [secretText, setSecretText] = useState('');
   const handlePostSecret = async ({ title, text }) => {
