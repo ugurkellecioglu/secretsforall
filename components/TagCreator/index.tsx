@@ -42,7 +42,6 @@ const TagCreator = ({ userTags, setUserTags }) => {
   const handleAddTag = (tag) => {
     const date = new Date();
     setUserTags((prevState) => [...prevState, { ...tag, id: date.getTime() }]);
-    console.log(userTags);
   };
   const removeTag = (tag) => {
     setUserTags((prevState) =>

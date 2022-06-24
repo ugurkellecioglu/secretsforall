@@ -2,7 +2,7 @@ import { Spin, Card, Layout, Row, Space, Col, notification } from 'antd';
 import { useContext, useReducer, useState } from 'react';
 import axios from 'axios';
 import LoginForm from './RegisterForm';
-import styles from './style.module.css';
+import styles from './style.module.scss';
 import useAvatar from './useAvatar';
 import Header from './Header';
 import Avatar from './Avatar';
@@ -110,7 +110,7 @@ const Home = () => {
               </Space>
             </Card>
           </Col>
-          <Col lg={12} md={12} sm={24}>
+          <Col lg={12} md={12} sm={24} className={styles.image}>
             <Image src={Vector} alt="Group of People Image" />
           </Col>
         </Row>

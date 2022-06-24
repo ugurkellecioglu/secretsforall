@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, Card } from 'antd';
 import PropTypes from 'prop-types';
-import styles from './Login.module.css';
+import styles from './Login.module.scss';
 import { LeftSquareFilled } from '@ant-design/icons';
 import { UserOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
@@ -24,8 +24,7 @@ function LoginForm({ handleLogin, cardStyles }) {
         flexDirection: 'column',
         alignItems: 'center',
         ...cardStyles
-      }}
-    >
+      }}>
       <div className={styles.registerIconWrapper}>
         <div className={styles.registerIcon}>
           <LeftSquareFilled
@@ -48,16 +47,14 @@ function LoginForm({ handleLogin, cardStyles }) {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center'
-        }}
-      >
+        }}>
         <Form.Item
           wrapperCol={{ span: 32 }}
           name="username"
           style={{ width: '300px' }}
           label="Username"
           className={styles.formLabel}
-          rules={[{ required: true, Message: 'Please input your username!' } as any]}
-        >
+          rules={[{ required: true, Message: 'Please input your username!' } as any]}>
           <Input suffix={<UserOutlined />} />
         </Form.Item>
 
@@ -67,8 +64,7 @@ function LoginForm({ handleLogin, cardStyles }) {
           label="Password"
           style={{ width: '300px' }}
           className={styles.formLabel}
-          rules={[{ required: true, Message: 'Please input your password!' } as any]}
-        >
+          rules={[{ required: true, Message: 'Please input your password!' } as any]}>
           <Input.Password />
         </Form.Item>
 

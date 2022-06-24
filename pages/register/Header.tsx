@@ -2,7 +2,7 @@ import { Col, Typography } from 'antd';
 import { RightSquareFilled } from '@ant-design/icons';
 import React from 'react';
 import { useRouter } from 'next/router';
-import styles from './style.module.css';
+import styles from './style.module.scss';
 
 function Header() {
   const router = useRouter();
