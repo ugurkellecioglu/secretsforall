@@ -16,7 +16,7 @@ function Secrets({ data }) {
   return (
     <PostProvider>
       <Row justify="center" align="middle">
-        <Col span={12}>
+        <Col sm={12} xs={24}>
           {data &&
             data.map(({ _id, user, text, updatedAt, comments }) => (
               <SecretPost

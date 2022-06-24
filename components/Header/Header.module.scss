@@ -1,0 +1,18 @@
+.header {
+  & header {
+    padding: 0 2rem !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    & .welcome {
+      @media screen and (max-width: 768px) {
+        display: none;
+      }
+    }
+  }
+}

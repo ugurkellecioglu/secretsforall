@@ -1,8 +1,8 @@
 import { Layout } from 'antd';
 import React, { useContext } from 'react';
 import { HeaderContext } from '../context/HeaderContext';
-import Header from './Header';
-import Sidebar from './Sidebar';
+import Header from './Header/Header';
+import Sidebar from './Sidebar/Sidebar';
 type Props = { children: React.ReactNode };
 const Overlay: React.FC<Props> = ({ children }) => {
   const { collapsed } = useContext(HeaderContext);

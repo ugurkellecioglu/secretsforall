@@ -1,14 +1,15 @@
-import { Col, Row, Typography } from 'antd';
+import { div, Row, Typography } from 'antd';
 import React, { useContext } from 'react';
 import { Layout } from 'antd';
-import styles from './style.module.css';
+import '../style.module.css';
 import Avatar from 'antd/lib/avatar/avatar';
 import { Dropdown } from 'antd';
-import MenuComp from './Menu';
-import { UserContext } from '../context/UserContext';
-import { HeaderContext } from '../context/HeaderContext';
+import MenuComp from '../Menu';
+import { UserContext } from '../../context/UserContext';
+import { HeaderContext } from '../../context/HeaderContext';
 import Link from 'next/link';
 import { MinusSquareFilled, PlusSquareFilled } from '@ant-design/icons';
+import styles from './Header.module.scss';
 import PropTypes from 'prop-types';
 
 const { Header: Head } = Layout;
@@ -42,7 +43,7 @@ const Header = () => {
         zIndex: '999',
         backgroundColor: 'white'
       }}
-    >
+      className={styles.header}>
       <Head
         style={{
           backgroundColor: 'white',
@@ -51,14 +52,12 @@ const Header = () => {
           position: 'fixed',
           width: '100vw',
           display: 'block'
-        }}
-      >
+        }}>
         <Row justify="space-between" align="middle">
-          <Col style={{ display: 'flex' }}>
+          <div style={{ display: 'flex' }}>
             <span
               onClick={() => setCollapsed((prev) => !prev)}
-              style={{ cursor: 'pointer', alignItems: 'center', justifyContent: 'center' }}
-            >
+              style={{ cursor: 'pointer', alignItems: 'center', justifyContent: 'center' }}>
               {collapsed ? (
                 <PlusSquareFilled style={{ fontSize: '25px', marginRight: '15px' }} />
               ) : (
@@ -68,31 +67,25 @@ const Header = () => {
             <Typography.Title level={5} style={{ display: 'flex', alignItems: 'center' }}>
               <Link href="/dashboard">Secrets for All</Link>
             </Typography.Title>
-          </Col>
-          <Col>
+          </div>
+          <div className={styles.welcome}>
             <Typography.Text>
               Welcome you little secret keeper <b>{user.username}</b>
             </Typography.Text>
-          </Col>
-          <Col className={styles.col}>
-            {/* <Switch
-              checkedChildren={<CheckOutlined />}
-              unCheckedChildren={<CloseOutlined />}
-              defaultChecked
-            /> */}
+          </div>
+          <div className={styles.col}>
             <Typography.Text italic={true} className="username">
               {user.username}
             </Typography.Text>
             <Dropdown
               className={styles.avatar}
               overlay={<MenuComp divide={false} data={[...menuData]} />}
-              trigger={['click']}
-            >
+              trigger={['click']}>
               <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
                 <Avatar size={32} src={user.profilePic} />
               </a>
             </Dropdown>
-          </Col>
+          </div>
         </Row>
       </Head>
     </div>

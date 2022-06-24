@@ -3,9 +3,10 @@ import { AppstoreTwoTone, StarTwoTone } from '@ant-design/icons';
 import { Menu, Layout } from 'antd';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import styles from './sidebar.module.scss';
 function Sidebar({ collapsed }) {
   return (
-    <>
+    <div className={styles.wrapper}>
       <Layout.Sider
         style={{
           overflow: 'auto',
@@ -14,8 +15,7 @@ function Sidebar({ collapsed }) {
           zIndex: 100
         }}
         collapsed={collapsed}
-        theme="light"
-      >
+        theme="light">
         <Menu mode="inline" defaultSelectedKeys={['1']}>
           <Menu.Item key="1" icon={<AppstoreTwoTone />}>
             <Link href="/dashboard"> Dashboard</Link>
@@ -25,7 +25,7 @@ function Sidebar({ collapsed }) {
           </Menu.Item>
         </Menu>
       </Layout.Sider>
-    </>
+    </div>
   );
 }
 

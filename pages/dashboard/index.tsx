@@ -42,8 +42,7 @@ const Index: React.FC<any> = ({ data }) => {
     <DashboardProvider
       setSecretText={setSecretText}
       secretText={secretText}
-      handlePostSecret={handlePostSecret}
-    >
+      handlePostSecret={handlePostSecret}>
       <Overlay>
         <Spin spinning={loading} delay={500} tip="Loading...">
           {loading ? (
@@ -51,7 +50,7 @@ const Index: React.FC<any> = ({ data }) => {
           ) : (
             <>
               <Row style={{ paddingBottom: '30px' }} justify="center" align="middle">
-                <Col className={styles.ShareSecret} span={12}>
+                <Col className={styles.ShareSecret} md={12} span={24}>
                   <ShareSecret />
                 </Col>
               </Row>
