@@ -1,11 +1,14 @@
 import { Layout } from 'antd';
 import React, { useContext } from 'react';
 import { HeaderContext } from '../context/HeaderContext';
-import Header from './Header/Header';
-import Sidebar from './Sidebar/Sidebar';
-import TopMenu from './TopMenu';
 import useDeviceDetect from '../helpers/useDeviceDetect';
+import dynamic from 'next/dynamic';
 type Props = { children: React.ReactNode };
+
+const Header = dynamic(import('./Header/Header'));
+const Sidebar = dynamic(import('./Sidebar/Sidebar'));
+const TopMenu = dynamic(import('./TopMenu'));
+
 const Overlay: React.FC<Props> = ({ children }) => {
   const { collapsed } = useContext(HeaderContext);
   const { isMobile } = useDeviceDetect();

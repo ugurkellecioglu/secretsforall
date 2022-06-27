@@ -4,12 +4,14 @@ import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
 import axios from 'axios';
 import { UserContext } from '../../context/UserContext';
-import ShareSecret from '../../components/Dashboard/ShareSecret/ShareSecret';
-import Secrets from './Secrets';
 import _Skeleton from './Skeleton';
 import { DashboardProvider } from '../../context/DasboardContext';
-
 import mongoDB from '../../helpers/MongoDB';
+import dynamic from 'next/dynamic';
+
+const ShareSecret = dynamic(import('../../components/Dashboard/ShareSecret/ShareSecret'));
+const Secrets = dynamic(import('./Secrets'));
+
 const Index: React.FC<any> = ({ data }) => {
   const user = useContext(UserContext);
   const loading = false;
@@ -42,8 +44,7 @@ const Index: React.FC<any> = ({ data }) => {
     <DashboardProvider
       setSecretText={setSecretText}
       secretText={secretText}
-      handlePostSecret={handlePostSecret}
-    >
+      handlePostSecret={handlePostSecret}>
       <Overlay>
         <Spin spinning={loading} delay={500} tip="Loading...">
           {loading ? (

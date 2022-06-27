@@ -1,15 +1,17 @@
 import { Button, Tag } from 'antd';
 // import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
-import Overlay from '../../components/Overlay';
 import { UserContext } from '../../context/UserContext';
 import styles from './index.module.scss';
-import Secrets from '../dashboard/Secrets';
 import axios from '../../helpers/axios';
 import jwt from 'jsonwebtoken';
 import mongoDB from '../../helpers/MongoDB';
-import EditProfileModal from './EditProfileModal';
 import { HeaderContext } from '../../context/HeaderContext';
+import dynamic from 'next/dynamic';
+
+const Secrets = dynamic(import('../dashboard/Secrets'));
+const Overlay = dynamic(import('../../components/Overlay'));
+const EditProfileModal = dynamic(import('./EditProfileModal'));
 const Index: React.FC<any> = ({ data }) => {
   const userCtx = useContext(UserContext);
   const { setCollapsed } = useContext(HeaderContext);
@@ -60,8 +62,7 @@ const Index: React.FC<any> = ({ data }) => {
                 type="primary"
                 onClick={() => setShowEditProfileModal(true)}
                 shape="round"
-                className={styles['profile-edit-btn']}
-              >
+                className={styles['profile-edit-btn']}>
                 Edit Profile
               </Button>
             ) : null}
