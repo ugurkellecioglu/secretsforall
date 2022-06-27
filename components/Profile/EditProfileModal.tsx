@@ -4,7 +4,7 @@ import { Modal, notification, Row, Typography } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import axios from '../../helpers/axios';
 import { UserContext } from '../../context/UserContext';
-import TagCreator from '../TagCreator
+import TagCreator from '../TagCreator';
 const EditProfileModal = ({ show, setShow, userTags, setUserTags }) => {
   const { user, setUser } = useContext(UserContext);
   const [info, setInfo] = useState(user.info);

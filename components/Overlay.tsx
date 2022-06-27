@@ -10,11 +10,11 @@ const Sidebar = dynamic(import('./Sidebar/Sidebar'));
 const TopMenu = dynamic(import('./TopMenu'));
 
 const Overlay: React.FC<Props> = ({ children }) => {
-  const { collapsed } = useContext(HeaderContext);
+  const { collapsed, setCollapsed } = useContext(HeaderContext);
   const { isMobile } = useDeviceDetect();
   return (
     <div style={{ overflowX: 'hidden', height: '100%', backgroundColor: '#f0f2f5' }}>
-      <Header />
+      <Header collapsed={collapsed} setCollapsed={setCollapsed} />
       {isMobile && <TopMenu collapsed={collapsed} />}
       <Layout style={{ height: '90vh', width: '100%' }}>
         {!isMobile && <Sidebar collapsed={collapsed} />}

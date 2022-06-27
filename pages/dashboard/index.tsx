@@ -43,7 +43,8 @@ const Index: React.FC<any> = ({ data }) => {
     <DashboardProvider
       setSecretText={setSecretText}
       secretText={secretText}
-      handlePostSecret={handlePostSecret}>
+      handlePostSecret={handlePostSecret}
+    >
       <Overlay>
         <Spin spinning={loading} delay={500} tip="Loading...">
           {loading ? (

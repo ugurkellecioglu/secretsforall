@@ -62,7 +62,8 @@ const Index: React.FC<any> = ({ data }) => {
                 type="primary"
                 onClick={() => setShowEditProfileModal(true)}
                 shape="round"
-                className={styles['profile-edit-btn']}>
+                className={styles['profile-edit-btn']}
+              >
                 Edit Profile
               </Button>
             ) : null}

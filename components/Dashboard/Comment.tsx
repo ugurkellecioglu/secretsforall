@@ -3,7 +3,6 @@ import { Col, Comment, Divider, Row, Tooltip } from 'antd';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import Editor from './Editor';
 import PropTypes from 'prop-types';
-import { motion, AnimatePresence } from 'framer-motion';
 import CommentList from './CommentList';
 import axios from 'axios';
 
@@ -93,22 +92,15 @@ const Demo = (props) => {
           />
         </div>
       )}
-      <AnimatePresence>
-        {isReply && (
-          <motion.div
-            initial={{ y: -20 }}
-            animate={{ y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Row>
-              <Col span={20} style={{ marginLeft: '7%' }}>
-                <Editor maxRow={2} onSubmit={handleReply} value={value} onChange={handleChange} />
-              </Col>
-            </Row>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isReply && (
+        <div>
+          <Row>
+            <Col span={20} style={{ marginLeft: '7%' }}>
+              <Editor maxRow={2} onSubmit={handleReply} value={value} onChange={handleChange} />
+            </Col>
+          </Row>
+        </div>
+      )}
     </>
   );
 };

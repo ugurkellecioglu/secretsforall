@@ -1,8 +1,8 @@
 import { Avatar, Row } from 'antd';
-import moment from 'moment';
+
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import dayjs from '../../helpers/dayjs';
 const CardHeader = ({ updatedAt, user }: any) => {
   return (
     <React.Fragment>
@@ -12,7 +12,7 @@ const CardHeader = ({ updatedAt, user }: any) => {
           <span>{user.username}</span>
 
           <p style={{ fontSize: '9px', color: 'gray', fontWeight: 'lighter' }}>
-            {moment(updatedAt).fromNow()}
+            {dayjs(updatedAt).fromNow()}
           </p>
         </div>
       </Row>

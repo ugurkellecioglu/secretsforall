@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { useState, useEffect } from 'react';
-import moment from 'moment';
+import dayjs from '../../helpers/dayjs';
+
 import CommentList from './CommentList';
 import Editor from './Editor';
 // eslint-disable-next-line require-jsdoc
@@ -17,7 +18,7 @@ const ReplyEditor = ({ postId, comments, submitting, handleChange, handleSubmit,
           author: item.username,
           content: item.text,
           avatar: item.profilePic,
-          datetime: moment(item.updatedAt).fromNow()
+          datetime: dayjs(item.updatedAt).fromNow()
         };
       })
     );
