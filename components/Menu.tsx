@@ -1,4 +1,5 @@
 import { Menu } from 'antd';
+import Link from 'next/link';
 import React from 'react';
 interface MenuProps {
   divide?: boolean;
@@ -14,7 +15,7 @@ const MenuComp = (props: MenuProps) => (
     {props.data.map((item, index) => (
       <>
         <Menu.Item key={index + index}>
-          <a href={item.url}>{item.title}</a>
+          <Link href={item.url}>{item.title}</Link>
         </Menu.Item>
         {props.divide ? <Menu.Divider /> : null}
       </>
