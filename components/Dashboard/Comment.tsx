@@ -1,11 +1,13 @@
 import React, { createElement, useContext, useState } from 'react';
 import { Col, Comment, Divider, Row, Tooltip } from 'antd';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
-import Editor from './Editor';
 import PropTypes from 'prop-types';
-import CommentList from './CommentList';
 import axios from 'axios';
 import { UserContext } from '../../context/UserContext';
+import dynamic from 'next/dynamic';
+
+const Editor = dynamic(import('./Editor'));
+const CommentList = dynamic(import('./CommentList'));
 
 const Demo = (props) => {
   const { user } = useContext(UserContext);

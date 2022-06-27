@@ -1,10 +1,12 @@
 import { Col, Row } from 'antd';
 import React from 'react';
-import SecretPost from './SecretPost';
 import PropTypes from 'prop-types';
 import { PostProvider } from '../../context/PostContext';
 import { useRouter } from 'next/router';
-import CardHeader from '../../components/CardHeader.tsx';
+import dynamic from 'next/dynamic';
+
+const CardHeader = dynamic(import('../../components/CardHeader.tsx'));
+const SecretPost = dynamic(import('./SecretPost'));
 
 function Secrets({ data }) {
   const router = useRouter();

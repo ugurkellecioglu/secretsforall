@@ -1,7 +1,9 @@
 import { List } from 'antd';
-import Comment from './Comment';
 import React from 'react';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
+
+const Comment = dynamic(import('./Comment'));
 
 const CommentList = ({ comments, isReply }) => {
   return (

@@ -1,11 +1,14 @@
 import React, { useContext, useState } from 'react';
-import Secret from './Secret';
 import { Card, notification } from 'antd';
 import PropTypes from 'prop-types';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 import styles from './index.module.css';
-import ReplyEditor from './ReplyEditor';
+import dynamic from 'next/dynamic';
+
+const ReplyEditor = dynamic(import('./ReplyEditor'));
+const Secret = dynamic(import('./Secret'));
+
 function SecretPost({ postId, title, text, onClick, comments: initialComments }) {
   const { user } = useContext(UserContext);
   const [comments, setComments] = useState(initialComments);

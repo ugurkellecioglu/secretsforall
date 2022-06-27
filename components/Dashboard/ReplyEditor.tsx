@@ -4,8 +4,11 @@ import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import dayjs from '../../helpers/dayjs';
 
-import CommentList from './CommentList';
-import Editor from './Editor';
+import dynamic from 'next/dynamic';
+
+const CommentList = dynamic(import('./CommentList'));
+const Editor = dynamic(import('./Editor'));
+
 // eslint-disable-next-line require-jsdoc
 const ReplyEditor = ({ postId, comments, submitting, handleChange, handleSubmit, value }) => {
   const [commentData, setcommentData] = useState([]);
