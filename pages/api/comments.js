@@ -5,16 +5,14 @@ export default async function handler(req, res) {
   const collection = db.collection('secrets');
   if (req.method === 'POST') {
     const body = req.body;
-    const { userId, text, postId } = body;
-    if (!userId || !text || !postId) {
+    const { user, text, postId } = body;
+    if (!user || !text || !postId) {
       return res.status(400).json({ Message: 'Use id, comment text, postId is required.' });
     }
     try {
-      const result = await collection.findOne({ _id: objectId(postId) });
-      if (!result) return res.status(400).json({ Message: 'Post not found.' });
       const data = {
         id: objectId(),
-        userId,
+        user,
         text,
         comments: [],
         likes: [],
@@ -31,7 +29,7 @@ export default async function handler(req, res) {
         },
         { upsert: true }
       );
-      return res.status(200).json({ Message: 'Comment added.', ...data, ...result.user });
+      return res.status(200).json({ Message: 'Comment added.', ...data });
     } catch (error) {
       return res.status(500).json({ error: error.toString() });
     }

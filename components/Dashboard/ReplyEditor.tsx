@@ -15,9 +15,9 @@ const ReplyEditor = ({ postId, comments, submitting, handleChange, handleSubmit,
         return {
           ...item,
           postId,
-          author: item.username,
+          author: item.user.username,
           content: item.text,
-          avatar: item.profilePic,
+          avatar: item.user.profilePic,
           datetime: dayjs(item.updatedAt).fromNow()
         };
       })

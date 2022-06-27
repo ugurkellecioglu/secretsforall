@@ -12,9 +12,9 @@ function SecretPost({ postId, title, text, onClick, comments: initialComments })
   const [value, setValue] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const postComment = async (userId, postId, text) => {
+  const postComment = async (postId, text) => {
     const response = await axios.post(`/api/comments`, {
-      userId,
+      user,
       postId,
       text
     });
@@ -40,7 +40,7 @@ function SecretPost({ postId, title, text, onClick, comments: initialComments })
     }
 
     setSubmitting(true);
-    postComment(user._id, postId, value);
+    postComment(postId, value);
     setTimeout(() => {
       setSubmitting(false);
       setValue('');

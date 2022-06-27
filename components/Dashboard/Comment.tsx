@@ -1,12 +1,14 @@
-import React, { createElement, useState } from 'react';
+import React, { createElement, useContext, useState } from 'react';
 import { Col, Comment, Divider, Row, Tooltip } from 'antd';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import Editor from './Editor';
 import PropTypes from 'prop-types';
 import CommentList from './CommentList';
 import axios from 'axios';
+import { UserContext } from '../../context/UserContext';
 
 const Demo = (props) => {
+  const { user } = useContext(UserContext);
   const { userId, postId, id, content, author, avatar, comments: initialComments } = props;
   const [likes, setLikes] = useState(0);
   const [dislikes, setDislikes] = useState(0);
@@ -33,8 +35,8 @@ const Demo = (props) => {
   const handleReply = () => {
     axios
       .post(`/api/reply`, {
-        userId: userId,
-        postId: postId,
+        user,
+        postId,
         commentId: id,
         text: value
       })
@@ -84,8 +86,8 @@ const Demo = (props) => {
             isReply={true}
             comments={comments.map((comment) => {
               return {
-                author: comment.username,
-                avatar: comment.profilePic,
+                author: comment.user.username,
+                avatar: comment.user.profilePic,
                 content: comment.text
               };
             })}

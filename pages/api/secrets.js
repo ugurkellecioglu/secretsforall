@@ -56,19 +56,6 @@ export default async function handler(req, res) {
     } else {
       const secretsCollection = await db.collection('secrets');
       const secrets = await secretsCollection.find({}).sort({ updatedAt: -1 }).toArray();
-
-      const usersCollection = await db.collection('users');
-      const users = await usersCollection.find({}).toArray();
-      secrets.forEach((secret) => {
-        const secretComments = secret.comments.map((comment) => {
-          const commented = users.find((user) => user._id.toString() === comment.userId.toString());
-          if (commented) {
-            const { profilePic, username } = commented;
-            return { ...comment, profilePic, username };
-          }
-        });
-        secret.comments = secretComments;
-      });
       return res.status(200).send(secrets);
     }
   } else {
