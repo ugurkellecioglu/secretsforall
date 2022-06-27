@@ -4,14 +4,13 @@ import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
 import axios from 'axios';
 import { UserContext } from '../../context/UserContext';
-import _Skeleton from './Skeleton';
 import { DashboardProvider } from '../../context/DasboardContext';
 import mongoDB from '../../helpers/MongoDB';
 import dynamic from 'next/dynamic';
 
 const ShareSecret = dynamic(import('../../components/Dashboard/ShareSecret/ShareSecret'));
-const Secrets = dynamic(import('./Secrets'));
-
+const Secrets = dynamic(import('../../components/Dashboard/Secrets'));
+const _Skeleton = dynamic(import('../../components/Dashboard/Skeleton'));
 const Index: React.FC<any> = ({ data }) => {
   const user = useContext(UserContext);
   const loading = false;

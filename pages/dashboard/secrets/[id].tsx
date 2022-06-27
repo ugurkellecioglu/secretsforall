@@ -4,7 +4,10 @@ import reducer from '../../../reducers/reducer';
 import Overlay from '../../../components/Overlay';
 import { Col, Row, Spin } from 'antd';
 import axios from 'axios';
-import SecretPost from '../SecretPost';
+import dynamic from 'next/dynamic';
+
+const SecretPost = dynamic(import('../../../components/Dashboard/SecretPost'));
+
 function Index() {
   const router = useRouter();
   const { id } = router.query;
@@ -23,6 +26,8 @@ function Index() {
       dispatch({ type: 'SECRET_ERROR' });
     }
   };
+  console.log(state.data);
+
   useEffect(() => {
     if (!id) return;
     getPost(id);
@@ -30,11 +35,17 @@ function Index() {
   return (
     <Overlay>
       <Spin spinning={state.loading} delay={500} tip="Loading...">
-        {state.data ? (
+        {state.data && state.data.result ? (
           <>
             <Row justify="center" align="middle">
               <Col span={12}>
-                <SecretPost text={state.data.text} title={state.data.title} onClick={() => {}} />
+                <SecretPost
+                  text={state.data.result.text}
+                  title={state.data.result.title}
+                  onClick={() => {}}
+                  postId={state.data.result._id}
+                  comments={state.data.result.comments}
+                />
               </Col>
             </Row>
           </>

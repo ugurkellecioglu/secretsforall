@@ -2,10 +2,10 @@ import { Spin } from 'antd';
 import React from 'react';
 import PropTypes from 'prop-types';
 import mongoDb from '../../helpers/MongoDB';
-import Secrets from '../dashboard/Secrets';
 import dynamic from 'next/dynamic';
 
 const Overlay = dynamic(() => import('../../components/Overlay'));
+const Secrets = dynamic(() => import('../../components/Dashboard/Secrets'));
 function RandomSecret({ data }) {
   return (
     <Overlay>

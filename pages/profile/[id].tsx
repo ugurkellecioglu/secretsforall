@@ -9,9 +9,9 @@ import mongoDB from '../../helpers/MongoDB';
 import { HeaderContext } from '../../context/HeaderContext';
 import dynamic from 'next/dynamic';
 
-const Secrets = dynamic(import('../dashboard/Secrets'));
+const Secrets = dynamic(import('../../components/Dashboard/Secrets'));
 const Overlay = dynamic(import('../../components/Overlay'));
-const EditProfileModal = dynamic(import('./EditProfileModal'));
+const EditProfileModal = dynamic(import('../../components/Profile/EditProfileModal'));
 const Index: React.FC<any> = ({ data }) => {
   const userCtx = useContext(UserContext);
   const { setCollapsed } = useContext(HeaderContext);

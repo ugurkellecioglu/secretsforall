@@ -1,19 +1,20 @@
 import { Spin, Card, Layout, Row, Space, Col, notification } from 'antd';
 import { useContext, useReducer, useState } from 'react';
 import axios from 'axios';
-import LoginForm from './RegisterForm';
 import styles from './style.module.scss';
-import useAvatar from './useAvatar';
-import Header from './Header';
-import Avatar from './Avatar';
-import AvatarController from './AvatarController';
-import Vector from '../../public/Speech bubbles-bro.svg';
+import useAvatar from '../../helpers/useAvatar';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 import reducer from '../../reducers/reducer';
 import Cookies from 'js-cookie';
 import { UserContext } from '../../context/UserContext';
+import dynamic from 'next/dynamic';
+import Vector from '../../public/Speech bubbles-bro.svg';
+const Header = dynamic(import('../../components/Register/Header'));
+const Avatar = dynamic(() => import('../../components/Register/Avatar'));
+const AvatarController = dynamic(() => import('../../components/Register/AvatarController'));
+const RegisterForm = dynamic(() => import('../../components/Register/RegisterForm'));
 
 const Home = () => {
   const [avatar, changeAvatar] = useAvatar();
@@ -103,7 +104,7 @@ const Home = () => {
                   <AvatarController handleAvatarChange={handleAvatarChange} styles={styles} />
                 </Row>
                 <Row justify="center">
-                  <LoginForm
+                  <RegisterForm
                     handleRegister={(form) => handleRegister({ ...form, profilePic: avatar })}
                   />
                 </Row>
