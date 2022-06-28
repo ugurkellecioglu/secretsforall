@@ -16,8 +16,7 @@ export default async function handler(req, res) {
     res.status(400).json({ error: 'username and password are required' });
     return;
   }
-  const db = await mongoDB.getDB('secretsforall');
-  const collection = db.collection('users');
+  const collection = await mongoDB.getCollection('USERS');
   // find the user
   try {
     const user = await collection.findOne({ username });

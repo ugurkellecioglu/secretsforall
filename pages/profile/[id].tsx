@@ -62,8 +62,7 @@ const Index: React.FC<any> = ({ data }) => {
                 type="primary"
                 onClick={() => setShowEditProfileModal(true)}
                 shape="round"
-                className={styles['profile-edit-btn']}
-              >
+                className={styles['profile-edit-btn']}>
                 Edit Profile
               </Button>
             ) : null}
@@ -110,8 +109,10 @@ const Index: React.FC<any> = ({ data }) => {
 };
 
 export async function getServerSideProps({ query, req, res }) {
-  const db = await mongoDB.getDB(mongoDB.dbNames.SECRETSFORALL);
-  const collection = db.collection(mongoDB.collections.USERS);
+  const [collection, secretsCollection] = await Promise.all([
+    mongoDB.getCollection('USERS'),
+    mongoDB.getCollection('SECRETS')
+  ]);
   const { id } = query;
   const token = req.cookies.jwtToken;
   if (!token) {
@@ -134,7 +135,6 @@ export async function getServerSideProps({ query, req, res }) {
       const result = await collection.findOne({ username: id });
       // eslint-disable-next-line no-unused-vars
       const { password, ...user } = result;
-      const secretsCollection = db.collection(mongoDB.collections.SECRETS);
       try {
         const result = await secretsCollection.find({ 'user.username': id }).toArray();
         if (!result) return res.status(400).json({ Message: 'Secret not found.' });

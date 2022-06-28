@@ -17,7 +17,8 @@ const Demo = (props) => {
   const [action, setAction] = useState(null);
   const [value, setValue] = useState('');
   const [comments, setComments] = useState(initialComments);
-
+  const [isReply, setIsReply] = useState(props.isReply || false);
+  const [replies, setReplies] = useState(props.replies || []);
   const handleChange = (e: { target: { value: any } }) => {
     setValue(e.target.value);
   };
@@ -25,6 +26,7 @@ const Demo = (props) => {
     setLikes(1);
     setDislikes(0);
     setAction('liked');
+    console.log(props);
   };
 
   const dislike = () => {
@@ -33,7 +35,6 @@ const Demo = (props) => {
     setAction('disliked');
   };
 
-  const [isReply, setIsReply] = useState(false);
   const handleReply = () => {
     axios
       .post(`/api/reply`, {
@@ -79,24 +80,26 @@ const Demo = (props) => {
 
   return (
     <>
-      {props.isReply === false ? <Divider /> : null}
       <Comment actions={actions} author={author} avatar={avatar} content={content} />
 
       {comments.length > 0 && (
         <div style={{ width: '70%', marginLeft: '50px' }}>
           <CommentList
             isReply={true}
-            comments={comments.map((comment) => {
+            comments={comments.map((reply) => {
+              console.log(reply);
               return {
-                author: comment.user.username,
-                avatar: comment.user.profilePic,
-                content: comment.text
+                author: reply.user.username,
+                avatar: reply.user.profilePic,
+                content: reply.text,
+                id: reply.id,
+                commentId: reply.commentId
               };
             })}
           />
         </div>
       )}
-      {isReply && (
+      {isReply && replies.length === 0 && (
         <div>
           <Row>
             <Col span={20} style={{ marginLeft: '7%' }}>
@@ -117,7 +120,8 @@ Demo.propTypes = {
   content: PropTypes.string,
   avatar: PropTypes.string,
   author: PropTypes.string,
-  isReply: PropTypes.bool
+  isReply: PropTypes.bool,
+  replies: PropTypes.array
 };
 Demo.defaultProps = {
   likes: 0,
@@ -129,7 +133,8 @@ Demo.defaultProps = {
   content: '',
   avatar: '',
   author: '',
-  isReply: false
+  isReply: false,
+  replies: []
 };
 
 export default Demo;

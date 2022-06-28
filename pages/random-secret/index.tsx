@@ -23,8 +23,7 @@ RandomSecret.defaultProps = {
 };
 
 export async function getServerSideProps(context) {
-  const db = await mongoDb.getDB(mongoDb.dbNames.SECRETSFORALL);
-  const collection = db.collection(mongoDb.collections.SECRETS);
+  const collection = await mongoDb.getCollection('SECRETS');
   try {
     const result = await collection.aggregate([{ $sample: { size: 1 } }]).toArray();
     if (!result)

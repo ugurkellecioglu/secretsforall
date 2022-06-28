@@ -1,11 +1,15 @@
 import { ObjectId as objectId } from 'mongodb';
 import mongoDB from '../../helpers/MongoDB';
 export default async function handler(req, res) {
-  const db = await mongoDB.getDB('secretsforall');
-  const collection = db.collection('secrets');
+  const collection = await mongoDB.getCollection('USERS');
   if (req.method === 'POST') {
     const body = req.body;
-    const { user, text, postId } = body;
+    const {
+      // eslint-disable-next-line no-unused-vars
+      user: { cover, info, tags, id, iat, exp, ...user },
+      text,
+      postId
+    } = body;
     if (!user || !text || !postId) {
       return res.status(400).json({ Message: 'Use id, comment text, postId is required.' });
     }

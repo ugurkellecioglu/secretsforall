@@ -2,8 +2,7 @@ import jwt from 'jsonwebtoken';
 import { ObjectId as objectId } from 'mongodb';
 import mongoDB from '../../../helpers/MongoDB';
 export default async function handler(req, res) {
-  const db = await mongoDB.getDB('secretsforall');
-  const collection = db.collection('users');
+  const collection = await mongoDB.getCollection('USERS');
   if (req.method === 'GET') {
     const token = req.cookies.jwtToken;
     if (!token) {

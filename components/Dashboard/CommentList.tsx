@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 
 const Comment = dynamic(import('./Comment'));
 
-const CommentList = ({ comments, isReply }) => {
+const CommentList = ({ comments, isReply, ...props }) => {
   return (
     <>
       {isReply === true ? (

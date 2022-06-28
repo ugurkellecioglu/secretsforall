@@ -18,14 +18,34 @@ class MongoDB {
     this.dbNames = {
       SECRETSFORALL: 'secretsforall'
     };
+    this.collectionList = {
+      SECRETS: null,
+      USERS: null
+    };
+    this.secretsCollection = this.usersCollection = async () => {
+      const db = await mongoDB.getDB(mongoDB.dbNames.SECRETSFORALL);
+      return db.collection(mongoDB.collections.USERS);
+    };
   }
-
+  async getCollection(collectionName) {
+    if (this.collectionList[collectionName] === null) {
+      await this.client.connect();
+      const db = await mongoDB.getDB(mongoDB.dbNames.SECRETSFORALL);
+      this.collectionList.SECRETS = await db.collection(mongoDB.collections.SECRETS);
+      this.collectionList.USERS = await db.collection(mongoDB.collections.USERS);
+      console.log('MongoDB collections is connected');
+      return this.collectionList[collectionName];
+    } else {
+      console.log('MongoDB collection is already connected and given collection name is same');
+      return this.collectionList[collectionName];
+    }
+  }
   async getDB(db) {
     if (this.db && this.db?.namespace === db) {
       console.log('MongoDB database is already connected and given db name is same');
       return this.db;
     }
-    console.log('MongoDB database is not connected or given db name is different');
+    console.log('MongoDB database is not connected or given db name is different', db);
     await this.client.connect();
     console.log('MongoDB database is connected');
     this.db = this.client.db(db);
@@ -34,5 +54,4 @@ class MongoDB {
 }
 
 const mongoDB = new MongoDB();
-
 export default mongoDB;
