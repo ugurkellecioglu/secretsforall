@@ -1,42 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import { useState, useEffect } from 'react';
-import dayjs from '../../helpers/dayjs';
+import styles from './style.module.scss';
 
 import dynamic from 'next/dynamic';
 
-const CommentList = dynamic(import('./CommentList'));
 const Editor = dynamic(import('./Editor'));
 
-// eslint-disable-next-line require-jsdoc
-const ReplyEditor = ({ postId, comments, submitting, handleChange, handleSubmit, value }) => {
-  const [commentData, setcommentData] = useState([]);
-  useEffect(() => {
-    setcommentData(
-      comments.map((item) => {
-        return {
-          ...item,
-          postId,
-          author: item.user.username,
-          content: item.text,
-          avatar: item.user.profilePic,
-          datetime: dayjs(item.updatedAt).fromNow()
-        };
-      })
-    );
-  }, [comments]);
-
+const ReplyEditor = ({ submitting, handleChange, handleSubmit, value }) => {
   return (
-    <>
-      {comments.length > 0 && <CommentList comments={commentData} />}
+    <div className={styles.editor}>
       <Editor
         onChange={(e) => handleChange(e)}
         onSubmit={(e) => handleSubmit()}
         submitting={submitting}
         value={value}
       />
-    </>
+    </div>
   );
 };
 

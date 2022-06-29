@@ -3,8 +3,9 @@ import { Card, notification } from 'antd';
 import PropTypes from 'prop-types';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
-import styles from './index.module.css';
+import styles from './style.module.scss';
 import dynamic from 'next/dynamic';
+import CommentList from './CommentList';
 
 const ReplyEditor = dynamic(import('./ReplyEditor'));
 const Secret = dynamic(import('./Secret'));
@@ -14,7 +15,7 @@ function SecretPost({ postId, title, text, onClick, comments: initialComments })
   const [comments, setComments] = useState(initialComments);
   const [value, setValue] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
+  console.log('secret post post Id', postId);
   const postComment = async (postId, text) => {
     const response = await axios.post(`/api/comments`, {
       user,
@@ -65,6 +66,7 @@ function SecretPost({ postId, title, text, onClick, comments: initialComments })
   return (
     <Card className={styles.card}>
       <Secret title={title} text={text} onClick={onClick} />
+      <CommentList postId={postId} comments={comments} />
       <ReplyEditor {...props} />
     </Card>
   );

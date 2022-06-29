@@ -1,4 +1,4 @@
-import { Button, Col, Typography } from 'antd';
+import { Col, Typography } from 'antd';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { RedoOutlined } from '@ant-design/icons';

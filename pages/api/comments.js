@@ -1,7 +1,7 @@
 import { ObjectId as objectId } from 'mongodb';
 import mongoDB from '../../helpers/MongoDB';
 export default async function handler(req, res) {
-  const collection = await mongoDB.getCollection('USERS');
+  const collection = await mongoDB.getCollection('SECRETS');
   if (req.method === 'POST') {
     const body = req.body;
     const {

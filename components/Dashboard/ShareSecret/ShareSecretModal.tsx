@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import propTypes from 'prop-types';
 import { Avatar, Modal, Row, Typography } from 'antd';
 import DashboardContext from '../../../context/DasboardContext';
 import TextArea from 'antd/lib/input/TextArea';
@@ -63,7 +62,4 @@ const ShareSecretModal = () => {
   );
 };
 
-ShareSecretModal.propTypes = {
-  show: propTypes.bool
-};
 export default ShareSecretModal;

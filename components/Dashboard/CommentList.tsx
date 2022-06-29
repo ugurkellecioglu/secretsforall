@@ -1,39 +1,24 @@
-import { List } from 'antd';
 import React from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 
 const Comment = dynamic(import('./Comment'));
 
-const CommentList = ({ comments, isReply, ...props }) => {
+const CommentList = (props) => {
+  console.log('comment list props', props);
   return (
     <>
-      {isReply === true ? (
-        <List
-          dataSource={comments}
-          itemLayout="horizontal"
-          renderItem={(props) => <Comment {...props} isReply={true} />}
-        />
-      ) : (
-        <List
-          dataSource={comments}
-          header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
-          itemLayout="horizontal"
-          renderItem={(props) => <Comment {...props} />}
-        />
-      )}
+      {props.comments &&
+        props.comments.map((comment) => {
+          return <Comment key={comment.id} postId={props.postId} comment={comment} />;
+        })}
     </>
   );
 };
 
 CommentList.propTypes = {
   comments: PropTypes.array,
-  isReply: PropTypes.bool
-};
-
-CommentList.defaultProps = {
-  comments: [],
-  isReply: false
+  postId: PropTypes.string
 };
 
 export default CommentList;

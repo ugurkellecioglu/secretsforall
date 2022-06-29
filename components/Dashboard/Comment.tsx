@@ -1,66 +1,58 @@
 import React, { createElement, useContext, useState } from 'react';
-import { Col, Comment, Divider, Row, Tooltip } from 'antd';
-import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
+import { Comment, notification, Tooltip } from 'antd';
+import { LikeOutlined, LikeFilled } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { UserContext } from '../../context/UserContext';
 import dynamic from 'next/dynamic';
 
-const Editor = dynamic(import('./Editor'));
-const CommentList = dynamic(import('./CommentList'));
+const Reply = dynamic(() => import('./Reply'));
+const ReplyEditor = dynamic(() => import('./ReplyEditor'));
 
+import styles from './style.module.scss';
+import dayjs from '../../helpers/dayjs';
 const Demo = (props) => {
   const { user } = useContext(UserContext);
-  const { userId, postId, id, content, author, avatar, comments: initialComments } = props;
+  const postId = props.postId;
+  const { username: author, profilePic: avatar } = props.comment.user;
+  const [replies, setReplies] = useState(props.comment.comments);
+  const { text: content, id } = props.comment;
   const [likes, setLikes] = useState(0);
-  const [dislikes, setDislikes] = useState(0);
-  const [action, setAction] = useState(null);
+  const [action, setAction] = useState<string | null>(null);
+  const [isReplying, setIsReplying] = useState(false);
   const [value, setValue] = useState('');
-  const [comments, setComments] = useState(initialComments);
-  const [isReply, setIsReply] = useState(props.isReply || false);
-  const [replies, setReplies] = useState(props.replies || []);
-  const handleChange = (e: { target: { value: any } }) => {
-    setValue(e.target.value);
-  };
+  const [submitting, setSubmitting] = useState(false);
+
   const like = () => {
     setLikes(1);
-    setDislikes(0);
     setAction('liked');
-    console.log(props);
-  };
-
-  const dislike = () => {
-    setLikes(0);
-    setDislikes(1);
-    setAction('disliked');
   };
 
   const handleReply = () => {
-    axios
-      .post(`/api/reply`, {
-        user,
-        postId,
-        commentId: id,
-        text: value
-      })
-      .then((result) => {
-        setComments((prevState) => {
-          return [...prevState, result.data];
-        });
-      })
-      .catch((err) => {});
+    console.log('reply');
+    setIsReplying((prevState) => !prevState);
   };
-
-  const CheckIfReply = () => {
-    return (
-      <>
-        {props.isReply === false ? (
-          <span key="comment-basic-reply-to" onClick={(e) => setIsReply(!isReply)}>
-            {isReply ? <b>Replying..</b> : <>Reply to</>}
-          </span>
-        ) : null}
-      </>
-    );
+  const postComment = async (commentId, postId, text) => {
+    const response = await axios.post(`/api/reply`, {
+      user,
+      commentId,
+      postId,
+      text
+    });
+    if (response.status === 200) {
+      notification.success({
+        message: 'Comment Posted',
+        description: 'You have successfully posted a comment.',
+        placement: 'topRight'
+      });
+      setReplies((prevState) => [...prevState, response.data]);
+    } else {
+      notification.warning({
+        message: 'Comment Post Error',
+        description: 'There was an error posting your comment.',
+        placement: 'topRight'
+      });
+    }
   };
   const actions = [
     <Tooltip key="comment-basic-like" title="Like">
@@ -69,72 +61,53 @@ const Demo = (props) => {
         <span className="comment-action">{likes}</span>
       </span>
     </Tooltip>,
-    <Tooltip key="comment-basic-dislike" title="Dislike">
-      <span onClick={dislike}>
-        {React.createElement(action === 'disliked' ? DislikeFilled : DislikeOutlined)}
-        <span className="comment-action">{dislikes}</span>
-      </span>
-    </Tooltip>,
-    <CheckIfReply key="comment-basic-reply-to" />
+    <span key="comment-basic-reply-to" onClick={handleReply}>
+      {isReplying ? 'Replying...' : 'Reply'}
+    </span>,
+    <span key="updatedAt">{dayjs(props.comment.updatedAt).fromNow()}</span>
   ];
 
-  return (
-    <>
-      <Comment actions={actions} author={author} avatar={avatar} content={content} />
+  const handleSubmit = () => {
+    if (!value) {
+      return;
+    }
 
-      {comments.length > 0 && (
-        <div style={{ width: '70%', marginLeft: '50px' }}>
-          <CommentList
-            isReply={true}
-            comments={comments.map((reply) => {
-              console.log(reply);
-              return {
-                author: reply.user.username,
-                avatar: reply.user.profilePic,
-                content: reply.text,
-                id: reply.id,
-                commentId: reply.commentId
-              };
-            })}
-          />
-        </div>
-      )}
-      {isReply && replies.length === 0 && (
-        <div>
-          <Row>
-            <Col span={20} style={{ marginLeft: '7%' }}>
-              <Editor maxRow={2} onSubmit={handleReply} value={value} onChange={handleChange} />
-            </Col>
-          </Row>
-        </div>
-      )}
-    </>
+    setSubmitting(true);
+    postComment(id, postId, value);
+    setTimeout(() => {
+      setSubmitting(false);
+      setValue('');
+    }, 1000);
+  };
+
+  const handleChange = (e: { target: { value: any } }) => {
+    setValue(e.target.value);
+  };
+
+  const replyEditorProps = {
+    replyId: id,
+    submitting,
+    handleSubmit,
+    handleChange,
+    value
+  };
+
+  return (
+    <div className={styles.comment}>
+      <Comment actions={actions} author={author} avatar={avatar} content={content}>
+        {replies &&
+          replies.map((reply) => {
+            return <Reply key={reply.id} reply={reply} />;
+          })}
+        {isReplying && <ReplyEditor {...replyEditorProps} />}
+      </Comment>
+    </div>
   );
 };
 
 Demo.propTypes = {
-  comments: PropTypes.array,
-  userId: PropTypes.string,
-  postId: PropTypes.string,
-  id: PropTypes.string,
-  content: PropTypes.string,
-  avatar: PropTypes.string,
-  author: PropTypes.string,
-  isReply: PropTypes.bool,
-  replies: PropTypes.array
-};
-Demo.defaultProps = {
-  likes: 0,
-  dislikes: 0,
-  userId: '',
-  postId: '',
-  id: '',
-  comments: [],
-  content: '',
-  avatar: '',
-  author: '',
-  isReply: false,
-  replies: []
+  comment: PropTypes.object,
+  postId: PropTypes.string
 };
 
 export default Demo;

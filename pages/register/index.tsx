@@ -101,7 +101,7 @@ const Home = () => {
                   <Avatar avatar={avatar} avatarLoading={avatarLoading} />
                 </Row>
                 <Row justify="center">
-                  <AvatarController handleAvatarChange={handleAvatarChange} styles={styles} />
+                  <AvatarController handleAvatarChange={handleAvatarChange} />
                 </Row>
                 <Row justify="center">
                   <RegisterForm
