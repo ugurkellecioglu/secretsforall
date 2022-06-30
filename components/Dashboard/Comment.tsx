@@ -24,7 +24,11 @@ const Demo = (props) => {
   const [submitting, setSubmitting] = useState(false);
 
   const like = async () => {
-    setLikes(1);
+    if (action === 'liked') {
+      console.log('unliking');
+      return setAction('');
+    }
+    setLikes((prevState) => prevState + 1);
     setAction('liked');
     const response = await axios.put(`/api/comments?type=like`, { postId, commentId: _id, user });
     await response.data;

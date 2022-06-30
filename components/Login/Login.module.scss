@@ -70,9 +70,9 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  @media screen and (max-width: 768px) {
-    & .card {
-      width: 100% !important ;
-    }
+}
+@media screen and (max-width: 768px) {
+  .card {
+    width: 100% !important ;
   }
 }
