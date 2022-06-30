@@ -13,9 +13,10 @@ export default async function handler(req, res) {
     if (!user || !text || !postId) {
       return res.status(400).json({ Message: 'Use id, comment text, postId is required.' });
     }
+    const _id = objectId();
     try {
       const data = {
-        id: objectId(),
+        _id,
         user,
         text,
         comments: [],
@@ -31,9 +32,13 @@ export default async function handler(req, res) {
             comments: data
           }
         },
-        { upsert: true }
+        {
+          upsert: true
+        }
       );
-      return res.status(200).json({ Message: 'Comment added.', ...data });
+      return res
+        .status(200)
+        .json({ Message: 'Comment added.', ...data, result: { insertedId: _id } });
     } catch (error) {
       return res.status(500).json({ error: error.toString() });
     }
@@ -45,10 +50,16 @@ export default async function handler(req, res) {
       if (!postId || !commentId || !user) {
         return res.status(400).json({ Message: 'PostId, CommentId and User is required.' });
       }
+      const { _id, username, profilePic } = user;
+
       try {
         await collection.updateOne(
           { _id: objectId(postId), 'comments.id': objectId(commentId) },
-          { $push: { 'comments.$.likes': user } },
+          {
+            $push: {
+              'comments.$.likes': { user: { _id: objectId(_id), username, profilePic } }
+            }
+          },
           { $inc: { 'comments.$.likeCount': 1 } }
         );
         return res.status(200).json({ Message: 'Comment liked.' });

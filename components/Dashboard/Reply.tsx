@@ -10,7 +10,6 @@ import axios from '../../helpers/axios';
 const Reply = (props) => {
   const { username: author, profilePic: avatar } = props.reply.user;
   const { text: content } = props.reply;
-
   const [likes, setLikes] = useState(props.reply.likesCount);
   const [action, setAction] = useState<string | null>(null);
 
@@ -22,8 +21,7 @@ const Reply = (props) => {
       replyId: props.reply.id,
       user: props.reply.user
     });
-    const result = await response.data;
-    console.log(result);
+    await response.data;
     setAction('liked');
   };
 
@@ -36,7 +34,6 @@ const Reply = (props) => {
     </Tooltip>,
     <span key="updatedAt">{dayjs(props.reply.updatedAt).fromNow()}</span>
   ];
-  console.log('Reply', props);
   return (
     <div className={styles.comment}>
       <Comment actions={actions} author={author} avatar={avatar} content={content} />

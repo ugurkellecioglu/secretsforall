@@ -16,7 +16,7 @@ const Demo = (props) => {
   const postId = props.postId;
   const { username: author, profilePic: avatar } = props.comment.user;
   const [replies, setReplies] = useState(props.comment.comments);
-  const { text: content, id } = props.comment;
+  const { text: content, _id } = props.comment;
   const [likes, setLikes] = useState(props.comment.likesCount);
   const [action, setAction] = useState<string | null>(null);
   const [isReplying, setIsReplying] = useState(false);
@@ -26,13 +26,11 @@ const Demo = (props) => {
   const like = async () => {
     setLikes(1);
     setAction('liked');
-    const response = await axios.put(`/api/comments?type=like`, { postId, commentId: id, user });
-    const result = await response.data;
-    console.log(result);
+    const response = await axios.put(`/api/comments?type=like`, { postId, commentId: _id, user });
+    await response.data;
   };
 
   const handleReply = () => {
-    console.log('reply');
     setIsReplying((prevState) => !prevState);
   };
   const postComment = async (commentId, postId, text) => {
@@ -48,6 +46,7 @@ const Demo = (props) => {
         description: 'You have successfully posted a comment.',
         placement: 'topRight'
       });
+      console.log('49,', response.data);
       setReplies((prevState) => [...prevState, response.data]);
     } else {
       notification.warning({
@@ -76,7 +75,7 @@ const Demo = (props) => {
     }
 
     setSubmitting(true);
-    postComment(id, postId, value);
+    postComment(_id, postId, value);
     setTimeout(() => {
       setSubmitting(false);
       setValue('');
@@ -88,7 +87,7 @@ const Demo = (props) => {
   };
 
   const replyEditorProps = {
-    replyId: id,
+    replyId: _id,
     submitting,
     handleSubmit,
     handleChange,
@@ -100,7 +99,7 @@ const Demo = (props) => {
       <Comment actions={actions} author={author} avatar={avatar} content={content}>
         {replies &&
           replies.map((reply) => {
-            return <Reply key={reply.id} postId={postId} commentId={id} reply={reply} />;
+            return <Reply key={reply._id} postId={postId} commentId={_id} reply={reply} />;
           })}
         {isReplying && <ReplyEditor {...replyEditorProps} />}
       </Comment>

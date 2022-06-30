@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     }
     // if everything is correct
     const token = jwt.sign({ id: user._id, username: user.username }, secret, {
-      expiresIn: '1h'
+      expiresIn: '30d'
     });
     res.setHeader('Set-Cookie', serialize('jwtToken', token, { httpOnly: true }));
     return res.status(200).json({ username: user.username, jwtToken: token, expires_in: 60 });

@@ -12,10 +12,9 @@ const Secret = dynamic(import('./Secret'));
 
 function SecretPost({ postId, title, text, onClick, comments: initialComments }) {
   const { user } = useContext(UserContext);
-  const [comments, setComments] = useState(initialComments);
+  const [comments, setComments] = useState(initialComments || []);
   const [value, setValue] = useState('');
   const [submitting, setSubmitting] = useState(false);
-  console.log('secret post post Id', postId);
   const postComment = async (postId, text) => {
     const response = await axios.post(`/api/comments`, {
       user,

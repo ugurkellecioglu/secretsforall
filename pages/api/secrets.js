@@ -8,9 +8,14 @@ export default async function handler(req, res) {
       res.status(400).json({ error: 'Missing user, title, text or img' });
       return;
     }
+    const { _id, username, profilePic } = user;
     try {
       const result = await secretsCollection.insertOne({
-        user,
+        user: {
+          _id: objectId(_id),
+          username,
+          profilePic
+        },
         title,
         text,
         createdAt: new Date(),

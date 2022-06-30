@@ -22,7 +22,7 @@ const Index: React.FC<any> = () => {
     if (data.length > 0) {
       data.unshift({ title, text, ...user, _id: response.data.result.insertedId });
     } else {
-      setData([{ title, text, ...user }]);
+      setData([{ title, text, ...user, _id: response.data.result.insertedId }]);
     }
 
     if (response.status === 200) {

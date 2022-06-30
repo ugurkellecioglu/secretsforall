@@ -5,12 +5,12 @@ import dynamic from 'next/dynamic';
 const Comment = dynamic(import('./Comment'));
 
 const CommentList = (props) => {
-  console.log('comment list props', props);
+  console.log('Comment list', props);
   return (
     <>
       {props.comments &&
         props.comments.map((comment) => {
-          return <Comment key={comment.id} postId={props.postId} comment={comment} />;
+          return <Comment key={comment._id} postId={props.postId} comment={comment} />;
         })}
     </>
   );
