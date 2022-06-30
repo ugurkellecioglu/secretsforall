@@ -1,4 +1,4 @@
-import React, { createElement, useContext, useState } from 'react';
+import React, { createElement, useContext, useEffect, useState } from 'react';
 import { Comment, notification, Tooltip } from 'antd';
 import { LikeOutlined, LikeFilled } from '@ant-design/icons';
 import PropTypes from 'prop-types';
@@ -18,14 +18,30 @@ const Demo = (props) => {
   const [replies, setReplies] = useState(props.comment.comments);
   const { text: content, _id } = props.comment;
   const [likes, setLikes] = useState(props.comment.likesCount);
+
   const [action, setAction] = useState<string | null>(null);
   const [isReplying, setIsReplying] = useState(false);
   const [value, setValue] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  useEffect(() => {
+    const userIdsWhoLiked = props.comment.likes.reduce(
+      (prev, curr) => [...prev, curr.user._id],
+      []
+    );
+    const isLiked = userIdsWhoLiked.includes(user._id);
+    setAction(isLiked ? 'liked' : null);
+  }, [props]);
+
   const like = async () => {
     if (action === 'liked') {
       console.log('unliking');
+      setLikes((prevState) => prevState - 1);
+      await axios.put(`/api/comments?type=unlike`, {
+        postId,
+        commentId: _id,
+        user
+      });
       return setAction('');
     }
     setLikes((prevState) => prevState + 1);

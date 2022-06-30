@@ -54,15 +54,41 @@ export default async function handler(req, res) {
 
       try {
         await collection.updateOne(
-          { _id: objectId(postId), 'comments.id': objectId(commentId) },
+          { 'comments._id': objectId(commentId) },
           {
+            $inc: { 'comments.$[outer].likesCount': 1 },
             $push: {
-              'comments.$.likes': { user: { _id: objectId(_id), username, profilePic } }
+              'comments.$[outer].likes': {
+                user: { _id: objectId(_id), username, profilePic }
+              }
             }
           },
-          { $inc: { 'comments.$.likeCount': 1 } }
+          {
+            arrayFilters: [{ 'outer._id': objectId(commentId) }]
+          }
         );
         return res.status(200).json({ Message: 'Comment liked.' });
+      } catch (error) {
+        return res.status(500).json({ error: error.toString() });
+      }
+    }
+    if (type === 'unlike') {
+      const { postId, commentId, user } = req.body;
+      if (!postId || !commentId || !user) {
+        return res.status(400).json({ Message: 'PostId, CommentId and User is required.' });
+      }
+      const { _id } = user;
+      try {
+        await collection.updateOne(
+          { 'comments._id': objectId(commentId) },
+          {
+            $pull: {
+              'comments.$.likes': { user: { _id: objectId(_id) } }
+            },
+            $inc: { 'comments.$.likesCount': -1 }
+          }
+        );
+        return res.status(200).json({ Message: 'Comment unliked.' });
       } catch (error) {
         return res.status(500).json({ error: error.toString() });
       }
