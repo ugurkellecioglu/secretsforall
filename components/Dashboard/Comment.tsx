@@ -17,15 +17,18 @@ const Demo = (props) => {
   const { username: author, profilePic: avatar } = props.comment.user;
   const [replies, setReplies] = useState(props.comment.comments);
   const { text: content, id } = props.comment;
-  const [likes, setLikes] = useState(0);
+  const [likes, setLikes] = useState(props.comment.likesCount);
   const [action, setAction] = useState<string | null>(null);
   const [isReplying, setIsReplying] = useState(false);
   const [value, setValue] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const like = () => {
+  const like = async () => {
     setLikes(1);
     setAction('liked');
+    const response = await axios.put(`/api/comments?type=like`, { postId, commentId: id, user });
+    const result = await response.data;
+    console.log(result);
   };
 
   const handleReply = () => {
@@ -97,7 +100,7 @@ const Demo = (props) => {
       <Comment actions={actions} author={author} avatar={avatar} content={content}>
         {replies &&
           replies.map((reply) => {
-            return <Reply key={reply.id} reply={reply} />;
+            return <Reply key={reply.id} postId={postId} commentId={id} reply={reply} />;
           })}
         {isReplying && <ReplyEditor {...replyEditorProps} />}
       </Comment>
