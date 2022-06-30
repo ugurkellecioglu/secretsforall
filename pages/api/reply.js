@@ -85,7 +85,7 @@ export default async function handler(req, res) {
       if (!postId || !commentId || !user) {
         return res.status(400).json({ Message: 'PostId, CommentId and User is required.' });
       }
-      const { _id, username, profilePic } = user;
+      const { _id } = user;
       try {
         await collection.updateOne(
           {
