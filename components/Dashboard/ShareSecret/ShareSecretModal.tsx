@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Avatar, Modal, Row, Typography } from 'antd';
 import DashboardContext from '../../../context/DasboardContext';
 import TextArea from 'antd/lib/input/TextArea';
@@ -6,6 +6,10 @@ import styles from './shareSecret.module.scss';
 import { UserContext } from '../../../context/UserContext';
 const ShareSecretModal = () => {
   const { user } = useContext(UserContext);
+  const inputRef = useRef(null);
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const {
     showShareSecretModal,
@@ -39,8 +43,7 @@ const ShareSecretModal = () => {
       onCancel={handleCancel}
       okText="Share"
       centered
-      title="Share Secret"
-    >
+      title="Share Secret">
       <Row className={styles.row}>
         <Avatar className={styles.avatar} size={32} src={user.profilePic} />
         <Typography.Title className={styles.title} level={5}>
@@ -50,6 +53,7 @@ const ShareSecretModal = () => {
       <TextArea
         className={styles.tetxArea}
         rows={4}
+        ref={inputRef}
         allowClear={true}
         showCount={true}
         autoSize={{ minRows: 3, maxRows: 6 }}

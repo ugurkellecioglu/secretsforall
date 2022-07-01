@@ -1,16 +1,21 @@
 import { Avatar, Card, Input } from 'antd';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import styles from './shareSecret.module.scss';
 import DashboardContext from '../../../context/DasboardContext';
 import { UserContext } from '../../../context/UserContext';
 import dynamic from 'next/dynamic';
 
-const ShareSecretModal = dynamic(() => import('./ShareSecretModal'));
-
 function ShareSecret() {
   const { secretText, setShowShareSecretModal } = useContext(DashboardContext);
   const { user } = useContext(UserContext);
+  const [ShareSecretModal, setShareSecretModal] = useState(null);
+  const onClick = () => {
+    const ShareSecretModal = dynamic(() => import('./ShareSecretModal'));
+    setShareSecretModal(<ShareSecretModal />);
+    setShowShareSecretModal(true);
+  };
+
   return (
     <Card className={styles.card}>
       <Avatar className={styles.avatar} size={64} src={user.profilePic} />
@@ -19,9 +24,9 @@ function ShareSecret() {
         bordered={true}
         value={secretText}
         placeholder="Share your secret..."
-        onClick={() => setShowShareSecretModal(true)}
+        onClick={onClick}
       />
-      <ShareSecretModal />
+      {ShareSecretModal}
     </Card>
   );
 }
