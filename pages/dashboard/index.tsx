@@ -1,4 +1,4 @@
-import { Col, notification, Row, Spin } from 'antd';
+import { Col, Empty, notification, Row, Spin } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
@@ -61,8 +61,7 @@ const Index: React.FC<any> = () => {
     <DashboardProvider
       setSecretText={setSecretText}
       secretText={secretText}
-      handlePostSecret={handlePostSecret}
-    >
+      handlePostSecret={handlePostSecret}>
       <Overlay>
         <Spin spinning={loading} delay={500} tip="Loading...">
           {loading ? (
@@ -76,7 +75,7 @@ const Index: React.FC<any> = () => {
               </Row>
               <Row justify="center" align="middle">
                 <Col className={styles.col} span={24}>
-                  <Secrets data={data} />
+                  {data?.length > 0 ? <Secrets data={data} /> : <Empty />}
                 </Col>
               </Row>
             </>

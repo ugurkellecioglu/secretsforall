@@ -1,4 +1,4 @@
-import { Button, Tag } from 'antd';
+import { Button, Empty, Tag } from 'antd';
 // import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
@@ -112,7 +112,7 @@ const Index: React.FC<any> = ({ data }) => {
         </div>
       </div>
       <div className={styles.posts}>
-        <Secrets data={data.posts} />
+        {data?.posts?.length > 0 ? <Secrets data={data.posts} /> : <Empty />}
       </div>
     </Overlay>
   );

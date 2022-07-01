@@ -1,4 +1,4 @@
-import { Spin } from 'antd';
+import { Empty, Spin } from 'antd';
 import React from 'react';
 import PropTypes from 'prop-types';
 import mongoDb from '../../helpers/MongoDB';
@@ -12,7 +12,7 @@ function RandomSecret({ data }) {
       <Spin spinning={false}>
         {data && (
           <div style={{ marginTop: '1rem' }}>
-            <Secrets data={data} />
+            {data?.length > 0 ? <Secrets data={data} /> : <Empty />}
           </div>
         )}
       </Spin>
