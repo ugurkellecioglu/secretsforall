@@ -2,41 +2,7 @@ import React from 'react';
 import styles from './tagCreator.module.scss';
 import { Button, Tag, Typography } from 'antd';
 import PropTypes from 'prop-types';
-
-const tags = [
-  {
-    color: '#f5222d',
-    text: 'movie lover'
-  },
-  {
-    color: '#faad14',
-    text: 'traveler'
-  },
-  {
-    color: '#52c41a',
-    text: 'gamer'
-  },
-  {
-    color: '#1890ff',
-    text: 'photographer'
-  },
-  {
-    color: '#2f54eb',
-    text: 'writer'
-  },
-  {
-    color: '#722ed1',
-    text: 'entrepreneur'
-  },
-  {
-    color: '#eb2f96',
-    text: 'sporty'
-  },
-  {
-    color: '#1890ff',
-    text: 'sporty'
-  }
-];
+import tags from './tags';
 
 const TagCreator = ({ userTags, setUserTags }) => {
   const handleAddTag = (tag) => {
@@ -64,17 +30,23 @@ const TagCreator = ({ userTags, setUserTags }) => {
         <Typography.Title level={5}>Your Tags</Typography.Title>
         {userTags?.length > 0 &&
           userTags.map((tag, idx) => (
-            <Tag color={tag.color} key={`${tag.text}-${idx}`}>
-              <input
-                onChange={(e) => (tag.text = e.target.value)}
-                placeholder={tag.text}
-                className={styles.createTag}
-                type="text"
-              />
-              <span onClick={() => removeTag(tag)} className={styles.cancel}>
-                x
-              </span>
-            </Tag>
+            <div
+              key={`${tag.text}-${idx}`}
+              style={{ marginTop: '0.5rem', display: 'inline-block' }}>
+              <Tag color={tag.color}>
+                <input
+                  onChange={(e) => (tag.text = e.target.value)}
+                  placeholder={tag.text}
+                  className={styles.createTag}
+                  type="text"
+                  size={10}
+                  minLength={3}
+                />
+                <span onClick={() => removeTag(tag)} className={styles.cancel}>
+                  x
+                </span>
+              </Tag>
+            </div>
           ))}
         {userTags?.length === 0 && <Typography.Text>No tags yet</Typography.Text>}
       </div>

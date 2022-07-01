@@ -105,7 +105,9 @@ const Home = () => {
                 </Row>
                 <Row justify="center">
                   <RegisterForm
-                    handleRegister={(form) => handleRegister({ ...form, profilePic: avatar })}
+                    handleRegister={(form) =>
+                      handleRegister({ ...form, profilePic: avatar, tags: [] })
+                    }
                   />
                 </Row>
               </Space>

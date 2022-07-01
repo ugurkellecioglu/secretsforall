@@ -22,6 +22,7 @@ const Index: React.FC<any> = ({ data }) => {
   const [image, setImage] = useState(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [userTags, setUserTags] = useState(data.tags || []);
+  console.log('x', data.tags);
   const onLoad = (event) => {
     const element = event.target;
     const file = element.files[0];

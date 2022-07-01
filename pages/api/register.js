@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     if (!username || !password || !profilePic) {
       throw new Error('Missing username, password or profilePic');
     }
-    const user = { username, password, profilePic };
+    const user = { username, password, profilePic, tags: [] };
     const isUserFound = await collection.findOne({ username });
     if (isUserFound) return res.status(400).json({ Message: 'User already exists' });
 
