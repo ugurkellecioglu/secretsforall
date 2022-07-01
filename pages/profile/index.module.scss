@@ -96,7 +96,17 @@
     top: -10%;
   }
 }
-
+.uploadACoverWrapperMobile {
+  float: right;
+  position: absolute;
+  margin-right: 15px;
+  right: 0;
+  top: -40%;
+  background-color: white;
+  outline: 1px solid gray;
+  padding: 0.7rem;
+  border-radius: 50%;
+}
 .posts {
   margin-top: 40vh;
 }

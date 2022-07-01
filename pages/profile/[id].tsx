@@ -8,11 +8,15 @@ import jwt from 'jsonwebtoken';
 import mongoDB from '../../helpers/MongoDB';
 import { HeaderContext } from '../../context/HeaderContext';
 import dynamic from 'next/dynamic';
+import useDeviceDetect from '../../helpers/useDeviceDetect';
+import { CameraFilled } from '@ant-design/icons';
 
 const Secrets = dynamic(import('../../components/Dashboard/Secrets'));
 const Overlay = dynamic(import('../../components/Overlay'));
 const EditProfileModal = dynamic(import('../../components/Profile/EditProfileModal'));
 const Index: React.FC<any> = ({ data }) => {
+  const { isMobile } = useDeviceDetect();
+
   const userCtx = useContext(UserContext);
   const { setCollapsed } = useContext(HeaderContext);
   const [image, setImage] = useState(null);
@@ -62,8 +66,7 @@ const Index: React.FC<any> = ({ data }) => {
                 type="primary"
                 onClick={() => setShowEditProfileModal(true)}
                 shape="round"
-                className={styles['profile-edit-btn']}
-              >
+                className={styles['profile-edit-btn']}>
                 Edit Profile
               </Button>
             ) : null}
@@ -85,9 +88,14 @@ const Index: React.FC<any> = ({ data }) => {
             </div>
           </div>
           {userCtx.user.username === data.username ? (
-            <div className={styles.uploadACoverWrapper}>
+            <div
+              className={!isMobile ? styles.uploadACoverWrapper : styles.uploadACoverWrapperMobile}>
               <label htmlFor="image" className={styles.uploadACover}>
-                <div className="ant-btn ant-btn-primary">Upload a cover</div>
+                {!isMobile ? (
+                  <div className="ant-btn ant-btn-primary">Upload a cover</div>
+                ) : (
+                  <CameraFilled style={{ fontSize: '20px' }} />
+                )}
               </label>
               <input
                 type="file"
