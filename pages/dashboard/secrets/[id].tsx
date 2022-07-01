@@ -38,11 +38,10 @@ function Index() {
         {state.data && state.data.result ? (
           <>
             <Row justify="center" align="middle">
-              <Col span={12}>
+              <Col lg={12} md={18} sm={24} xs={24} style={{ marginTop: '1rem' }}>
                 <SecretPost
                   text={state.data.result.text}
                   title={state.data.result.title}
-                  onClick={() => {}}
                   postId={state.data.result._id}
                   comments={state.data.result.comments}
                 />

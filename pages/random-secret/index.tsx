@@ -9,7 +9,13 @@ const Secrets = dynamic(() => import('../../components/Dashboard/Secrets'));
 function RandomSecret({ data }) {
   return (
     <Overlay>
-      <Spin spinning={false}>{data && <Secrets data={data} />}</Spin>
+      <Spin spinning={false}>
+        {data && (
+          <div style={{ marginTop: '1rem' }}>
+            <Secrets data={data} />
+          </div>
+        )}
+      </Spin>
     </Overlay>
   );
 }

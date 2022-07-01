@@ -10,7 +10,7 @@ import CommentList from './CommentList';
 const ReplyEditor = dynamic(import('./ReplyEditor'));
 const Secret = dynamic(import('./Secret'));
 
-function SecretPost({ postId, title, text, onClick, comments: initialComments }) {
+function SecretPost({ postId, title, text, comments: initialComments }) {
   const { user } = useContext(UserContext);
   const [comments, setComments] = useState(initialComments || []);
   const [value, setValue] = useState('');
@@ -64,7 +64,7 @@ function SecretPost({ postId, title, text, onClick, comments: initialComments })
   };
   return (
     <Card className={styles.card}>
-      <Secret title={title} text={text} onClick={onClick} />
+      <Secret title={title} text={text} postId={postId} />
       <CommentList postId={postId} comments={comments} />
       <ReplyEditor {...props} />
     </Card>
@@ -75,8 +75,7 @@ SecretPost.propTypes = {
   comments: PropTypes.array,
   postId: PropTypes.string,
   title: PropTypes.element,
-  text: PropTypes.string,
-  onClick: PropTypes.func
+  text: PropTypes.string
 };
 
 export default React.memo(SecretPost);
