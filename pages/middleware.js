@@ -1,5 +1,14 @@
 import { NextResponse } from 'next/server';
-import checkJwt from '../helpers/checkJwt';
+import jwt from 'jsonwebtoken';
+const checkJwt = (token) => {
+  return jwt.verify(token, process.env.SECRET, function (err, decoded) {
+    if (err) {
+      return false;
+    } else {
+      return decoded;
+    }
+  });
+};
 
 // eslint-disable-next-line no-unused-vars
 export async function middleware(req, ev) {
