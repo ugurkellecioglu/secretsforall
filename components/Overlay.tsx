@@ -13,10 +13,10 @@ const Overlay: React.FC<Props> = ({ children }) => {
   const { collapsed, setCollapsed } = useContext(HeaderContext);
   const { isMobile } = useDeviceDetect();
   return (
-    <div style={{ overflowX: 'hidden', height: '100%', backgroundColor: '#f0f2f5' }}>
+    <div style={{ backgroundColor: '#f0f2f5' }}>
       <Header collapsed={collapsed} setCollapsed={setCollapsed} />
       {isMobile && <TopMenu collapsed={collapsed} />}
-      <Layout style={{ height: '90vh', width: '100%' }}>
+      <Layout style={{}}>
         {!isMobile && <Sidebar collapsed={collapsed} />}
         <Layout.Content>
           <div>{children}</div>

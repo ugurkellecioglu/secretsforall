@@ -55,9 +55,20 @@ export default async function handler(req, res) {
       } catch (error) {
         return res.status(500).json({ error: error.toString() });
       }
-    } else {
-      const secrets = await secretsCollection.find({}).sort({ updatedAt: -1 }).toArray();
-      return res.status(200).send(secrets);
+    } else if (req.query.size && req.query.page) {
+      console.log(req.query.size, req.query.page);
+      try {
+        const secrets = await secretsCollection
+          .find()
+          .sort({ createdAt: -1 })
+          .skip(req.query.size * (req.query.page - 1))
+          .limit(Number(req.query.size))
+          .toArray();
+        if (!secrets) return res.status(400).send([]);
+        return res.status(200).send(secrets);
+      } catch (error) {
+        return res.status(500).json({ error: error.toString() });
+      }
     }
   } else {
     return res.status(400).json({ error: 'Invalid method' });

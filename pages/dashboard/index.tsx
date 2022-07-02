@@ -1,8 +1,9 @@
+import InfiniteScroll from 'react-infinite-scroll-component';
+import axios from '../../helpers/axios';
 import { Col, Empty, notification, Row, Spin } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
-import axios from 'axios';
 import { UserContext } from '../../context/UserContext';
 import { DashboardProvider } from '../../context/DasboardContext';
 import dynamic from 'next/dynamic';
@@ -11,11 +12,30 @@ const ShareSecret = dynamic(import('../../components/Dashboard/ShareSecret/Share
 const Secrets = dynamic(import('../../components/Dashboard/Secrets'));
 const _Skeleton = dynamic(import('../../components/Dashboard/Skeleton'));
 
+const style = {
+  height: 30,
+  border: '1px solid green',
+  margin: 6,
+  padding: 8
+};
+
 const Index: React.FC<any> = () => {
   const user = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
   const [secretText, setSecretText] = useState('');
-  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [infiniteLoadig, setInfiniteLoading] = useState(false);
+  const [data, setData] = React.useState([]);
+  const [page, setPage] = React.useState(1);
+  const fetchMoreData = async () => {
+    setInfiniteLoading(true);
+    const response = await axios.get(`/api/secrets?size=10&page=${page}`);
+    if (response.status === 200) {
+      setData(data.concat(response.data));
+      setPage((prev) => prev + 1);
+    }
+    setInfiniteLoading(false);
+    setLoading(false);
+  };
 
   const handlePostSecret = async ({ title, text }) => {
     const response = await axios.post('/api/secrets', { title, text, ...user });
@@ -40,21 +60,10 @@ const Index: React.FC<any> = () => {
     }
     setSecretText('');
   };
-  const getPosts = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get('/api/secrets');
-      if (response.status === 200) {
-        setData(response.data);
-      }
-    } catch (error) {
-      console.log('error', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+
   useEffect(() => {
-    getPosts();
+    setLoading(true);
+    fetchMoreData();
   }, []);
 
   return (
@@ -73,11 +82,14 @@ const Index: React.FC<any> = () => {
                   <ShareSecret />
                 </Col>
               </Row>
-              <Row justify="center" align="middle">
-                <Col className={styles.col} span={24}>
-                  {data?.length > 0 ? <Secrets data={data} /> : <Empty />}
-                </Col>
-              </Row>
+              <InfiniteScroll
+                dataLength={20}
+                next={fetchMoreData}
+                refreshFunction={fetchMoreData}
+                hasMore={true}
+                loader={<Spin spinning={infiniteLoadig} delay={100} tip="Loading..." />}>
+                <Secrets data={data} />
+              </InfiniteScroll>
             </>
           )}
         </Spin>
