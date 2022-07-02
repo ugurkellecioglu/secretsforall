@@ -35,7 +35,6 @@ const Demo = (props) => {
 
   const like = async () => {
     if (action === 'liked') {
-      console.log('unliking');
       setLikes((prevState) => prevState - 1);
       await axios.put(`/api/comments?type=unlike`, {
         postId,
@@ -66,7 +65,6 @@ const Demo = (props) => {
         description: 'You have successfully posted a comment.',
         placement: 'topRight'
       });
-      console.log('49,', response.data);
       setReplies((prevState) => [...prevState, response.data]);
     } else {
       notification.warning({

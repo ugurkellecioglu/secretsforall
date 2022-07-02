@@ -58,7 +58,6 @@ export default async function handler(req, res) {
         return res.status(400).json({ Message: 'PostId, CommentId and User is required.' });
       }
       const { _id, username, profilePic } = user;
-      console.log('reply id is ', replyId);
       try {
         await collection.updateOne(
           {

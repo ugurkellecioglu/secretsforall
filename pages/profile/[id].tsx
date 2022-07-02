@@ -22,7 +22,6 @@ const Index: React.FC<any> = ({ data }) => {
   const [image, setImage] = useState(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const [userTags, setUserTags] = useState(data.tags || []);
-  console.log('x', data.tags);
   const onLoad = (event) => {
     const element = event.target;
     const file = element.files[0];
@@ -67,7 +66,8 @@ const Index: React.FC<any> = ({ data }) => {
                 type="primary"
                 onClick={() => setShowEditProfileModal(true)}
                 shape="round"
-                className={styles['profile-edit-btn']}>
+                className={styles['profile-edit-btn']}
+              >
                 Edit Profile
               </Button>
             ) : null}
@@ -90,7 +90,8 @@ const Index: React.FC<any> = ({ data }) => {
           </div>
           {userCtx.user.username === data.username ? (
             <div
-              className={!isMobile ? styles.uploadACoverWrapper : styles.uploadACoverWrapperMobile}>
+              className={!isMobile ? styles.uploadACoverWrapper : styles.uploadACoverWrapperMobile}
+            >
               <label htmlFor="image" className={styles.uploadACover}>
                 {!isMobile ? (
                   <div className="ant-btn ant-btn-primary">Upload a cover</div>

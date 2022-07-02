@@ -56,7 +56,6 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: error.toString() });
       }
     } else if (req.query.size && req.query.page) {
-      console.log(req.query.size, req.query.page);
       try {
         const secrets = await secretsCollection
           .find()

@@ -26,7 +26,6 @@ function Index() {
       dispatch({ type: 'SECRET_ERROR' });
     }
   };
-  console.log(state.data);
 
   useEffect(() => {
     if (!id) return;

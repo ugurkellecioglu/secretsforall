@@ -45,7 +45,6 @@ export async function getServerSideProps(context) {
       }
     };
   } catch (error) {
-    console.log('random-secret, 42', error);
     return {
       props: {
         data: {}

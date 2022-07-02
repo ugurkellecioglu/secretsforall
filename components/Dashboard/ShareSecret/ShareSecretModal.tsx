@@ -43,7 +43,8 @@ const ShareSecretModal = () => {
       onCancel={handleCancel}
       okText="Share"
       centered
-      title="Share Secret">
+      title="Share Secret"
+    >
       <Row className={styles.row}>
         <Avatar className={styles.avatar} size={32} src={user.profilePic} />
         <Typography.Title className={styles.title} level={5}>

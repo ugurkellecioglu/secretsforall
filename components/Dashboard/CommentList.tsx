@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 const Comment = dynamic(import('./Comment'));
 
 const CommentList = (props) => {
-  console.log('Comment list', props);
   return (
     <>
       {props.comments &&

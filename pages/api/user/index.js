@@ -4,7 +4,7 @@ import mongoDB from '../../../helpers/MongoDB';
 export default async function handler(req, res) {
   const collection = await mongoDB.getCollection('USERS');
   if (req.method === 'GET') {
-    const token = req.cookies.jwtToken;
+    const token = req.headers.authorization.split(' ')[1];
     if (!token) {
       return res.status(401).json({ error: 'Missing token' });
     }

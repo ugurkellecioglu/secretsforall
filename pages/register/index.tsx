@@ -38,6 +38,7 @@ const Home = () => {
       await response.data;
       dispatch({ type: 'LOGIN_LOADING' });
       const login = await axios.post('/api/authorize', form);
+
       const result = await login.data;
       dispatch({ type: 'LOGIN_SUCCESS', payload: result });
       const d = new Date();

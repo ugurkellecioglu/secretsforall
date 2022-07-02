@@ -1,6 +1,6 @@
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from '../../helpers/axios';
-import { Col, Empty, notification, Row, Spin } from 'antd';
+import { Col, notification, Row, Spin } from 'antd';
 import React, { useContext, useEffect, useState } from 'react';
 import styles from './style.module.css';
 import Overlay from '../../components/Overlay';
@@ -11,13 +11,6 @@ import dynamic from 'next/dynamic';
 const ShareSecret = dynamic(import('../../components/Dashboard/ShareSecret/ShareSecret'));
 const Secrets = dynamic(import('../../components/Dashboard/Secrets'));
 const _Skeleton = dynamic(import('../../components/Dashboard/Skeleton'));
-
-const style = {
-  height: 30,
-  border: '1px solid green',
-  margin: 6,
-  padding: 8
-};
 
 const Index: React.FC<any> = () => {
   const user = useContext(UserContext);
@@ -70,7 +63,8 @@ const Index: React.FC<any> = () => {
     <DashboardProvider
       setSecretText={setSecretText}
       secretText={secretText}
-      handlePostSecret={handlePostSecret}>
+      handlePostSecret={handlePostSecret}
+    >
       <Overlay>
         <Spin spinning={loading} delay={500} tip="Loading...">
           {loading ? (
@@ -83,11 +77,11 @@ const Index: React.FC<any> = () => {
                 </Col>
               </Row>
               <InfiniteScroll
-                dataLength={20}
+                dataLength={data.length}
                 next={fetchMoreData}
-                refreshFunction={fetchMoreData}
                 hasMore={true}
-                loader={<Spin spinning={infiniteLoadig} delay={100} tip="Loading..." />}>
+                loader={<Spin spinning={infiniteLoadig} delay={100} tip="Loading..." />}
+              >
                 <Secrets data={data} />
               </InfiniteScroll>
             </>

@@ -32,7 +32,8 @@ const TagCreator = ({ userTags, setUserTags }) => {
           userTags.map((tag, idx) => (
             <div
               key={`${tag.text}-${idx}`}
-              style={{ marginTop: '0.5rem', display: 'inline-block' }}>
+              style={{ marginTop: '0.5rem', display: 'inline-block' }}
+            >
               <Tag color={tag.color}>
                 <input
                   onChange={(e) => (tag.text = e.target.value)}
