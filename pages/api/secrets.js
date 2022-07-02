@@ -37,13 +37,16 @@ export default async function handler(req, res) {
       } catch (error) {
         return res.status(500).json({ error: error.toString() });
       }
-    } else if (req.query.username) {
+    } else if (req.query.username && req.query.size && req.query.page) {
       try {
         const result = await secretsCollection
           .find({ 'user.username': req.query.username })
+          .sort({ createdAt: -1 })
+          .skip(req.query.size * (req.query.page - 1))
+          .limit(Number(req.query.size))
           .toArray();
-        if (!result) return res.status(400).json({ Message: 'Secret not found.' });
-        return res.status(200).json({ Message: 'Secret found.', result });
+        if (!result) return res.status(400).json({ Message: 'Secrets not found.' });
+        return res.status(200).json(result);
       } catch (error) {
         return res.status(500).json({ error: error.toString() });
       }

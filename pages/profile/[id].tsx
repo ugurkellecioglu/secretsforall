@@ -1,27 +1,55 @@
-import { Button, Empty, Tag } from 'antd';
+import { Button, Spin, Tag } from 'antd';
 // import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../context/UserContext';
 import styles from './index.module.scss';
 import axios from '../../helpers/axios';
-import jwt from 'jsonwebtoken';
-import mongoDB from '../../helpers/MongoDB';
 import { HeaderContext } from '../../context/HeaderContext';
 import dynamic from 'next/dynamic';
 import useDeviceDetect from '../../helpers/useDeviceDetect';
 import { CameraFilled } from '@ant-design/icons';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { useRouter } from 'next/router';
 
 const Secrets = dynamic(import('../../components/Dashboard/Secrets'));
 const Overlay = dynamic(import('../../components/Overlay'));
 const EditProfileModal = dynamic(import('../../components/Profile/EditProfileModal'));
-const Index: React.FC<any> = ({ data }) => {
+const Index: React.FC<any> = () => {
   const { isMobile } = useDeviceDetect();
 
   const userCtx = useContext(UserContext);
   const { setCollapsed } = useContext(HeaderContext);
   const [image, setImage] = useState(null);
   const [showEditProfileModal, setShowEditProfileModal] = useState(false);
-  const [userTags, setUserTags] = useState(data.tags || []);
+  const [userTags, setUserTags] = useState([]);
+  const route = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [infiniteLoadig, setInfiniteLoading] = useState(false);
+  const [data, setData] = React.useState([]);
+  const [page, setPage] = React.useState(1);
+  const [user, setUser] = useState(null);
+  const fetchMoreData = async () => {
+    setInfiniteLoading(true);
+    console.log(route.query);
+    const response = await axios.get(
+      `/api/secrets?username=${route.query.id}&size=10&page=${page}`
+    );
+    if (response.status === 200) {
+      setData(data.concat(response.data));
+      setPage((prev) => prev + 1);
+    }
+    setInfiniteLoading(false);
+    setLoading(false);
+  };
+
+  const getUserInfo = async () => {
+    const response = await axios.get(`/api/user?id=${route.query.id}`);
+    if (response.status === 200) {
+      setUser(response.data);
+      setUserTags(response.data.tags);
+    }
+  };
+
   const onLoad = (event) => {
     const element = event.target;
     const file = element.files[0];
@@ -46,126 +74,94 @@ const Index: React.FC<any> = ({ data }) => {
       });
   }, [image]);
   useEffect(() => {
+    setLoading(true);
+    if (!route.query.id) return;
     setCollapsed(true);
-  }, []);
+    getUserInfo();
+    fetchMoreData();
+  }, [route.query]);
 
   return (
     <Overlay>
-      <div className={styles.cover}>
-        <div className={styles.coverWrapperImage}>
-          <img className={styles.coverImg} src={image || data.cover} />
-        </div>
-        <div className={styles['profile-section']}>
-          <div className={styles['profile-img']}>
-            <img src={data?.profilePic || ''} style={{ objectFit: 'none' }} />
+      <Spin spinning={loading} delay={500} size="large">
+        <div className={styles.cover}>
+          <div className={styles.coverWrapperImage}>
+            <img className={styles.coverImg} src={image || user?.cover || ''} />
           </div>
-          <div className={styles['profile-infos']}>
-            <h1 className={styles['profile-fullname']}>{data?.username}</h1>
-            {userCtx.user.username === data.username ? (
-              <Button
-                type="primary"
-                onClick={() => setShowEditProfileModal(true)}
-                shape="round"
-                className={styles['profile-edit-btn']}
-              >
-                Edit Profile
-              </Button>
-            ) : null}
-            <EditProfileModal
-              userTags={userTags}
-              setUserTags={setUserTags}
-              show={showEditProfileModal}
-              setShow={setShowEditProfileModal}
-            />
-            <div className={styles['profile-info']}>
-              <span>{userCtx.user.username === data.username ? userCtx.user.info : data.info}</span>
+          <div className={styles['profile-section']}>
+            <div className={styles['profile-img']}>
+              <img src={user?.profilePic || ''} style={{ objectFit: 'none' }} />
             </div>
-            <div>
-              {userTags.map((tag, idx) => (
-                <Tag key={`${tag.text}-${idx}`} color={tag.color}>
-                  {tag.text}
-                </Tag>
-              ))}
-            </div>
-          </div>
-          {userCtx.user.username === data.username ? (
-            <div
-              className={!isMobile ? styles.uploadACoverWrapper : styles.uploadACoverWrapperMobile}
-            >
-              <label htmlFor="image" className={styles.uploadACover}>
-                {!isMobile ? (
-                  <div className="ant-btn ant-btn-primary">Upload a cover</div>
-                ) : (
-                  <CameraFilled style={{ fontSize: '20px' }} />
-                )}
-              </label>
-              <input
-                type="file"
-                id="image"
-                name="img"
-                className={styles.addCoverPhoto}
-                accept="image/*"
-                onChange={(e) => onLoad(e)}
-                style={{ display: 'none' }}
+            <div className={styles['profile-infos']}>
+              <h1 className={styles['profile-fullname']}>{user?.username}</h1>
+              {userCtx.user.username === user?.username ? (
+                <Button
+                  type="primary"
+                  onClick={() => setShowEditProfileModal(true)}
+                  shape="round"
+                  className={styles['profile-edit-btn']}
+                >
+                  Edit Profile
+                </Button>
+              ) : null}
+              <EditProfileModal
+                userTags={userTags}
+                setUserTags={setUserTags}
+                show={showEditProfileModal}
+                setShow={setShowEditProfileModal}
               />
+              <div className={styles['profile-info']}>
+                <span>
+                  {userCtx.user.username === user?.username ? userCtx.user.info : user?.info}
+                </span>
+              </div>
+              <div>
+                {userTags.map((tag, idx) => (
+                  <Tag key={`${tag.text}-${idx}`} color={tag.color}>
+                    {tag.text}
+                  </Tag>
+                ))}
+              </div>
             </div>
-          ) : null}
+            {userCtx.user.username === user?.username ? (
+              <div
+                className={
+                  !isMobile ? styles.uploadACoverWrapper : styles.uploadACoverWrapperMobile
+                }
+              >
+                <label htmlFor="image" className={styles.uploadACover}>
+                  {!isMobile ? (
+                    <div className="ant-btn ant-btn-primary">Upload a cover</div>
+                  ) : (
+                    <CameraFilled style={{ fontSize: '20px' }} />
+                  )}
+                </label>
+                <input
+                  type="file"
+                  id="image"
+                  name="img"
+                  className={styles.addCoverPhoto}
+                  accept="image/*"
+                  onChange={(e) => onLoad(e)}
+                  style={{ display: 'none' }}
+                />
+              </div>
+            ) : null}
+          </div>
         </div>
-      </div>
-      <div className={styles.posts}>
-        {data?.posts?.length > 0 ? <Secrets data={data.posts} /> : <Empty />}
-      </div>
+        <div className={styles.posts}>
+          <InfiniteScroll
+            dataLength={data.length}
+            next={fetchMoreData}
+            hasMore={true}
+            loader={<Spin spinning={infiniteLoadig} delay={100} tip="Loading..." />}
+          >
+            <Secrets data={data} />
+          </InfiniteScroll>
+        </div>
+      </Spin>
     </Overlay>
   );
 };
 
-export async function getServerSideProps({ query, req, res }) {
-  const [collection, secretsCollection] = await Promise.all([
-    mongoDB.getCollection('USERS'),
-    mongoDB.getCollection('SECRETS')
-  ]);
-  const { id } = query;
-  const token = req.cookies.jwtToken;
-  if (!token) {
-    return {
-      props: {
-        data: {}
-      }
-    };
-  }
-  const decoded = jwt.verify(token, process.env.SECRET);
-  if (!decoded) {
-    return {
-      props: {
-        data: {}
-      }
-    };
-  }
-  if (id) {
-    try {
-      const result = await collection.findOne({ username: id });
-      // eslint-disable-next-line no-unused-vars
-      const { password, ...user } = result;
-      try {
-        const result = await secretsCollection.find({ 'user.username': id }).toArray();
-        if (!result) return res.status(400).json({ Message: 'Secret not found.' });
-        user.posts = result;
-      } catch (error) {
-        return {
-          props: {
-            data: {}
-          }
-        };
-      }
-      return {
-        props: {
-          data: JSON.parse(JSON.stringify({ ...user }))
-        }
-      };
-    } catch (error) {
-      return { props: { data: {} } };
-    }
-  }
-  return res.status(500).json({ error: 'Missing id' });
-}
 export default Index;
