@@ -3,7 +3,6 @@ import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import { useEffect, useReducer, useState } from 'react';
 import { UserContext } from '../context/UserContext';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import reducer from '../reducers/reducer';
 import { Spin } from 'antd';
 import PropTypes from 'prop-types';
@@ -12,6 +11,7 @@ import NProgress from 'nprogress';
 import Router from 'next/router';
 import 'nprogress/nprogress.css';
 import { HeaderProvider } from '../context/HeaderContext';
+import axios from '../helpers/axios';
 NProgress.configure({
   minimum: 0.3,
   easing: 'ease',

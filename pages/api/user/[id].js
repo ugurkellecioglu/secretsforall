@@ -1,15 +1,15 @@
-import jwt from 'jsonwebtoken';
+import checkUser from '../../../helpers/checkUser';
 import mongoDB from '../../../helpers/MongoDB';
 export default async function handler(req, res) {
   const usersCollection = await mongoDB.getCollection('USERS');
   if (req.method === 'GET') {
-    const token = req.cookies.jwtToken;
-    if (!token) {
-      return res.status(401).json({ error: 'Missing token' });
-    }
-    const decoded = jwt.verify(token, process.env.SECRET);
-    if (!decoded) {
-      return res.status(401).json({ error: 'Invalid token' });
+    try {
+      // eslint-disable-next-line no-var
+      var decoded = await checkUser(req.headers.authorization);
+    } catch (error) {
+      return res.status(401).json({
+        error: error.message
+      });
     }
     if (req.query.id) {
       try {

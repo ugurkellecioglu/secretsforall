@@ -21,7 +21,7 @@ axios.interceptors.request.use(
     if (token) {
       // add the token to the headers
       config.headers.Authorization = `Bearer ${token}`;
-    } else {
+    } else if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
       // if token is not present
       // redirect to the login page
       window.location.href = '/login';
@@ -37,6 +37,10 @@ axios.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log('exxrror', error);
+    window.location.href = '/login';
+    cookie.remove('jwtToken');
+
     return Promise.reject(error);
   }
 );

@@ -14,13 +14,11 @@ const Reply = (props) => {
   const [likes, setLikes] = useState(props.reply.likesCount);
   const [action, setAction] = useState<string | null>(null);
   const { user } = useContext(UserContext);
-  console.log('Reply', props);
   useEffect(() => {
     const userIdsWhoLiked = props.reply?.likes?.reduce(
       (prev, curr) => [...prev, curr.user._id],
       []
     );
-    console.log('userIdsWhoLiked', userIdsWhoLiked);
 
     const isLiked = userIdsWhoLiked?.includes(user._id);
     setAction(isLiked ? 'liked' : null);

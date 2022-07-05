@@ -30,7 +30,6 @@ const Index: React.FC<any> = () => {
   const [user, setUser] = useState(null);
   const fetchMoreData = async () => {
     setInfiniteLoading(true);
-    console.log(route.query);
     const response = await axios.get(
       `/api/secrets?username=${route.query.id}&size=10&page=${page}`
     );

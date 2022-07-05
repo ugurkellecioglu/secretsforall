@@ -1,6 +1,6 @@
 import { Spin, Card, Layout, Row, Space, Col, notification } from 'antd';
 import { useContext, useReducer, useState } from 'react';
-import axios from 'axios';
+import axios from '../../helpers/axios';
 import styles from './style.module.scss';
 import useAvatar from '../../helpers/useAvatar';
 import Image from 'next/image';

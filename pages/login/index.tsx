@@ -1,6 +1,5 @@
 import React, { useContext, useReducer } from 'react';
 import { Spin, Layout, notification } from 'antd';
-import axios from 'axios';
 import reducer from '../../reducers/reducer';
 import { UserContext } from '../../context/UserContext';
 import { useRouter } from 'next/router';
@@ -14,6 +13,7 @@ import Triangle from '../../public/login/triangle.png';
 import { Typography } from 'antd';
 import styles from './styles.module.scss';
 import dynamic from 'next/dynamic';
+import axios from '../../helpers/axios';
 
 const LoginForm = dynamic(import('../../components/Login/LoginForm'));
 
@@ -57,10 +57,12 @@ function Index() {
           dispatch({ type: 'USER_SUCCESS', payload: res.data });
         })
         .catch((err) => {
+          console.log('err', err);
           dispatch({ type: 'USER_ERROR', payload: err.response.data });
         });
       router.push('/dashboard');
     } catch (error) {
+      console.log('error', error);
       dispatch({ type: 'LOGIN_ERROR', payload: error.response.data.error });
       notification.warning({
         message: 'Login Error',

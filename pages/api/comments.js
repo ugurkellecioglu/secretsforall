@@ -1,6 +1,14 @@
 import { ObjectId as objectId } from 'mongodb';
+import checkUser from '../../helpers/checkUser';
 import mongoDB from '../../helpers/MongoDB';
 export default async function handler(req, res) {
+  try {
+    await checkUser(req.headers.authorization);
+  } catch (error) {
+    return res.status(401).json({
+      error: error.message
+    });
+  }
   const collection = await mongoDB.getCollection('SECRETS');
   if (req.method === 'POST') {
     const body = req.body;
