@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { PostProvider } from '../../context/PostContext';
 import dynamic from 'next/dynamic';
 
-const CardHeader = dynamic(import('../../components/CardHeader.tsx'));
+const CardHeader = dynamic(import('../CardHeader'));
 const SecretPost = dynamic(import('./SecretPost'));
 
 function Secrets({ data }) {
@@ -19,7 +19,15 @@ function Secrets({ data }) {
                 postId={_id}
                 text={text}
                 comments={comments}
-                title={<CardHeader updatedAt={updatedAt} user={user} />}
+                title={
+                  <CardHeader
+                    updatedAt={updatedAt}
+                    user={user}
+                    postId={_id}
+                    text={text}
+                    setText={undefined}
+                  />
+                }
               />
             ))}
         </Col>

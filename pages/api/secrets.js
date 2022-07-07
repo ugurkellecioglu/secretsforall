@@ -80,6 +80,23 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: error.toString() });
       }
     }
+  } else if (req.method === 'PUT') {
+    console.log('put');
+    const { postId, text } = req.body;
+    if (!postId || !text) {
+      res.status(400).json({ error: 'Missing postId or text' });
+      return res.status(400).json({ error: 'Missing postId or text' });
+    }
+    try {
+      const result = await secretsCollection.updateOne(
+        { _id: objectId(postId) },
+        { $set: { text, updatedAt: new Date() } }
+      );
+      if (!result) return res.status(400).json({ Message: 'Secret not found.' });
+      return res.status(200).json({ Message: 'Secret updated.', result });
+    } catch (error) {
+      return res.status(500).json({ error: error.toString() });
+    }
   } else {
     return res.status(400).json({ error: 'Invalid method' });
   }
