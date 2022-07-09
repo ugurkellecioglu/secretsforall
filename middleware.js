@@ -6,7 +6,7 @@ export default function middleware(req) {
     console.log('redirecting to /');
     const redirect =
       process.env.NODE_ENV === 'production'
-        ? 'https://secretsforall.vercel.app'
+        ? 'https://secretsforall.herokuapp.com'
         : 'http://localhost:3000';
 
     return NextResponse.redirect(`${redirect}/dashboard`);
