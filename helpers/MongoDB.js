@@ -13,14 +13,16 @@ class MongoDB {
     this.db = null;
     this.collections = {
       SECRETS: 'secrets',
-      USERS: 'users'
+      USERS: 'users',
+      CHAT: 'chat'
     };
     this.dbNames = {
       SECRETSFORALL: 'secretsforall'
     };
     this.collectionList = {
       SECRETS: null,
-      USERS: null
+      USERS: null,
+      CHAT: null
     };
     this.secretsCollection = this.usersCollection = async () => {
       const db = await mongoDB.getDB(mongoDB.dbNames.SECRETSFORALL);
@@ -33,6 +35,7 @@ class MongoDB {
       const db = await mongoDB.getDB(mongoDB.dbNames.SECRETSFORALL);
       this.collectionList.SECRETS = await db.collection(mongoDB.collections.SECRETS);
       this.collectionList.USERS = await db.collection(mongoDB.collections.USERS);
+      this.collectionList.CHAT = await db.collection(mongoDB.collections.CHAT);
       console.log('MongoDB collections is connected');
       return this.collectionList[collectionName];
     } else {

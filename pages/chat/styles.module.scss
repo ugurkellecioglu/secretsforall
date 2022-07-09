@@ -1,0 +1,10 @@
+.wrapper {
+  :global(.ant-card-body) {
+    overflow-y: auto;
+    height: 80vh;
+
+    @media (max-width: 768px) {
+      height: 100vh;
+    }
+  }
+}

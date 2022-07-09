@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Card, notification } from 'antd';
 import PropTypes from 'prop-types';
 import { UserContext } from '../../context/UserContext';
-import axios from 'axios';
+import axios from '../../helpers/axios';
 import styles from './style.module.scss';
 import dynamic from 'next/dynamic';
 import CommentList from './CommentList';

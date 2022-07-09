@@ -1,4 +1,4 @@
-import { AppstoreTwoTone, StarTwoTone } from '@ant-design/icons';
+import { AppstoreTwoTone, MessageTwoTone, StarTwoTone } from '@ant-design/icons';
 import { Menu } from 'antd';
 import Link from 'next/link';
 import React, { useEffect, useRef } from 'react';
@@ -24,6 +24,9 @@ const TopMenu: React.FC<{ collapsed: boolean }> = ({ collapsed }) => {
         </Menu.Item>
         <Menu.Item key="2" icon={<StarTwoTone />}>
           <Link href="/random-secret">Random Secret</Link>
+        </Menu.Item>
+        <Menu.Item key="3" icon={<MessageTwoTone />}>
+          <Link href="/chat">Chat</Link>
         </Menu.Item>
       </Menu>
     </div>

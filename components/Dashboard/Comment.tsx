@@ -2,7 +2,7 @@ import React, { createElement, useContext, useEffect, useState } from 'react';
 import { Comment, notification, Tooltip } from 'antd';
 import { LikeOutlined, LikeFilled } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import axios from '../../helpers/axios';
 import { UserContext } from '../../context/UserContext';
 import dynamic from 'next/dynamic';
 

@@ -3,7 +3,7 @@ import React, { useEffect, useReducer } from 'react';
 import reducer from '../../../reducers/reducer';
 import Overlay from '../../../components/Overlay';
 import { Col, Row, Spin } from 'antd';
-import axios from 'axios';
+import axios from '../../../helpers/axios';
 import dynamic from 'next/dynamic';
 
 const SecretPost = dynamic(import('../../../components/Dashboard/SecretPost'));

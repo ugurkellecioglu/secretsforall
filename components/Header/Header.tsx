@@ -29,6 +29,11 @@ const Header = () => {
       path: '/profile'
     },
     {
+      title: 'Chat',
+      url: '/chat',
+      path: '/chat'
+    },
+    {
       title: 'Logout',
       url: '/logout',
       path: '/logout'

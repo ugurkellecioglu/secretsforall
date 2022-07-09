@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppstoreTwoTone, StarTwoTone } from '@ant-design/icons';
+import { AppstoreTwoTone, MessageTwoTone, StarTwoTone } from '@ant-design/icons';
 import { Menu, Layout } from 'antd';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
@@ -23,6 +23,9 @@ function Sidebar({ collapsed }) {
           </Menu.Item>
           <Menu.Item key="2" icon={<StarTwoTone />}>
             <Link href="/random-secret">Random Secret</Link>
+          </Menu.Item>
+          <Menu.Item key="3" icon={<MessageTwoTone />}>
+            <Link href="/chat">Chat</Link>
           </Menu.Item>
         </Menu>
       </Layout.Sider>
