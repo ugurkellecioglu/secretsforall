@@ -5,3 +5,32 @@ body {
 html {
   overflow-x: hidden;
 }
+/* Customize website's scrollbar like Mac OS
+Not supports in Firefox and IE */
+
+/* total width */
+body::-webkit-scrollbar {
+  background-color: #fff !important;
+  width: 16px !important;
+}
+
+/* background of the scrollbar except button or resizer */
+body::-webkit-scrollbar-track {
+  background-color: #fff !important;
+}
+
+/* scrollbar itself */
+body::-webkit-scrollbar-thumb {
+  background-color: #babac0 !important;
+  border-radius: 16px !important;
+  border: 4px solid #fff !important;
+}
+
+/* set button(top and bottom of the scrollbar) */
+body::-webkit-scrollbar-button {
+  display: none !important;
+}
+
+:global(.ant-card-body::-webkit-scrollbar-button) {
+  display: none !important;
+}
