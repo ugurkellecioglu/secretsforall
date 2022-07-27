@@ -60,9 +60,10 @@ const Index: React.FC = () => {
       };
 
       const resp = await axios.post('/api/chat', message);
-
       // reset field if OK
-      if (resp.status === 200) setMsg('');
+      if (resp.status === 201) {
+        setMsg('');
+      }
     }
 
     // focus after click
