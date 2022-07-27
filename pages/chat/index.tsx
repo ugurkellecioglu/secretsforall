@@ -127,13 +127,12 @@ const Index: React.FC = () => {
           <Col xl={16} sm={24} xs={24} className={styles.msgRow}>
             <TextArea
               ref={inputRef}
-              type="text"
               disabled={!connected}
               placeholder="Type your message here"
               className={styles.textArea}
               value={msg}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMsg(e.target.value)}
-              onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+              onChange={(e) => setMsg(e.target.value)}
+              onKeyPress={(e) => {
                 if (e.key === 'Enter') sendMessage();
               }}
             />

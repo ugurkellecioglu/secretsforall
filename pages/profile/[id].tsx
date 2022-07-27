@@ -98,7 +98,8 @@ const Index: React.FC<any> = () => {
                   type="primary"
                   onClick={() => setShowEditProfileModal(true)}
                   shape="round"
-                  className={styles['profile-edit-btn']}>
+                  className={styles['profile-edit-btn']}
+                >
                   Edit Profile
                 </Button>
               ) : null}
@@ -125,7 +126,8 @@ const Index: React.FC<any> = () => {
               <div
                 className={
                   !isMobile ? styles.uploadACoverWrapper : styles.uploadACoverWrapperMobile
-                }>
+                }
+              >
                 <label htmlFor="image" className={styles.uploadACover}>
                   {!isMobile ? (
                     <div className="ant-btn ant-btn-primary">Upload a cover</div>
@@ -151,7 +153,8 @@ const Index: React.FC<any> = () => {
             dataLength={data.length}
             next={fetchMoreData}
             hasMore={true}
-            loader={<Spin spinning={infiniteLoadig} delay={100} tip="Loading..." />}>
+            loader={<Spin spinning={infiniteLoadig} delay={100} tip="Loading..." />}
+          >
             <Secrets data={data} />
           </InfiniteScroll>
         </div>
