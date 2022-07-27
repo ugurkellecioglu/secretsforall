@@ -1,4 +1,6 @@
+import { SendOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Input, Row } from 'antd';
+const { TextArea } = Input;
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import io from 'socket.io-client';
 import Overlay from '../../components/Overlay';
@@ -78,7 +80,7 @@ const Index: React.FC = () => {
         <Row justify="center">
           <Col xl={16} sm={24} xs={24}>
             <Card title="Chat" bordered={false}>
-              <Row justify="center">
+              <Row justify="center" className={styles.msgRow}>
                 <Col xl={22} lg={20} md={18} span={24}>
                   {!connected ? (
                     <div>
@@ -114,31 +116,35 @@ const Index: React.FC = () => {
                     <div>No chat messages</div>
                   )}
                 </Col>
-                <Row justify="end">
-                  <Col>
-                    <Input
-                      ref={inputRef}
-                      type="text"
-                      disabled={!connected}
-                      value={msg}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMsg(e.target.value)}
-                      onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
-                        if (e.key === 'Enter') sendMessage();
-                      }}
-                    />
-                    <Button block disabled={!connected} onClick={sendMessage}>
-                      Send
-                    </Button>
-                    <audio ref={soundRef}>
-                      <source src="notification.mp3" type="audio/mp3" />
-                      Your browser does not support the audio element.
-                    </audio>
-                  </Col>
-                </Row>
               </Row>
             </Card>
           </Col>
+          <Col xl={16} sm={24} xs={24} className={styles.msgRow}>
+            <TextArea
+              ref={inputRef}
+              type="text"
+              disabled={!connected}
+              placeholder="Type your message here"
+              className={styles.textArea}
+              value={msg}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMsg(e.target.value)}
+              onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
+                if (e.key === 'Enter') sendMessage();
+              }}
+            />
+            <Button
+              type="primary"
+              className={styles.sendBtn}
+              disabled={!connected}
+              onClick={sendMessage}
+              icon={<SendOutlined />}
+            />
+          </Col>
         </Row>
+        <audio ref={soundRef}>
+          <source src="notification.mp3" type="audio/mp3" />
+          Your browser does not support the audio element.
+        </audio>
       </div>
     </Overlay>
   );
