@@ -15,7 +15,7 @@ interface IMsg {
 // component
 const Index: React.FC = () => {
   const inputRef = useRef(null);
-
+  const soundRef = useRef(null);
   // connected flag
   const [connected, setConnected] = useState<boolean>(false);
 
@@ -44,6 +44,8 @@ const Index: React.FC = () => {
     // update chat on new message dispatched
     socket.on('message', (message: IMsg) => {
       setChat((prevChat) => [...prevChat, message]);
+      // play sound
+      soundRef.current.play();
     });
 
     // socket disconnet onUnmount if exists
@@ -127,6 +129,10 @@ const Index: React.FC = () => {
                     <Button block disabled={!connected} onClick={sendMessage}>
                       Send
                     </Button>
+                    <audio ref={soundRef}>
+                      <source src="notification.mp3" type="audio/mp3" />
+                      Your browser does not support the audio element.
+                    </audio>
                   </Col>
                 </Row>
               </Row>
