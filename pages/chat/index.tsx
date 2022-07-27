@@ -1,5 +1,6 @@
 import { SendOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Input, Row } from 'antd';
+import Link from 'next/link';
 const { TextArea } = Input;
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import io from 'socket.io-client';
@@ -102,7 +103,11 @@ const Index: React.FC = () => {
                         <p style={chat.user === user.username ? { textAlign: 'end' } : {}}>
                           <span>
                             <span style={{ fontWeight: 'bold' }}>
-                              {chat.user === user.username ? 'Me' : chat.user}
+                              {chat.user === user.username ? (
+                                'Me'
+                              ) : (
+                                <Link href={`/profile/${chat.user}`}>{chat.user}</Link>
+                              )}
                             </span>
                             : {chat.msg}
                           </span>
